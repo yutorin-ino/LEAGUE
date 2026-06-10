@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>リフォーム業界総合分析レポート 2026</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --green:  #1b5e20;
+  --mid:    #2e7d32;
+  --light:  #43a047;
+  --now:    #2e7d32;
+  --future: #e65100;
+  --strat:  #1565c0;
+  --warn:   #c62828;
+  --bg:     #f4faf4;
+  --border: #c8e6c9;
+  --text:   #1a2e1a;
+  --muted:  #5a6e5a;
+}
+body {
+  font-family:"Yu Gothic","Meiryo","Noto Sans JP",sans-serif;
+  font-size:11px; color:var(--text); background:#e0ece0; line-height:1.65;
+}
+.page {
+  width:210mm; min-height:297mm; background:white;
+  margin:8mm auto; padding:14mm 13mm 12mm;
+  position:relative; page-break-after:always;
+}
+/* COVER */
+.cover {
+  background:linear-gradient(160deg,#0a1e0a 0%,#1b5e20 45%,#2e7d32 100%);
+  color:white; display:flex; flex-direction:column;
+  justify-content:space-between; padding:16mm 14mm;
+}
+.cover-eyebrow { font-size:10px; letter-spacing:3px; opacity:.65; margin-bottom:4mm; }
+.cover-title { font-size:26px; font-weight:900; line-height:1.25; margin-bottom:4mm; letter-spacing:1px; }
+.cover-subtitle { font-size:13px; opacity:.85; margin-bottom:10mm; line-height:1.7; }
+.cover-divider { border:none; border-top:1px solid rgba(255,255,255,.3); margin:6mm 0; }
+.cover-toc { display:grid; grid-template-columns:1fr 1fr; gap:3mm 6mm; }
+.cover-toc-item { display:flex; align-items:center; gap:2mm; font-size:10px; opacity:.85; }
+.cover-toc-item .tn { background:rgba(255,255,255,.2); border-radius:50%; width:18px; height:18px;
+  display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:bold; flex-shrink:0; }
+.cover-kpi-row { display:grid; grid-template-columns:repeat(3,1fr); gap:3mm; margin-top:8mm; }
+.cover-kpi { background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.2);
+  border-radius:2mm; padding:3mm 4mm; text-align:center; }
+.cover-kpi .ck-label { font-size:8px; opacity:.7; margin-bottom:1mm; }
+.cover-kpi .ck-val { font-size:17px; font-weight:900; line-height:1; }
+.cover-kpi .ck-sub { font-size:8px; margin-top:1mm; color:#a5d6a7; }
+.cover-bottom { margin-top:auto; padding-top:8mm; display:flex; justify-content:space-between;
+  align-items:flex-end; font-size:9px; opacity:.55; }
+
+/* PAGE HEADER */
+.page-header { border-bottom:2px solid var(--green); padding-bottom:3mm; margin-bottom:5mm;
+  display:flex; align-items:flex-end; justify-content:space-between; }
+.page-header .ph-chapter { font-size:8px; color:var(--muted); letter-spacing:1px; margin-bottom:1mm; }
+.page-header .ph-title { font-size:17px; font-weight:900; color:var(--green); }
+.page-header .ph-page { font-size:9px; color:var(--muted); text-align:right; }
+
+.section-title { font-size:12px; font-weight:900; color:var(--green);
+  border-left:4px solid var(--mid); padding-left:3mm; margin-bottom:3mm; }
+
+/* INSIGHT */
+.insight { background:#e8f5e9; border-left:4px solid var(--mid);
+  border-radius:0 2mm 2mm 0; padding:3mm 4mm; margin-bottom:4mm; font-size:10px; line-height:1.7; }
+.insight .ins-head { font-weight:900; color:var(--mid); font-size:10.5px; margin-bottom:1.5mm; }
+.insight.warn { background:#fdecea; border-color:var(--warn); }
+.insight.warn .ins-head { color:var(--warn); }
+.insight.future { background:#fff3e0; border-color:var(--future); }
+.insight.future .ins-head { color:var(--future); }
+.insight.strat { background:#e3f0fc; border-color:var(--strat); }
+.insight.strat .ins-head { color:var(--strat); }
+
+/* NVF */
+.nvf-wrap { display:grid; grid-template-columns:1fr 1fr; gap:3mm; margin-bottom:4mm; }
+.nvf-box { border-radius:2mm; padding:3.5mm 4mm; font-size:10px; line-height:1.65; }
+.nvf-box.now { background:#e8f5e9; border:1.5px solid var(--now); }
+.nvf-box.future-box { background:#fff3e0; border:1.5px solid var(--future); }
+.nvf-box .nvf-head { font-size:10px; font-weight:900; margin-bottom:2mm; display:flex; align-items:center; gap:1.5mm; }
+.nvf-box.now .nvf-head { color:var(--now); }
+.nvf-box.future-box .nvf-head { color:var(--future); }
+.nvf-box ul { padding-left:4mm; }
+.nvf-box li { margin-bottom:1mm; }
+
+/* CHART */
+.chart-box { background:var(--bg); border:1px solid var(--border);
+  border-radius:2mm; padding:3mm; margin-bottom:4mm; }
+.chart-label { font-size:9px; color:var(--muted); margin-bottom:2mm; }
+.chart-wrap { position:relative; width:100%; }
+
+/* TABLE */
+.data-table { width:100%; border-collapse:collapse; font-size:10px; margin-bottom:4mm; }
+.data-table th { background:var(--green); color:white; padding:2mm 3mm;
+  text-align:center; font-weight:bold; font-size:9.5px; }
+.data-table td { padding:2mm 3mm; border-bottom:1px solid var(--border); text-align:center; }
+.data-table tr:nth-child(even) td { background:#f0faf0; }
+.data-table td.L { text-align:left; }
+.data-table td.nc { color:var(--now); font-weight:bold; }
+.data-table td.fc { color:var(--future); font-weight:bold; }
+.data-table td.red { color:var(--warn); font-weight:bold; }
+.data-table td.grn { color:var(--strat); font-weight:bold; }
+.data-table td.up { color:#1b5e20; font-weight:bold; }
+.data-table tr.hl td { background:#fff8e1; }
+
+/* STRAT */
+.strat-grid { display:grid; grid-template-columns:1fr 1fr; gap:3mm; margin-bottom:4mm; }
+.strat-card { border:1.5px solid var(--strat); border-radius:2mm; overflow:hidden; }
+.strat-card .sc-head { background:var(--strat); color:white; padding:2mm 3mm; font-size:10px; font-weight:900; }
+.strat-card .sc-body { padding:3mm; font-size:10px; line-height:1.65; }
+.strat-card .sc-body ul { padding-left:4mm; }
+.strat-card .sc-body li { margin-bottom:1mm; }
+
+/* SCENARIO */
+.scenario-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:3mm; margin-bottom:4mm; }
+.sc3-box { border-radius:2mm; padding:3mm 3.5mm; font-size:10px; line-height:1.6; }
+.sc3-box.base { background:#e8f5e9; border:1.5px solid #2e7d32; }
+.sc3-box.bull { background:#e3f0fc; border:1.5px solid #1565c0; }
+.sc3-box.bear { background:#fdecea; border:1.5px solid #c62828; }
+.sc3-box h4 { font-size:10.5px; font-weight:900; margin-bottom:2mm; }
+.sc3-box.base h4 { color:#1b5e20; }
+.sc3-box.bull h4 { color:#1565c0; }
+.sc3-box.bear h4 { color:#c62828; }
+.sc3-box ul { padding-left:3.5mm; }
+.sc3-box li { margin-bottom:1mm; }
+
+/* HN ROW */
+.hl-num-row { display:grid; grid-template-columns:repeat(3,1fr); gap:3mm; margin-bottom:4mm; }
+.hl-num { background:var(--bg); border:1px solid var(--border); border-radius:2mm; padding:3mm; text-align:center; }
+.hl-num .hn-label { font-size:9px; color:var(--muted); margin-bottom:1mm; }
+.hl-num .hn-val { font-size:20px; font-weight:900; line-height:1; }
+.hl-num .hn-sub { font-size:9px; margin-top:1mm; }
+.hl-num.now-n { border-top:3px solid var(--now); }
+.hl-num.now-n .hn-val { color:var(--now); }
+.hl-num.fut-n { border-top:3px solid var(--future); }
+.hl-num.fut-n .hn-val { color:var(--future); }
+.hl-num.warn-n { border-top:3px solid var(--warn); }
+.hl-num.warn-n .hn-val { color:var(--warn); }
+.hl-num.strat-n { border-top:3px solid var(--strat); }
+.hl-num.strat-n .hn-val { color:var(--strat); }
+
+/* TIMELINE */
+.timeline-row { display:flex; align-items:stretch; gap:0; margin-bottom:4mm; overflow:hidden; border-radius:2mm; }
+.tl-item { flex:1; background:#f0faf0; padding:2.5mm 2mm; text-align:center;
+  font-size:9px; position:relative; line-height:1.4; }
+.tl-item::after { content:''; position:absolute; right:-4px; top:0; bottom:0; width:0;
+  border-top:18px solid transparent; border-bottom:18px solid transparent;
+  border-left:8px solid #f0faf0; z-index:2; }
+.tl-item:last-child::after { display:none; }
+.tl-item .tl-year { font-size:11px; font-weight:900; color:var(--now); margin-bottom:.5mm; }
+.tl-item.future-tl { background:#fff3e0; }
+.tl-item.future-tl::after { border-left-color:#fff3e0; }
+.tl-item.future-tl .tl-year { color:var(--future); }
+.tl-item.warn-tl { background:#fdecea; }
+.tl-item.warn-tl::after { border-left-color:#fdecea; }
+.tl-item.warn-tl .tl-year { color:var(--warn); }
+
+.two-col { display:grid; grid-template-columns:1fr 1fr; gap:4mm; margin-bottom:4mm; }
+
+/* DRIVER */
+.driver-grid { display:grid; grid-template-columns:1fr 1fr; gap:1.5mm; margin-bottom:4mm; }
+.driver-item { border-radius:0 2mm 2mm 0; padding:2.5mm 3mm; font-size:10px; line-height:1.6; }
+.driver-item.pos { background:#f0faf0; border-left:3px solid var(--mid); }
+.driver-item.neg { background:#fff5f5; border-left:3px solid var(--warn); }
+.driver-item strong { display:block; margin-bottom:.5mm; font-size:10px; }
+.driver-item.pos strong { color:#1b5e20; }
+.driver-item.neg strong { color:#900; }
+
+/* FOOTER */
+.page-footer { position:absolute; bottom:6mm; left:13mm; right:13mm;
+  display:flex; justify-content:space-between; font-size:8px; color:var(--muted);
+  border-top:1px solid var(--border); padding-top:2mm; }
+
+@media print {
+  @page { size:A4 portrait; margin:8mm; }
+  body { background:white; }
+  .page { width:100%; margin:0; padding:12mm 10mm 10mm; box-shadow:none; }
+}
+
+/* ===== A4 COMPACT OVERRIDE (自動追加) ===== */
+body { font-size: 10px !important; line-height: 1.56 !important; }
+
+/* ページ余白 */
+.page { padding: 9mm 11mm 8mm !important; }
+.page-header { margin-bottom: 3mm !important; padding-bottom: 1.5mm !important; }
+.ph-title { font-size: 14px !important; }
+.ph-chapter { font-size: 7px !important; margin-bottom: 0 !important; }
+.ph-page { font-size: 8px !important; }
+
+/* インサイトボックス */
+.insight { padding: 2mm 3mm !important; margin-bottom: 2.5mm !important; }
+.insight .ins-head { font-size: 10px !important; margin-bottom: 0.8mm !important; }
+
+/* セクションタイトル */
+.section-title { font-size: 10.5px !important; margin-bottom: 1.5mm !important; }
+
+/* NVF / CMP */
+.nvf-wrap, .cmp-row { gap: 2mm !important; margin-bottom: 2.5mm !important; }
+.nvf-box, .cmp-box { padding: 2mm 2.5mm !important; }
+.nvf-box .nvf-head, .cmp-box .cb-head { font-size: 9.5px !important; margin-bottom: 1mm !important; }
+.nvf-box li, .cmp-box li { margin-bottom: 0.2mm !important; }
+.nvf-box ul, .cmp-box ul { padding-left: 3mm !important; }
+
+/* グリッド */
+.two-col, .three-col { gap: 2mm !important; margin-bottom: 2.5mm !important; }
+.strat-grid { gap: 2mm !important; margin-bottom: 2.5mm !important; }
+.scenario-3 { gap: 2mm !important; margin-bottom: 2.5mm !important; }
+.matrix { gap: 2mm !important; margin-bottom: 2.5mm !important; }
+.driver-grid { gap: 1.5mm !important; margin-bottom: 2.5mm !important; }
+.hl-num-row, .hl-row { gap: 2mm !important; margin-bottom: 2.5mm !important; }
+
+/* チャートボックス */
+.chart-box { padding: 1.5mm 2mm !important; margin-bottom: 2mm !important; }
+.chart-label { margin-bottom: 0.8mm !important; font-size: 7.5px !important; }
+
+/* テーブル */
+.data-table { margin-bottom: 2.5mm !important; font-size: 9.5px !important; }
+.data-table th { padding: 1.2mm 1.8mm !important; font-size: 8.5px !important; }
+.data-table td { padding: 1.2mm 1.8mm !important; }
+
+/* 数値ハイライト */
+.hl-num, .hn { padding: 1.8mm 2mm !important; }
+.hl-num .hn-val { font-size: 15px !important; }
+.hl-num .hn-label, .hl-num .hn-l { font-size: 7.5px !important; }
+.hl-num .hn-sub, .hl-num .hn-s { font-size: 7.5px !important; margin-top: 0.5mm !important; }
+
+/* 戦略カード */
+.strat-card .sc-head { padding: 1.5mm 2mm !important; font-size: 9px !important; }
+.strat-card .sc-body { padding: 2mm !important; }
+.strat-card .sc-body li { margin-bottom: 0.2mm !important; }
+.strat-card .sc-body ul { padding-left: 3mm !important; }
+
+/* シナリオ・マトリクス・ドライバー */
+.sc3-box { padding: 1.8mm 2.5mm !important; }
+.sc3-box h4 { font-size: 9.5px !important; margin-bottom: 1mm !important; }
+.sc3-box li { margin-bottom: 0.2mm !important; }
+.sc3-box ul { padding-left: 3mm !important; }
+.matrix-cell { padding: 2mm 2.5mm !important; }
+.matrix-cell h4 { font-size: 9.5px !important; margin-bottom: 1mm !important; }
+.matrix-cell li { margin-bottom: 0.2mm !important; }
+.matrix-cell ul { padding-left: 3mm !important; }
+.driver-item { padding: 1.5mm 2mm !important; }
+.driver-item strong { font-size: 9.5px !important; margin-bottom: 0.2mm !important; }
+
+/* タイムライン */
+.timeline-row { margin-bottom: 2mm !important; }
+.tl-item { font-size: 7.5px !important; padding: 1.5mm 1mm !important; }
+.tl-item .tl-year { font-size: 9px !important; }
+.tl-item::after {
+  border-top-width: 14px !important;
+  border-bottom-width: 14px !important;
+  right: -5px !important;
+}
+
+/* カバーページ */
+.cover { padding: 12mm 12mm !important; }
+.cover-title { font-size: 21px !important; margin-bottom: 2.5mm !important; }
+.cover-subtitle { font-size: 11px !important; margin-bottom: 5mm !important; }
+.cover-kpi-row { gap: 2mm !important; margin-top: 4mm !important; }
+.cover-kpi { padding: 2mm 3mm !important; }
+.cover-kpi .ck-val { font-size: 14px !important; }
+.cover-kpi .ck-label, .cover-kpi .ck-sub { font-size: 7px !important; }
+.cover-split { gap: 3mm !important; margin-bottom: 4mm !important; }
+.cover-half { padding: 3mm !important; }
+.cover-half h3 { font-size: 11px !important; margin-bottom: 1.5mm !important; }
+.cover-half .cv-kpi { font-size: 10px !important; margin-bottom: 1mm !important; }
+.cover-half .cv-kpi span { font-size: 16px !important; }
+.cover-toc { gap: 2mm 4mm !important; }
+.cover-toc-item { font-size: 9px !important; }
+.cover-msg { padding: 2.5mm 3mm !important; margin-bottom: 3mm !important; font-size: 10px !important; }
+.cover-divider { margin: 3mm 0 !important; }
+.cover-eyebrow { margin-bottom: 2.5mm !important; }
+
+/* 対比レポート固有 */
+.tl-both { margin-bottom: 2mm !important; }
+.tl-shin, .tl-ref { padding: 1.5mm 2mm !important; font-size: 8.5px !important; }
+.tl-year-cell { font-size: 8.5px !important; padding: 1mm !important; }
+.tl-content-col { gap: 1.5mm !important; }
+.tl-row { gap: 1.5mm !important; }
+
+/* フッター */
+.page-footer { font-size: 7px !important; padding-top: 1mm !important; }
+
+</style>
+</head>
+<body>
+
+<!-- PAGE 1: COVER -->
+<div class="page cover">
+  <div>
+    <div class="cover-eyebrow">Industry Report 2026</div>
+    <div class="cover-title">リフォーム業界<br>総合分析レポート</div>
+    <div class="cover-subtitle">
+      過去20年（2005〜2025年）の市場変遷を振り返り、<br>
+      今後20年（2026〜2045年）の見通しと事業戦略の方向性を整理する。
+    </div>
+    <div class="cover-kpi-row">
+      <div class="cover-kpi">
+        <div class="ck-label">2024年 リフォーム市場規模</div>
+        <div class="ck-val">7.5兆円</div>
+        <div class="ck-sub">▲ 2005年比 +約65%成長</div>
+      </div>
+      <div class="cover-kpi">
+        <div class="ck-label">築30年超の住宅ストック</div>
+        <div class="ck-val">3,200万戸</div>
+        <div class="ck-sub">全ストックの約49%</div>
+      </div>
+      <div class="cover-kpi">
+        <div class="ck-label">2045年 市場規模予測</div>
+        <div class="ck-val">10〜12兆円</div>
+        <div class="ck-sub">▲ 現在比 +33〜60%</div>
+      </div>
+    </div>
+    <hr class="cover-divider">
+    <div style="font-size:10px;opacity:.8;margin-bottom:4mm;font-weight:bold;">このレポートで扱うテーマ</div>
+    <div class="cover-toc">
+      <div class="cover-toc-item"><div class="tn">1</div>リフォーム市場の20年間の変遷</div>
+      <div class="cover-toc-item"><div class="tn">2</div>住宅ストック老朽化と需要構造</div>
+      <div class="cover-toc-item"><div class="tn">3</div>主要プレーヤーの現状と戦略</div>
+      <div class="cover-toc-item"><div class="tn">4</div>今後20年の需要見通し（2026〜2045）</div>
+      <div class="cover-toc-item"><div class="tn">5</div>現状 vs 今後：業界構造の変化対比</div>
+      <div class="cover-toc-item"><div class="tn">6</div>事業戦略の方向性と生き残り条件</div>
+    </div>
+  </div>
+  <div class="cover-bottom">
+    <div>作成：2026年6月</div>
+    <div>出典：国土交通省 住宅リフォーム市場規模調査 / 総務省 住宅・土地統計調査 / 社人研 将来推計人口（2023年推計）</div>
+  </div>
+</div>
+
+<!-- PAGE 2: 市場規模の変遷 -->
+<div class="page">
+  <div class="page-header">
+    <div>
+      <div class="ph-chapter">Chapter 1</div>
+      <div class="ph-title">リフォーム市場の20年間の変遷</div>
+    </div>
+    <div class="ph-page">リフォーム業界レポート 2026 ｜ p.2</div>
+  </div>
+
+  <div class="insight">
+    <div class="ins-head">💡 リフォーム市場が「成長産業」である理由</div>
+    新築住宅市場が縮小を続ける中、リフォーム市場は20年間で約65%拡大しました（4.5兆円→7.5兆円）。
+    この成長を支えているのは「人口増加」ではなく、<strong>住宅ストックの老朽化・高齢化社会・省エネ意識の高まり</strong>という構造的な需要です。
+    人口が減っても「既に存在する家を直す需要」はなくならない——これがリフォーム市場の本質的な強みです。
+  </div>
+
+  <div class="hl-num-row">
+    <div class="hl-num now-n">
+      <div class="hn-label">2005年 市場規模</div>
+      <div class="hn-val">4.5兆円</div>
+      <div class="hn-sub" style="color:var(--muted)">新築市場の約30%</div>
+    </div>
+    <div class="hl-num now-n">
+      <div class="hn-label">2024年 市場規模</div>
+      <div class="hn-val">7.5兆円</div>
+      <div class="hn-sub" style="color:var(--now)">▲ 20年で65%成長</div>
+    </div>
+    <div class="hl-num fut-n">
+      <div class="hn-label">2045年 市場規模予測</div>
+      <div class="hn-val">10〜12兆円</div>
+      <div class="hn-sub" style="color:var(--future)">▲ 現在比 +33〜60%</div>
+    </div>
+  </div>
+
+  <div class="chart-box">
+    <div class="chart-label">■ リフォーム市場規模の推移と新築市場規模の比較（兆円）　　実績（〜2025）＋予測（2026〜）</div>
+    <div class="chart-wrap" style="height:115px">
+      <canvas id="mktChart"></canvas>
+    </div>
+  </div>
+
+  <div style="font-size:9px;color:var(--muted);font-weight:bold;margin-bottom:1.5mm;">■ 過去の主要変曲点（なぜ市場が動いたか）</div>
+  <div class="timeline-row">
+    <div class="tl-item"><div class="tl-year">2006年</div>耐震改修促進法改正<br>補助拡充で需要増</div>
+    <div class="tl-item warn-tl"><div class="tl-year">2008〜09年</div>リーマンショック<br>一時的な落ち込み</div>
+    <div class="tl-item"><div class="tl-year">2011年</div>東日本大震災後<br>耐震・防災改修急増</div>
+    <div class="tl-item"><div class="tl-year">2021〜22年</div>コロナ禍・在宅増<br>書斎・間取り改修急増</div>
+    <div class="tl-item future-tl"><div class="tl-year">2025年〜</div>省エネ基準義務化<br>断熱改修が本格拡大</div>
+  </div>
+
+  <div class="nvf-wrap">
+    <div class="nvf-box now">
+      <div class="nvf-head">🟢 現在の市場状況（〜2025年）</div>
+      <ul>
+        <li>市場規模<strong>7.5兆円</strong>。新築市場（約10兆円）の約75%まで接近</li>
+        <li>設備系（キッチン・浴室・トイレ）が最大シェア（約28%）</li>
+        <li>外壁・屋根防水改修が20%、断熱・省エネが18%で急増中</li>
+        <li>バリアフリー改修は全体の13%。高齢化に連動して拡大</li>
+        <li>補助金（こどもエコすまい・先進的窓改修等）が需要を牽引</li>
+        <li>大手からホームセンターまで競合が多様で価格競争が激しい</li>
+      </ul>
+    </div>
+    <div class="nvf-box future-box">
+      <div class="nvf-head">🟠 今後の市場見通し（2026〜2045年）</div>
+      <ul>
+        <li>2035年頃に<strong>リフォーム市場が新築市場を逆転</strong>する見込み</li>
+        <li>築40〜50年超の大規模改修（スケルトンリノベ）が急増</li>
+        <li>省エネ義務化で「断熱改修」が「水回り改修」を超える可能性</li>
+        <li>中古住宅購入＋リノベーションが住宅取得の主流に</li>
+        <li>空き家再生・古民家再活用が国策として推進</li>
+        <li>欧米型（住宅投資の60〜70%がリフォーム）へ構造転換</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="insight future">
+    <div class="ins-head">🟠 2035年の大転換：リフォームが新築を追い越す</div>
+    欧米では住宅投資の60〜70%がリフォームです。日本はこれまで「新築信仰」が強く、その比率は逆でした。
+    しかし人口動態・ストック老朽化・省エネ義務化が重なり、<strong>2035年前後を境に日本もリフォームが新築を上回る</strong>と予測されます。
+    この転換は業界全体のビジネスモデルを根本から変える歴史的な転換点です。
+  </div>
+
+  <div class="page-footer">
+    <span>リフォーム業界総合分析レポート 2026</span>
+    <span>出典：国土交通省 住宅リフォーム市場規模調査</span>
+    <span>p.2</span>
+  </div>
+</div>
+
+<!-- PAGE 3: ストック老朽化と需要構造 -->
+<div class="page">
+  <div class="page-header">
+    <div>
+      <div class="ph-chapter">Chapter 2</div>
+      <div class="ph-title">住宅ストック老朽化と需要構造</div>
+    </div>
+    <div class="ph-page">リフォーム業界レポート 2026 ｜ p.3</div>
+  </div>
+
+  <div class="insight">
+    <div class="ins-head">💡 6,500万戸の「ストック」がリフォーム業界の基盤</div>
+    日本には約6,500万戸の住宅ストックがあります。そのうち<strong>築30年超が約3,200万戸（49%）、空き家が約900万戸（14%）</strong>。
+    これらは「いつかは手入れが必要」な潜在需要です。新築が毎年20〜30万戸減少しても、
+    この巨大なストックが存在する限り、リフォーム需要は構造的に維持・拡大されます。
+  </div>
+
+  <div class="hl-num-row">
+    <div class="hl-num now-n">
+      <div class="hn-label">総住宅ストック</div>
+      <div class="hn-val">6,500万戸</div>
+      <div class="hn-sub" style="color:var(--now)">世帯数を約1,100万戸上回る</div>
+    </div>
+    <div class="hl-num warn-n">
+      <div class="hn-label">空き家数（2023年）</div>
+      <div class="hn-val">900万戸</div>
+      <div class="hn-sub" style="color:var(--warn)">空き家率13.8%・増加継続</div>
+    </div>
+    <div class="hl-num fut-n">
+      <div class="hn-label">2040年 空き家予測</div>
+      <div class="hn-val">1,400万戸</div>
+      <div class="hn-sub" style="color:var(--future)">空き家率20%超の見通し</div>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="chart-box" style="margin-bottom:3mm;">
+        <div class="chart-label">■ 住宅ストックの老朽化進行と空き家数推移</div>
+        <div class="chart-wrap" style="height:101px">
+          <canvas id="stockChart"></canvas>
+        </div>
+      </div>
+      <div class="chart-box">
+        <div class="chart-label">■ リフォーム需要カテゴリ別構成比（2024年）</div>
+        <div class="chart-wrap" style="height:94px">
+          <canvas id="catChart"></canvas>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="section-title">需要を動かす6つの構造ドライバー</div>
+      <div class="driver-grid" style="grid-template-columns:1fr; margin-bottom:0;">
+        <div class="driver-item pos">
+          <strong>🏗️ 住宅ストックの大量老朽化</strong>
+          築30年超が全体の49%。耐震・防水・配管更新・断熱は「必ずやる工事」。2030年には築40年超が2,000万戸超に達する。
+        </div>
+        <div class="driver-item pos">
+          <strong>👴 急速な高齢化・バリアフリー需要</strong>
+          65歳以上の単身・夫婦世帯が急増。手すり・段差解消・浴室改修・玄関スロープは恒常的で切れない需要。
+        </div>
+        <div class="driver-item pos">
+          <strong>⚡ 省エネ義務化・補助金政策</strong>
+          2025年から全新築に省エネ基準適合を義務化。既存住宅の断熱改修・窓改修への補助も拡充され需要を強制牽引。
+        </div>
+        <div class="driver-item pos">
+          <strong>🏡 中古住宅流通の活性化</strong>
+          「買って直す」中古＋リノベが都市部の若年層を中心に拡大。物件価格を抑え、こだわりを実現する手段として定着。
+        </div>
+        <div class="driver-item neg">
+          <strong>💰 建材・人件費の高騰リスク</strong>
+          資材・職人費の上昇で施工単価が上がり、小額案件の採算が悪化。「やりたいが高すぎる」で先送りが増えるリスク。
+        </div>
+        <div class="driver-item neg">
+          <strong>👷 職人・施工者不足の深刻化</strong>
+          リフォーム職人の高齢化・後継者不足。特に大工・左官・板金は2030年代に深刻な供給不足になると予測される。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="insight strat">
+    <div class="ins-head">🔵 ポイント：「空き家」はリスクでなくビジネスチャンス</div>
+    空き家900万戸はリフォーム業界にとって最大の潜在市場です。国も空き家活用を推進しており、
+    「空き家バンク」「古民家再生補助」「住宅確保要配慮者向け改修補助」など政策的な後押しが続きます。
+    <strong>空き家一軒を再生する大規模リノベは、通常の改修工事の3〜5倍の単価</strong>になります。
+    この市場を開拓できる企業が今後10年の成長ドライバーをつかめます。
+  </div>
+
+  <div class="page-footer">
+    <span>リフォーム業界総合分析レポート 2026</span>
+    <span>出典：総務省 住宅・土地統計調査 / 国土交通省 空き家対策総合支援事業</span>
+    <span>p.3</span>
+  </div>
+</div>
+
+<!-- PAGE 4: 主要プレーヤーと戦略 -->
+<div class="page">
+  <div class="page-header">
+    <div>
+      <div class="ph-chapter">Chapter 3</div>
+      <div class="ph-title">主要プレーヤーの現状と戦略転換</div>
+    </div>
+    <div class="ph-page">リフォーム業界レポート 2026 ｜ p.4</div>
+  </div>
+
+  <div class="insight">
+    <div class="ins-head">💡 リフォーム市場の特徴：「群雄割拠」から「集約」へ向かう業界</div>
+    リフォーム市場は現在、大手ハウスメーカー系・住設メーカー系・専業リフォーム会社・ホームセンター・地域工務店まで
+    非常に多様なプレーヤーが乱立しています。上位10社のシェアは15〜20%に過ぎず、
+    残り80%超を中小・零細が占める「極めて分散した市場」です。
+    しかし今後、DX・ブランド・資金力の差で集約が加速すると見られます。
+  </div>
+
+  <table class="data-table" style="margin-bottom:3mm;">
+    <tr>
+      <th>区分</th><th>代表企業</th><th>強み</th><th>弱み</th><th>今後の方向性</th>
+    </tr>
+    <tr>
+      <td class="L nc">HMリフォーム系</td>
+      <td class="L">積水ハウスリフォーム<br>大和ハウスリフォーム 等</td>
+      <td class="L">既存OB顧客基盤・ブランド<br>高単価帯での信頼</td>
+      <td class="L">コスト高・小規模対応が苦手</td>
+      <td class="L">OB深耕・サブスク点検強化</td>
+    </tr>
+    <tr>
+      <td class="L">住設メーカー系</td>
+      <td class="L">リクシル・TOTO・パナ等</td>
+      <td class="L">製品力・ショールーム・<br>全国販売網</td>
+      <td class="L">施工力が弱く外注依存</td>
+      <td class="L">施工会社との提携強化</td>
+    </tr>
+    <tr>
+      <td class="L">専業リフォーム大手</td>
+      <td class="L">ナサホーム・リフォームキュー<br>ニチハ等</td>
+      <td class="L">専門特化・価格訴求力<br>FC展開力</td>
+      <td class="L">ブランド認知が限定的</td>
+      <td class="L">FC加盟店拡大・DX化</td>
+    </tr>
+    <tr>
+      <td class="L">ホームセンター系</td>
+      <td class="L">カインズ・コメリ・コーナン等</td>
+      <td class="L">圧倒的な集客力・低価格<br>DIY需要との融合</td>
+      <td class="L">施工品質・専門性が低い</td>
+      <td class="L">施工子会社強化・外注管理</td>
+    </tr>
+    <tr>
+      <td class="L fc">プラットフォーム系</td>
+      <td class="L">くらしのマーケット<br>ホームプロ・SUUMO等</td>
+      <td class="L">マッチング・顧客獲得<br>口コミ・比較検索</td>
+      <td class="L">施工責任なし・品質管理困難</td>
+      <td class="L">AI見積・一括管理機能追加</td>
+    </tr>
+    <tr>
+      <td class="L">地域工務店</td>
+      <td class="L">全国多数</td>
+      <td class="L">地域密着・融通・信頼関係</td>
+      <td class="L">集客力・DX・後継者不足</td>
+      <td class="L">FC加盟または専門特化</td>
+    </tr>
+  </table>
+
+  <div class="two-col">
+    <div>
+      <div class="chart-box">
+        <div class="chart-label">■ リフォーム工事規模別 件数・金額の構成</div>
+        <div class="chart-wrap" style="height:98px">
+          <canvas id="scaleChart"></canvas>
+        </div>
+      </div>
+      <div class="insight strat" style="margin-bottom:0;">
+        <div class="ins-head">🔵 小額工事が「件数」の9割、大規模が「金額」の6割</div>
+        リフォーム工事は100万円未満の小額工事が件数の約9割を占める一方、
+        500万円以上の大規模工事が金額ベースで約6割を担います。
+        利益率を高めるには「大規模工事を取れる提案力・信頼力」が鍵です。
+      </div>
+    </div>
+    <div>
+      <div class="chart-box">
+        <div class="chart-wrap" style="height:98px">
+          <canvas id="ageChart"></canvas>
+        </div>
+        <div class="chart-label" style="margin-top:1mm; margin-bottom:0;">■ 高齢者世帯数とバリアフリー・省エネ改修件数の推移</div>
+      </div>
+      <div class="insight future" style="margin-bottom:0;">
+        <div class="ins-head">🟠 高齢化が「安定した受注」を保証する</div>
+        高齢者関連の改修（バリアフリー・設備更新）は、景気に左右されにくい安定需要です。
+        介護保険の住宅改修給付（最大20万円）と組み合わせた提案が有効です。
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>リフォーム業界総合分析レポート 2026</span>
+    <span>出典：各社IR資料 / 国土交通省 住宅リフォーム事業者団体登録制度</span>
+    <span>p.4</span>
+  </div>
+</div>
+
+<!-- PAGE 5: 現状 vs 今後の対比 -->
+<div class="page">
+  <div class="page-header">
+    <div>
+      <div class="ph-chapter">Chapter 4 ＆ 5</div>
+      <div class="ph-title">現状と今後の業界構造：徹底対比</div>
+    </div>
+    <div class="ph-page">リフォーム業界レポート 2026 ｜ p.5</div>
+  </div>
+
+  <div class="insight">
+    <div class="ins-head">💡 リフォーム業界の「今」と「20年後」：成長の方向は変わらないが、主役が変わる</div>
+    新築市場と異なり、リフォーム市場は縮小しません。しかし「何が売れるか」「誰が勝つか」は大きく変わります。
+    今後20年で、市場の主役は「水回り設備交換」から「大規模省エネ改修・スケルトンリノベ」へ移行し、
+    プレーヤーはDXと資金力を持つ企業に集約されます。
+  </div>
+
+  <table class="data-table" style="margin-bottom:4mm;">
+    <tr>
+      <th style="width:22%">テーマ</th>
+      <th style="width:39%; background:var(--now);">🟢 現在（〜2025年）の状況</th>
+      <th style="width:39%; background:var(--future);">🟠 今後20年（〜2045年）の見通し</th>
+    </tr>
+    <tr>
+      <td class="L" style="font-weight:bold;">市場規模</td>
+      <td class="L">7.5兆円。新築（10兆円）の75%。成長継続中だが競合激化</td>
+      <td class="L fc">10〜12兆円。2035年頃に新築を逆転。住宅投資の主役へ</td>
+    </tr>
+    <tr>
+      <td class="L" style="font-weight:bold;">主力工事種別</td>
+      <td class="L">キッチン・浴室・トイレ等の設備交換が中心（全体の28%）</td>
+      <td class="L fc">断熱・省エネ改修とスケルトンリノベが主力に。設備交換は縮小</td>
+    </tr>
+    <tr>
+      <td class="L" style="font-weight:bold;">顧客層</td>
+      <td class="L">50〜70代の既存オーナーが主。30〜40代は中古リノベで参入</td>
+      <td class="L fc">空き家再生・古民家再活用で幅広い年齢層に。外国人移住者も</td>
+    </tr>
+    <tr>
+      <td class="L" style="font-weight:bold;">競争環境</td>
+      <td class="L">中小零細が乱立。上位10社で市場の15〜20%。価格競争が激しい</td>
+      <td class="L fc">DX・ブランド・資金力で集約加速。上位20社が50%超を獲得へ</td>
+    </tr>
+    <tr>
+      <td class="L" style="font-weight:bold;">工事単価</td>
+      <td class="L">小額工事（100万円未満）が件数の9割。平均単価は低い</td>
+      <td class="L fc">大規模化・複合化で平均単価が上昇。スケルトンリノベは1,000万円超</td>
+    </tr>
+    <tr>
+      <td class="L" style="font-weight:bold;">政策・補助金</td>
+      <td class="L">省エネ・バリアフリー・耐震の補助金が年度ごとに提供</td>
+      <td class="L fc">2050年カーボンニュートラルへ向け、省エネ改修補助は長期化必至</td>
+    </tr>
+    <tr>
+      <td class="L" style="font-weight:bold;">技術・DX</td>
+      <td class="L">見積・施工管理のデジタル化が部分的。AI活用は黎明期</td>
+      <td class="L fc">AI診断・AR見積・BIMリフォームが標準化。DX非対応企業は脱落</td>
+    </tr>
+    <tr>
+      <td class="L" style="font-weight:bold;">収益モデル</td>
+      <td class="L">工事一件ごとの請負型が主流。顧客との関係は断続的</td>
+      <td class="L fc">点検・保証・エネルギー管理のサブスク型で顧客と継続関係を構築</td>
+    </tr>
+  </table>
+
+  <div class="scenario-3">
+    <div class="sc3-box base">
+      <h4>📊 ベースシナリオ（10兆円）</h4>
+      <ul>
+        <li>現トレンドで老朽化需要が拡大</li>
+        <li>省エネ補助が一定規模で継続</li>
+        <li>中古リノベが住宅取得の30%に</li>
+        <li>地域工務店の3〜4割が廃業</li>
+        <li>上位20社でシェア40〜50%</li>
+      </ul>
+    </div>
+    <div class="sc3-box bull">
+      <h4>📈 楽観シナリオ（12兆円超）</h4>
+      <ul>
+        <li>空き家再生が国策として大規模化</li>
+        <li>2050年カーボンニュートラル推進で省エネ改修が急拡大</li>
+        <li>建設ロボット普及でコスト低下</li>
+        <li>外国人移住者向け需要が増加</li>
+        <li>サブスク型住宅管理が普及</li>
+      </ul>
+    </div>
+    <div class="sc3-box bear">
+      <h4>📉 悲観シナリオ（8兆円以下）</h4>
+      <ul>
+        <li>建材・人件費高騰で工事が高価格化しすぎ先送り増加</li>
+        <li>空き家の取壊し・更地化が主流に</li>
+        <li>補助金が財政悪化で縮小・廃止</li>
+        <li>職人不足で受注しても施工不能</li>
+        <li>新築建替え優位が続く</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="insight strat">
+    <div class="ins-head">🔵 この対比から読み取るべきこと</div>
+    リフォーム市場の規模は確実に拡大しますが、「昔ながらの工事のやり方」では生き残れません。
+    <strong>DXで集客・見積・施工管理を効率化し、省エネ・バリアフリー・大規模リノベの専門性を高め、
+    顧客との「一回限り」の関係を「長期サービス関係」に変える</strong>——これができた企業だけが2045年の勝者になります。
+  </div>
+
+  <div class="page-footer">
+    <span>リフォーム業界総合分析レポート 2026</span>
+    <span>出典：各種統計データをもとに作成</span>
+    <span>p.5</span>
+  </div>
+</div>
+
+<!-- PAGE 6: 事業戦略 -->
+<div class="page">
+  <div class="page-header">
+    <div>
+      <div class="ph-chapter">Chapter 6</div>
+      <div class="ph-title">事業戦略の方向性と生き残り条件</div>
+    </div>
+    <div class="ph-page">リフォーム業界レポート 2026 ｜ p.6</div>
+  </div>
+
+  <div class="insight strat">
+    <div class="ins-head">🔵 戦略の大前提：「工事を売る」から「住まいを守り続ける」へ</div>
+    リフォーム業界の伝統的なビジネスは「問い合わせが来たら見積して施工して終わり」のスポット型です。
+    しかしこれからは、顧客の住まいを継続的に管理・維持・改善し続ける「住まいのパートナー」になることが
+    持続的な収益の源泉になります。一度獲得した顧客を手放さない仕組みが最大の競争優位です。
+  </div>
+
+  <div class="strat-grid">
+    <div class="strat-card">
+      <div class="sc-head">① 省エネ・ZEH改修の専門化</div>
+      <div class="sc-body">
+        <strong style="color:var(--strat);">なぜ重要か：</strong><br>
+        2025年から省エネ基準適合が新築に義務化。既存住宅への波及も必然です。断熱・窓・設備の省エネ改修は補助金が充実しており、顧客の「光熱費を下げたい」ニーズとも一致。単価が高く利益率も良い優良工事です。<br><br>
+        <strong style="color:var(--strat);">具体的なアクション：</strong>
+        <ul>
+          <li>断熱等性能等級・ZEH水準の診断・提案ができる体制整備</li>
+          <li>「先進的窓リノベ」「こどもエコすまい」等の補助金申請代行サービス化</li>
+          <li>太陽光・蓄電池・EVチャージャーをセット提案するパッケージ構築</li>
+          <li>光熱費削減の収支シミュレーションで「元が取れる」を可視化</li>
+        </ul>
+      </div>
+    </div>
+    <div class="strat-card">
+      <div class="sc-head">② 大規模リノベ・スケルトン改修への参入</div>
+      <div class="sc-body">
+        <strong style="color:var(--strat);">なぜ重要か：</strong><br>
+        築40〜50年超の住宅は「設備交換」では対応しきれず、構造から見直す「スケルトンリノベ」が必要です。
+        工事単価は800万〜2,000万円以上と高く、「中古住宅購入＋リノベ」需要とも連動します。中小でも得意分野として確立できれば高収益を維持できます。<br><br>
+        <strong style="color:var(--strat);">具体的なアクション：</strong>
+        <ul>
+          <li>中古住宅インスペクション（建物診断）の提供能力を持つ</li>
+          <li>不動産会社・仲介業者との連携で「購入＋リノベ」をワンストップに</li>
+          <li>施工事例・ビフォーアフターをSNS・WEBで積極発信</li>
+          <li>設計士・コーディネーターと組んだデザイン提案力を強化</li>
+        </ul>
+      </div>
+    </div>
+    <div class="strat-card">
+      <div class="sc-head">③ 定期点検・サブスク型メンテナンスの確立</div>
+      <div class="sc-body">
+        <strong style="color:var(--strat);">なぜ重要か：</strong><br>
+        「工事した後に来なくなる」は最大の機会損失です。定期点検契約（年1〜2回・月額数千円〜）を持つ顧客は、
+        次の工事の発生率が5〜10倍になります。既存顧客を定期的に訪問することで、
+        問題を早期発見し先手の提案ができます。<br><br>
+        <strong style="color:var(--strat);">具体的なアクション：</strong>
+        <ul>
+          <li>施工後の「アフターメンテナンスパック」を標準サービスとして提供</li>
+          <li>点検記録をデジタル管理し、OB顧客へのリマインド通知を自動化</li>
+          <li>住宅履歴情報（いえかるて）の管理代行サービス化</li>
+          <li>介護保険の住宅改修（20万円給付）との連携で高齢顧客を囲い込む</li>
+        </ul>
+      </div>
+    </div>
+    <div class="strat-card">
+      <div class="sc-head">④ DX・集客・AI見積の導入</div>
+      <div class="sc-body">
+        <strong style="color:var(--strat);">なぜ重要か：</strong><br>
+        リフォーム業界は集客コストが高く、見積作業が人力中心で非効率なままです。
+        プラットフォーム（くらしのマーケット等）に依存すると手数料が利益を圧迫します。
+        自社でのデジタル集客・AI見積・施工管理ツールの導入が今後10年の生死を分けます。<br><br>
+        <strong style="color:var(--strat);">具体的なアクション：</strong>
+        <ul>
+          <li>GoogleマップMEO・SNS・SEOで地域密着型の自社集客を強化</li>
+          <li>AI見積ツール・ARシミュレーションを活用し提案スピードを向上</li>
+          <li>施工管理アプリで現場の進捗・品質・写真を一元管理</li>
+          <li>顧客管理（CRM）で誕生日・施工周年のフォロー自動化</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title">◆ 企業規模・立場別の優先戦略</div>
+  <table class="data-table" style="margin-bottom:3mm;">
+    <tr>
+      <th>企業規模・立場</th>
+      <th>最優先で取り組むべき戦略</th>
+      <th>2030年までの目標</th>
+      <th>注意すべきリスク</th>
+    </tr>
+    <tr>
+      <td class="L nc" style="font-weight:bold;">HMリフォーム系</td>
+      <td class="L">OB顧客の定期点検サブスク化＋大規模リノベ受注拡大</td>
+      <td class="L">OB顧客のリフォーム受注率30%以上</td>
+      <td class="L red">コスト高・プラットフォームに顧客を奪われる</td>
+    </tr>
+    <tr>
+      <td class="L" style="font-weight:bold;">専業リフォーム会社</td>
+      <td class="L">省エネ改修の専門化＋補助金申請代行のサービス化</td>
+      <td class="L">省エネ工事が全売上の40%超</td>
+      <td class="L red">補助金縮小時の代替需要源の確保</td>
+    </tr>
+    <tr>
+      <td class="L" style="font-weight:bold;">地域工務店（リフォーム転換）</td>
+      <td class="L">新築→リフォームへの段階移行＋既存顧客の定期点検</td>
+      <td class="L">売上の50%をリフォーム・ストックに</td>
+      <td class="L red">新築スキルとの両立・職人確保</td>
+    </tr>
+    <tr>
+      <td class="L fc" style="font-weight:bold;">新規参入・異業種</td>
+      <td class="L">スケルトンリノベ・空き家再生に特化した専門ブランド確立</td>
+      <td class="L">ニッチ市場で高単価・高利益率体制</td>
+      <td class="L red">施工力・職人ネットワークの構築に時間</td>
+    </tr>
+  </table>
+
+  <div class="insight strat">
+    <div class="ins-head">🔵 まとめ：リフォーム業界は「人口減少の恩恵を受ける数少ない産業」</div>
+    人口が減り、未婚が増え、新築が半減しても——既に建っている家はなくなりません。
+    そして老いていきます。この「構造的に老いていくストック」こそがリフォーム市場の永続的な需要基盤です。
+    <strong>「新しいものを売る」から「あるものを活かし続ける」ビジネスへの転換</strong>が
+    これからの10〜20年で最も大切な経営判断です。
+    正しく準備した企業にとって、2045年のリフォーム市場は今の1.5倍の規模になる「成長市場」です。
+  </div>
+
+  <div class="page-footer">
+    <span>リフォーム業界総合分析レポート 2026</span>
+    <span>出典：国土交通省 / 総務省 / 社人研 / 各社IR資料をもとに構成</span>
+    <span>p.6</span>
+  </div>
+</div>
+
+<script>
+const F = {family:"'Yu Gothic','Meiryo',sans-serif",size:9};
+const FA = s => ({family:"'Yu Gothic','Meiryo',sans-serif",size:s||9});
+
+// 市場規模推移
+new Chart(document.getElementById('mktChart'),{
+  type:'bar',
+  data:{
+    labels:['05','07','09','11','13','15','17','19','21','23','25','28予','32予','37予','45予'],
+    datasets:[
+      {
+        label:'リフォーム市場（兆円）',
+        data:[4.5,4.8,4.4,5.0,5.5,6.0,6.3,6.7,7.0,7.3,7.5,8.2,9.0,10.0,11.0],
+        backgroundColor: i => i.dataIndex>=10?'rgba(230,81,0,0.55)':'rgba(46,125,50,0.72)',
+        borderColor: i => i.dataIndex>=10?'#e65100':'#1b5e20',
+        borderWidth:1, yAxisID:'y'
+      },
+      {
+        label:'新築市場（兆円）',
+        data:[15.0,14.5,12.5,10.5,13.0,12.0,12.5,12.0,11.5,11.0,10.5,9.5,8.5,8.0,7.5],
+        type:'line',
+        borderColor:'#1565c0', backgroundColor:'rgba(21,101,192,0.08)',
+        pointRadius:3, borderWidth:2, tension:0.4, borderDash:[4,2], yAxisID:'y'
+      }
+    ]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    plugins:{legend:{labels:{font:F,boxWidth:10,padding:8}}},
+    scales:{
+      x:{ticks:{font:FA(7.5)},grid:{color:'#eee'}},
+      y:{min:0,max:18,ticks:{font:F},grid:{color:'#eee'},title:{display:true,text:'兆円',font:FA(8)}}
+    }
+  }
+});
+
+// ストック老朽化
+new Chart(document.getElementById('stockChart'),{
+  type:'bar',
+  data:{
+    labels:['2003','2008','2013','2018','2023','2030予','2040予'],
+    datasets:[
+      {
+        label:'築30年超ストック（万戸）',
+        data:[1800,2100,2400,2800,3200,3700,4200],
+        backgroundColor:'rgba(46,125,50,0.65)', borderColor:'#1b5e20', borderWidth:1, yAxisID:'y', stack:'a'
+      },
+      {
+        label:'空き家数（万戸）',
+        data:[659,757,820,849,900,1100,1400],
+        type:'line',
+        borderColor:'#c62828', backgroundColor:'rgba(198,40,40,0.1)',
+        pointRadius:3.5, borderWidth:2, tension:0.4, yAxisID:'y2'
+      }
+    ]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    plugins:{legend:{labels:{font:F,boxWidth:10,padding:6}}},
+    scales:{
+      x:{ticks:{font:FA(7.5)},grid:{color:'#eee'}},
+      y:{min:0,max:5000,ticks:{font:FA(7.5)},grid:{color:'#eee'},title:{display:true,text:'万戸(築30年超)',font:FA(7.5)}},
+      y2:{position:'right',min:0,max:1800,ticks:{font:FA(7.5)},grid:{drawOnChartArea:false},title:{display:true,text:'万戸(空き家)',font:FA(7.5)}}
+    }
+  }
+});
+
+// カテゴリ別
+new Chart(document.getElementById('catChart'),{
+  type:'doughnut',
+  data:{
+    labels:['設備交換','外壁・屋根','断熱・省エネ','バリアフリー','耐震補強','内装・他'],
+    datasets:[{
+      data:[28,20,18,13,9,12],
+      backgroundColor:['rgba(46,125,50,.8)','rgba(67,160,71,.75)','rgba(100,200,100,.75)','rgba(156,204,101,.8)','rgba(205,175,50,.8)','rgba(180,180,180,.7)'],
+      borderColor:['#1b5e20','#2e7d32','#388e3c','#7cb342','#b08020','#aaa'],
+      borderWidth:1
+    }]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    plugins:{legend:{position:'right',labels:{font:FA(7.5),boxWidth:9,padding:4}}}
+  }
+});
+
+// 工事規模別
+new Chart(document.getElementById('scaleChart'),{
+  type:'bar',
+  data:{
+    labels:['〜50万','50〜100万','100〜300万','300〜500万','500万〜'],
+    datasets:[
+      {
+        label:'件数構成(%)',
+        data:[55,25,12,5,3],
+        backgroundColor:'rgba(46,125,50,0.7)', borderColor:'#1b5e20', borderWidth:1, yAxisID:'y'
+      },
+      {
+        label:'金額構成(%)',
+        data:[12,15,22,12,39],
+        type:'line',
+        borderColor:'#e65100', backgroundColor:'rgba(230,81,0,0.1)',
+        pointRadius:4, borderWidth:2.5, tension:0.3, yAxisID:'y'
+      }
+    ]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    plugins:{legend:{labels:{font:F,boxWidth:10,padding:6}}},
+    scales:{
+      x:{ticks:{font:FA(7.5)},grid:{color:'#eee'}},
+      y:{min:0,max:60,ticks:{font:F,callback:v=>v+'%'},grid:{color:'#eee'},title:{display:true,text:'構成比(%)',font:FA(8)}}
+    }
+  }
+});
+
+// 高齢化×改修
+new Chart(document.getElementById('ageChart'),{
+  type:'line',
+  data:{
+    labels:['05','08','11','14','17','20','23','27予','32予','37予','45予'],
+    datasets:[
+      {
+        label:'高齢者単身・夫婦世帯（百万世帯）',
+        data:[8.5,10.0,11.5,13.0,14.5,16.0,17.5,18.5,19.5,20.5,21.5],
+        borderColor:'#1b5e20', backgroundColor:'rgba(46,125,50,0.12)',
+        fill:true, tension:0.4, pointRadius:2.5, borderWidth:2, yAxisID:'y'
+      },
+      {
+        label:'バリアフリー改修（万件）',
+        data:[12,15,20,28,35,42,50,58,67,75,85],
+        borderColor:'#e65100', backgroundColor:'rgba(230,81,0,0.1)',
+        fill:true, tension:0.4, pointRadius:2.5, borderWidth:2, yAxisID:'y2'
+      },
+      {
+        label:'省エネ・断熱改修（万件）',
+        data:[5,7,10,18,28,40,65,80,100,115,130],
+        borderColor:'#1565c0', backgroundColor:'rgba(21,101,192,0.07)',
+        fill:true, tension:0.4, pointRadius:2.5, borderWidth:2, borderDash:[4,2], yAxisID:'y2'
+      }
+    ]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    plugins:{legend:{labels:{font:FA(7.5),boxWidth:9,padding:4}}},
+    scales:{
+      x:{ticks:{font:FA(7.5)},grid:{color:'#eee'}},
+      y:{min:0,max:25,ticks:{font:FA(7.5)},grid:{color:'#eee'},title:{display:true,text:'百万世帯',font:FA(7.5)}},
+      y2:{position:'right',min:0,max:160,ticks:{font:FA(7.5)},grid:{drawOnChartArea:false},title:{display:true,text:'万件',font:FA(7.5)}}
+    }
+  }
+});
+</script>
+</body>
+</html>

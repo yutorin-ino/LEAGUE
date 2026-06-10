@@ -1,0 +1,1456 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>新築戸建て住宅業界レポート 2026</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+/* ===================================================
+   BASE
+=================================================== */
+* { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --navy:   #0d2137;
+  --blue:   #1565c0;
+  --sky:    #42a5f5;
+  --now:    #1565c0;      /* 現状カラー */
+  --future: #e65100;      /* 将来カラー */
+  --strat:  #2e7d32;      /* 戦略カラー */
+  --warn:   #c62828;
+  --bg:     #f5f7fa;
+  --border: #dce3ed;
+  --text:   #1a1a2e;
+  --muted:  #5a6a7a;
+}
+
+body {
+  font-family: "Yu Gothic","Meiryo","Noto Sans JP",sans-serif;
+  font-size: 11px;
+  color: var(--text);
+  background: #e8eaf0;
+  line-height: 1.65;
+}
+
+/* ===================================================
+   PAGE
+=================================================== */
+.page {
+  width: 210mm;
+  min-height: 297mm;
+  background: white;
+  margin: 8mm auto;
+  padding: 14mm 13mm 12mm;
+  position: relative;
+  page-break-after: always;
+}
+
+/* ===================================================
+   COVER PAGE
+=================================================== */
+.cover {
+  background: linear-gradient(160deg, #0a1628 0%, #0d2137 40%, #1565c0 100%);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 16mm 14mm;
+}
+.cover-eyebrow {
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  opacity: 0.65;
+  margin-bottom: 4mm;
+}
+.cover-title {
+  font-size: 28px;
+  font-weight: 900;
+  line-height: 1.25;
+  margin-bottom: 4mm;
+  letter-spacing: 1px;
+}
+.cover-subtitle {
+  font-size: 13px;
+  opacity: 0.85;
+  margin-bottom: 10mm;
+  line-height: 1.7;
+}
+.cover-divider {
+  border: none;
+  border-top: 1px solid rgba(255,255,255,0.3);
+  margin: 6mm 0;
+}
+.cover-toc {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3mm 6mm;
+}
+.cover-toc-item {
+  display: flex;
+  align-items: center;
+  gap: 2mm;
+  font-size: 10px;
+  opacity: 0.85;
+}
+.cover-toc-item .toc-num {
+  background: rgba(255,255,255,0.2);
+  border-radius: 50%;
+  width: 18px; height: 18px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px; font-weight: bold; flex-shrink: 0;
+}
+.cover-bottom {
+  margin-top: auto;
+  padding-top: 8mm;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  font-size: 9px;
+  opacity: 0.55;
+}
+.cover-kpi-row {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 3mm;
+  margin-top: 8mm;
+}
+.cover-kpi {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 2mm;
+  padding: 3mm 4mm;
+  text-align: center;
+}
+.cover-kpi .ck-label { font-size: 8px; opacity:0.7; margin-bottom:1mm; }
+.cover-kpi .ck-val { font-size: 18px; font-weight: 900; line-height:1; }
+.cover-kpi .ck-sub { font-size: 8px; margin-top:1mm; color:#ffcc80; }
+
+/* ===================================================
+   PAGE HEADER / SECTION TITLE
+=================================================== */
+.page-header {
+  border-bottom: 2px solid var(--navy);
+  padding-bottom: 3mm;
+  margin-bottom: 5mm;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+.page-header .ph-chapter {
+  font-size: 8px;
+  color: var(--muted);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 1mm;
+}
+.page-header .ph-title {
+  font-size: 17px;
+  font-weight: 900;
+  color: var(--navy);
+}
+.page-header .ph-page {
+  font-size: 9px;
+  color: var(--muted);
+  text-align: right;
+}
+
+.section-title {
+  font-size: 12px;
+  font-weight: 900;
+  color: var(--navy);
+  border-left: 4px solid var(--blue);
+  padding-left: 3mm;
+  margin-bottom: 3mm;
+}
+
+/* ===================================================
+   INSIGHT BOX
+=================================================== */
+.insight {
+  background: #e8f0fe;
+  border-left: 4px solid var(--blue);
+  border-radius: 0 2mm 2mm 0;
+  padding: 3mm 4mm;
+  margin-bottom: 4mm;
+  font-size: 10px;
+  line-height: 1.7;
+}
+.insight .ins-head {
+  font-weight: 900;
+  color: var(--blue);
+  font-size: 10.5px;
+  margin-bottom: 1.5mm;
+}
+.insight.warn {
+  background: #fdecea;
+  border-color: var(--warn);
+}
+.insight.warn .ins-head { color: var(--warn); }
+.insight.future {
+  background: #fff3e0;
+  border-color: var(--future);
+}
+.insight.future .ins-head { color: var(--future); }
+.insight.strat {
+  background: #e8f5e9;
+  border-color: var(--strat);
+}
+.insight.strat .ins-head { color: var(--strat); }
+
+/* ===================================================
+   NOW vs FUTURE PANEL
+=================================================== */
+.nvf-wrap {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3mm;
+  margin-bottom: 4mm;
+}
+.nvf-box {
+  border-radius: 2mm;
+  padding: 3.5mm 4mm;
+  font-size: 10px;
+  line-height: 1.65;
+}
+.nvf-box.now {
+  background: #e3f0fc;
+  border: 1.5px solid var(--now);
+}
+.nvf-box.future-box {
+  background: #fff3e0;
+  border: 1.5px solid var(--future);
+}
+.nvf-box .nvf-head {
+  font-size: 10px;
+  font-weight: 900;
+  margin-bottom: 2mm;
+  display: flex;
+  align-items: center;
+  gap: 1.5mm;
+}
+.nvf-box.now .nvf-head { color: var(--now); }
+.nvf-box.future-box .nvf-head { color: var(--future); }
+.nvf-box ul { padding-left: 4mm; }
+.nvf-box li { margin-bottom: 1mm; }
+
+/* ===================================================
+   CHART WRAPPER
+=================================================== */
+.chart-box {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 2mm;
+  padding: 3mm;
+  margin-bottom: 4mm;
+}
+.chart-label {
+  font-size: 9px;
+  color: var(--muted);
+  margin-bottom: 2mm;
+}
+.chart-wrap { position:relative; width:100%; }
+
+/* ===================================================
+   TABLE
+=================================================== */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 10px;
+  margin-bottom: 4mm;
+}
+.data-table th {
+  background: var(--navy);
+  color: white;
+  padding: 2mm 3mm;
+  text-align: center;
+  font-weight: bold;
+  font-size: 9.5px;
+}
+.data-table td {
+  padding: 2mm 3mm;
+  border-bottom: 1px solid var(--border);
+  text-align: center;
+}
+.data-table tr:nth-child(even) td { background: #f8f9fc; }
+.data-table td.L { text-align:left; }
+.data-table td.now-col { color: var(--now); font-weight:bold; }
+.data-table td.fut-col { color: var(--future); font-weight:bold; }
+.data-table td.red { color: var(--warn); font-weight:bold; }
+.data-table td.grn { color: var(--strat); font-weight:bold; }
+.data-table tr.highlight td { background: #fff3e0; }
+
+/* ===================================================
+   STRATEGY CARDS
+=================================================== */
+.strat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3mm;
+  margin-bottom: 4mm;
+}
+.strat-card {
+  border: 1.5px solid var(--strat);
+  border-radius: 2mm;
+  overflow: hidden;
+}
+.strat-card .sc-head {
+  background: var(--strat);
+  color: white;
+  padding: 2mm 3mm;
+  font-size: 10px;
+  font-weight: 900;
+}
+.strat-card .sc-body {
+  padding: 3mm;
+  font-size: 10px;
+  line-height: 1.65;
+}
+.strat-card .sc-body ul { padding-left: 4mm; }
+.strat-card .sc-body li { margin-bottom: 1mm; }
+
+/* ===================================================
+   SCENARIO 3-COL
+=================================================== */
+.scenario-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 3mm;
+  margin-bottom: 4mm;
+}
+.sc3-box {
+  border-radius: 2mm;
+  padding: 3mm 3.5mm;
+  font-size: 10px;
+  line-height: 1.6;
+}
+.sc3-box.base { background:#e8f5e9; border:1.5px solid #388e3c; }
+.sc3-box.bull { background:#e3f0fc; border:1.5px solid #1565c0; }
+.sc3-box.bear { background:#fdecea; border:1.5px solid #c62828; }
+.sc3-box h4 { font-size:10.5px; font-weight:900; margin-bottom:2mm; }
+.sc3-box.base h4 { color:#2e7d32; }
+.sc3-box.bull h4 { color:#1565c0; }
+.sc3-box.bear h4 { color:#c62828; }
+.sc3-box ul { padding-left:3.5mm; }
+.sc3-box li { margin-bottom:1mm; }
+
+/* ===================================================
+   BADGE / PILL
+=================================================== */
+.badge {
+  display:inline-block;
+  padding:0.5mm 2mm;
+  border-radius:1mm;
+  font-size:8px;
+  font-weight:bold;
+  vertical-align:middle;
+  margin-left:1.5mm;
+}
+.badge.now-b { background:var(--now); color:white; }
+.badge.fut-b { background:var(--future); color:white; }
+.badge.warn-b { background:var(--warn); color:white; }
+.badge.strat-b { background:var(--strat); color:white; }
+
+/* ===================================================
+   HIGHLIGHT NUMBER
+=================================================== */
+.hl-num-row {
+  display:grid;
+  grid-template-columns: repeat(3,1fr);
+  gap:3mm;
+  margin-bottom:4mm;
+}
+.hl-num {
+  background:var(--bg);
+  border:1px solid var(--border);
+  border-radius:2mm;
+  padding:3mm;
+  text-align:center;
+}
+.hl-num .hn-label { font-size:9px; color:var(--muted); margin-bottom:1mm; }
+.hl-num .hn-val { font-size:20px; font-weight:900; line-height:1; }
+.hl-num .hn-sub { font-size:9px; margin-top:1mm; }
+.hl-num.now-n { border-top:3px solid var(--now); }
+.hl-num.now-n .hn-val { color:var(--now); }
+.hl-num.fut-n { border-top:3px solid var(--future); }
+.hl-num.fut-n .hn-val { color:var(--future); }
+.hl-num.warn-n { border-top:3px solid var(--warn); }
+.hl-num.warn-n .hn-val { color:var(--warn); }
+.hl-num.strat-n { border-top:3px solid var(--strat); }
+.hl-num.strat-n .hn-val { color:var(--strat); }
+
+/* ===================================================
+   ARROW TIMELINE
+=================================================== */
+.timeline-row {
+  display:flex;
+  align-items:stretch;
+  gap:0;
+  margin-bottom:4mm;
+  overflow:hidden;
+  border-radius:2mm;
+}
+.tl-item {
+  flex:1;
+  background:#f0f4fa;
+  padding:2.5mm 2mm;
+  text-align:center;
+  font-size:9px;
+  position:relative;
+  line-height:1.4;
+}
+.tl-item::after {
+  content:'';
+  position:absolute;
+  right:-4px; top:0; bottom:0;
+  width:0;
+  border-top: 18px solid transparent;
+  border-bottom: 18px solid transparent;
+  border-left: 8px solid #f0f4fa;
+  z-index:2;
+}
+.tl-item:last-child::after { display:none; }
+.tl-item .tl-year { font-size:11px; font-weight:900; color:var(--now); margin-bottom:0.5mm; }
+.tl-item.future-tl { background:#fff3e0; }
+.tl-item.future-tl::after { border-left-color:#fff3e0; }
+.tl-item.future-tl .tl-year { color:var(--future); }
+.tl-item.warn-tl { background:#fdecea; }
+.tl-item.warn-tl::after { border-left-color:#fdecea; }
+.tl-item.warn-tl .tl-year { color:var(--warn); }
+
+/* ===================================================
+   TWO-COL LAYOUT
+=================================================== */
+.two-col {
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap:4mm;
+  margin-bottom:4mm;
+}
+.three-col {
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:3mm;
+  margin-bottom:4mm;
+}
+
+/* ===================================================
+   FOOTER
+=================================================== */
+.page-footer {
+  position:absolute;
+  bottom:6mm; left:13mm; right:13mm;
+  display:flex;
+  justify-content:space-between;
+  font-size:8px;
+  color:var(--muted);
+  border-top:1px solid var(--border);
+  padding-top:2mm;
+}
+
+/* ===================================================
+   PRINT
+=================================================== */
+@media print {
+  @page { size: A4 portrait; margin: 8mm; }
+  body { background: white; }
+  .page {
+    width:100%; margin:0; padding:12mm 10mm 10mm;
+    box-shadow:none;
+  }
+}
+
+/* ===== A4 COMPACT OVERRIDE (自動追加) ===== */
+body { font-size: 10px !important; line-height: 1.56 !important; }
+
+/* ページ余白 */
+.page { padding: 9mm 11mm 8mm !important; }
+.page-header { margin-bottom: 3mm !important; padding-bottom: 1.5mm !important; }
+.ph-title { font-size: 14px !important; }
+.ph-chapter { font-size: 7px !important; margin-bottom: 0 !important; }
+.ph-page { font-size: 8px !important; }
+
+/* インサイトボックス */
+.insight { padding: 2mm 3mm !important; margin-bottom: 2.5mm !important; }
+.insight .ins-head { font-size: 10px !important; margin-bottom: 0.8mm !important; }
+
+/* セクションタイトル */
+.section-title { font-size: 10.5px !important; margin-bottom: 1.5mm !important; }
+
+/* NVF / CMP */
+.nvf-wrap, .cmp-row { gap: 2mm !important; margin-bottom: 2.5mm !important; }
+.nvf-box, .cmp-box { padding: 2mm 2.5mm !important; }
+.nvf-box .nvf-head, .cmp-box .cb-head { font-size: 9.5px !important; margin-bottom: 1mm !important; }
+.nvf-box li, .cmp-box li { margin-bottom: 0.2mm !important; }
+.nvf-box ul, .cmp-box ul { padding-left: 3mm !important; }
+
+/* グリッド */
+.two-col, .three-col { gap: 2mm !important; margin-bottom: 2.5mm !important; }
+.strat-grid { gap: 2mm !important; margin-bottom: 2.5mm !important; }
+.scenario-3 { gap: 2mm !important; margin-bottom: 2.5mm !important; }
+.matrix { gap: 2mm !important; margin-bottom: 2.5mm !important; }
+.driver-grid { gap: 1.5mm !important; margin-bottom: 2.5mm !important; }
+.hl-num-row, .hl-row { gap: 2mm !important; margin-bottom: 2.5mm !important; }
+
+/* チャートボックス */
+.chart-box { padding: 1.5mm 2mm !important; margin-bottom: 2mm !important; }
+.chart-label { margin-bottom: 0.8mm !important; font-size: 7.5px !important; }
+
+/* テーブル */
+.data-table { margin-bottom: 2.5mm !important; font-size: 9.5px !important; }
+.data-table th { padding: 1.2mm 1.8mm !important; font-size: 8.5px !important; }
+.data-table td { padding: 1.2mm 1.8mm !important; }
+
+/* 数値ハイライト */
+.hl-num, .hn { padding: 1.8mm 2mm !important; }
+.hl-num .hn-val { font-size: 15px !important; }
+.hl-num .hn-label, .hl-num .hn-l { font-size: 7.5px !important; }
+.hl-num .hn-sub, .hl-num .hn-s { font-size: 7.5px !important; margin-top: 0.5mm !important; }
+
+/* 戦略カード */
+.strat-card .sc-head { padding: 1.5mm 2mm !important; font-size: 9px !important; }
+.strat-card .sc-body { padding: 2mm !important; }
+.strat-card .sc-body li { margin-bottom: 0.2mm !important; }
+.strat-card .sc-body ul { padding-left: 3mm !important; }
+
+/* シナリオ・マトリクス・ドライバー */
+.sc3-box { padding: 1.8mm 2.5mm !important; }
+.sc3-box h4 { font-size: 9.5px !important; margin-bottom: 1mm !important; }
+.sc3-box li { margin-bottom: 0.2mm !important; }
+.sc3-box ul { padding-left: 3mm !important; }
+.matrix-cell { padding: 2mm 2.5mm !important; }
+.matrix-cell h4 { font-size: 9.5px !important; margin-bottom: 1mm !important; }
+.matrix-cell li { margin-bottom: 0.2mm !important; }
+.matrix-cell ul { padding-left: 3mm !important; }
+.driver-item { padding: 1.5mm 2mm !important; }
+.driver-item strong { font-size: 9.5px !important; margin-bottom: 0.2mm !important; }
+
+/* タイムライン */
+.timeline-row { margin-bottom: 2mm !important; }
+.tl-item { font-size: 7.5px !important; padding: 1.5mm 1mm !important; }
+.tl-item .tl-year { font-size: 9px !important; }
+.tl-item::after {
+  border-top-width: 14px !important;
+  border-bottom-width: 14px !important;
+  right: -5px !important;
+}
+
+/* カバーページ */
+.cover { padding: 12mm 12mm !important; }
+.cover-title { font-size: 21px !important; margin-bottom: 2.5mm !important; }
+.cover-subtitle { font-size: 11px !important; margin-bottom: 5mm !important; }
+.cover-kpi-row { gap: 2mm !important; margin-top: 4mm !important; }
+.cover-kpi { padding: 2mm 3mm !important; }
+.cover-kpi .ck-val { font-size: 14px !important; }
+.cover-kpi .ck-label, .cover-kpi .ck-sub { font-size: 7px !important; }
+.cover-split { gap: 3mm !important; margin-bottom: 4mm !important; }
+.cover-half { padding: 3mm !important; }
+.cover-half h3 { font-size: 11px !important; margin-bottom: 1.5mm !important; }
+.cover-half .cv-kpi { font-size: 10px !important; margin-bottom: 1mm !important; }
+.cover-half .cv-kpi span { font-size: 16px !important; }
+.cover-toc { gap: 2mm 4mm !important; }
+.cover-toc-item { font-size: 9px !important; }
+.cover-msg { padding: 2.5mm 3mm !important; margin-bottom: 3mm !important; font-size: 10px !important; }
+.cover-divider { margin: 3mm 0 !important; }
+.cover-eyebrow { margin-bottom: 2.5mm !important; }
+
+/* 対比レポート固有 */
+.tl-both { margin-bottom: 2mm !important; }
+.tl-shin, .tl-ref { padding: 1.5mm 2mm !important; font-size: 8.5px !important; }
+.tl-year-cell { font-size: 8.5px !important; padding: 1mm !important; }
+.tl-content-col { gap: 1.5mm !important; }
+.tl-row { gap: 1.5mm !important; }
+
+/* フッター */
+.page-footer { font-size: 7px !important; padding-top: 1mm !important; }
+
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+  PAGE 1: COVER
+============================================================ -->
+<div class="page cover">
+  <div>
+    <div class="cover-eyebrow">Industry Report 2026</div>
+    <div class="cover-title">新築戸建て住宅業界<br>総合分析レポート</div>
+    <div class="cover-subtitle">
+      過去20年（2005〜2025年）の市場変遷を振り返り、<br>
+      今後20年（2026〜2045年）の見通しと事業戦略の方向性を整理する。
+    </div>
+
+    <div class="cover-kpi-row">
+      <div class="cover-kpi">
+        <div class="ck-label">現在の持ち家着工棟数</div>
+        <div class="ck-val">23万棟</div>
+        <div class="ck-sub">▼ 2006年比 −28%</div>
+      </div>
+      <div class="cover-kpi">
+        <div class="ck-label">2045年の予測着工棟数</div>
+        <div class="ck-val">12〜14万棟</div>
+        <div class="ck-sub">▼ 現在比 さらに−40%</div>
+      </div>
+      <div class="cover-kpi">
+        <div class="ck-label">主力購買層(30〜44歳)の減少</div>
+        <div class="ck-val">▼23%</div>
+        <div class="ck-sub">2005→2025年の20年間で</div>
+      </div>
+    </div>
+
+    <hr class="cover-divider">
+
+    <div style="font-size:10px; opacity:0.8; margin-bottom:4mm; font-weight:bold;">このレポートで扱うテーマ</div>
+    <div class="cover-toc">
+      <div class="cover-toc-item"><div class="toc-num">1</div>人口動態と世帯構造の変化（過去20年）</div>
+      <div class="cover-toc-item"><div class="toc-num">2</div>住宅着工棟数の推移と市場構造</div>
+      <div class="cover-toc-item"><div class="toc-num">3</div>ハウスメーカーの現状と戦略転換</div>
+      <div class="cover-toc-item"><div class="toc-num">4</div>今後20年の需要見通し（2026〜2045）</div>
+      <div class="cover-toc-item"><div class="toc-num">5</div>現状 vs 今後：業界構造の変化対比</div>
+      <div class="cover-toc-item"><div class="toc-num">6</div>事業戦略の方向性と生き残り条件</div>
+    </div>
+  </div>
+
+  <div class="cover-bottom">
+    <div>作成：2026年6月</div>
+    <div>出典：国土交通省 建築着工統計 / 総務省 住宅・土地統計調査 / 社人研 将来推計人口（2023年推計）</div>
+  </div>
+</div>
+
+
+<!-- ============================================================
+  PAGE 2: 人口動態
+============================================================ -->
+<div class="page">
+  <div class="page-header">
+    <div>
+      <div class="ph-chapter">Chapter 1</div>
+      <div class="ph-title">人口動態と世帯構造の変化</div>
+    </div>
+    <div class="ph-page">新築戸建て住宅業界レポート 2026 ｜ p.2</div>
+  </div>
+
+  <div class="insight">
+    <div class="ins-head">💡 なぜ人口動態が重要なのか？</div>
+    住宅の新規取得（特に戸建て購入）は、30〜44歳の「子育て世代」が最大の担い手です。この年代の人口が増えれば着工数は増え、減れば着工数も減る——それだけシンプルな構造です。
+    過去20年で日本の人口はピーク（2008年）を超えて減少に転じており、主力購買層は23%も縮小しました。この流れは少なくとも今後20年は反転しません。
+  </div>
+
+  <!-- ハイライト数字 -->
+  <div class="hl-num-row">
+    <div class="hl-num now-n">
+      <div class="hn-label">2008年 総人口ピーク</div>
+      <div class="hn-val">1.28億人</div>
+      <div class="hn-sub" style="color:var(--muted)">以降、一貫して減少</div>
+    </div>
+    <div class="hl-num warn-n">
+      <div class="hn-label">2025年 総人口（推計）</div>
+      <div class="hn-val">1.24億人</div>
+      <div class="hn-sub" style="color:var(--warn)">ピーク比 ▼400万人</div>
+    </div>
+    <div class="hl-num fut-n">
+      <div class="hn-label">2045年 総人口（推計）</div>
+      <div class="hn-val">1.05億人</div>
+      <div class="hn-sub" style="color:var(--future)">現在比 ▼さらに1,900万人</div>
+    </div>
+  </div>
+
+  <!-- 人口グラフ -->
+  <div class="chart-box">
+    <div class="chart-label">■ 人口推移グラフ（2005〜2045年）　青：総人口　橙：30〜44歳（主力購買層）　緑：65歳以上（高齢者）</div>
+    <div class="chart-wrap" style="height:109px">
+      <canvas id="popChart"></canvas>
+    </div>
+  </div>
+
+  <!-- 現状 vs 今後 -->
+  <div class="nvf-wrap">
+    <div class="nvf-box now">
+      <div class="nvf-head">🔵 現在の状況（〜2025年）</div>
+      <ul>
+        <li>30〜44歳の主力購買層は<strong>2,200万人</strong>（2005年比▼650万人）</li>
+        <li>2008年以降、人口は毎年約20〜30万人ペースで減少中</li>
+        <li>未婚率の上昇で「家を買わない若者」が増加（男性未婚率28%超）</li>
+        <li>高齢化率は29%超。住宅購入意欲のある現役世代が年々縮小</li>
+        <li>都市部への人口集中が続き、地方の需要は特に急落</li>
+      </ul>
+    </div>
+    <div class="nvf-box future-box">
+      <div class="nvf-head">🟠 今後の見通し（2026〜2045年）</div>
+      <ul>
+        <li>主力購買層はさらに<strong>▼約500万人</strong>減少（2045年に約1,700万人）</li>
+        <li>2030年頃、世帯数もピークアウト→需要の底割れリスク</li>
+        <li>高齢者世帯が全世帯の35〜40%に達し、「住み替え」需要が増加</li>
+        <li>外国人移住者の定住増加が一定の代替需要を生む可能性</li>
+        <li>テレワーク定着で郊外需要は残るが、全体縮小は避けられない</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 高齢化・未婚率グラフ -->
+  <div class="chart-box">
+    <div class="chart-label">■ 未婚率と主力購買層（30〜44歳）人口の推移　　＊未婚率上昇 → 持ち家取得意欲の低下に直結</div>
+    <div class="chart-wrap" style="height:94px">
+      <canvas id="mikonChart"></canvas>
+    </div>
+  </div>
+
+  <div class="insight warn">
+    <div class="ins-head">⚠️ 見落とされがちなリスク：「未婚化」が新築需要を静かに壊している</div>
+    統計上の「持ち家比率」は20年間60〜61%でほぼ変化していません。しかし、これは「新築志向が強い」のではなく、
+    <strong>既に持ち家を持つ高齢者世帯の比率が高まっているから</strong>です。現役世代・子育て世代の持ち家取得率は実質的に低下しており、
+    特に未婚単身者は「生涯賃貸」の選択が増えています。表面の数字に惑わされないことが重要です。
+  </div>
+
+  <div class="page-footer">
+    <span>新築戸建て住宅業界レポート 2026</span>
+    <span>出典：社人研 将来推計人口（2023年推計）/ 総務省 国勢調査</span>
+    <span>p.2</span>
+  </div>
+</div>
+
+
+<!-- ============================================================
+  PAGE 3: 着工棟数と市場構造
+============================================================ -->
+<div class="page">
+  <div class="page-header">
+    <div>
+      <div class="ph-chapter">Chapter 2</div>
+      <div class="ph-title">住宅着工棟数の推移と市場構造</div>
+    </div>
+    <div class="ph-page">新築戸建て住宅業界レポート 2026 ｜ p.3</div>
+  </div>
+
+  <div class="insight">
+    <div class="ins-head">💡 着工棟数で見る「市場の実力」</div>
+    住宅市場の規模を最も直接的に示すのが「新設住宅着工棟数」です。2006年のピーク時（約129万戸）と比べ、
+    2024年は約80万戸まで縮小しました。特に「持ち家（注文住宅）」の着工は約32万戸→23万戸と28%も減少。
+    さらに重要なのは、過去の落ち込みが経済ショックによる一時的なものだったのに対し、
+    <strong>これからの減少は人口動態に起因する構造的なもの</strong>であり、回復が見込めない点です。
+  </div>
+
+  <!-- 着工棟数グラフ -->
+  <div class="chart-box">
+    <div class="chart-label">■ 新設住宅着工棟数の推移と予測（万棟）　　予測部分（2026年以降）は破線で表示</div>
+    <div class="chart-wrap" style="height:121px">
+      <canvas id="startChart"></canvas>
+    </div>
+  </div>
+
+  <!-- 変曲点タイムライン -->
+  <div style="font-size:9px; color:var(--muted); margin-bottom:1.5mm; font-weight:bold;">■ 過去の主要変曲点（なぜ着工数が動いたか）</div>
+  <div class="timeline-row">
+    <div class="tl-item">
+      <div class="tl-year">2006年</div>
+      ピーク<br>129万戸<br><span style="color:var(--muted)">低金利・都市回帰</span>
+    </div>
+    <div class="tl-item warn-tl">
+      <div class="tl-year">2008年</div>
+      急落<br>リーマン<br>ショック
+    </div>
+    <div class="tl-item">
+      <div class="tl-year">2013〜14年</div>
+      消費税増税<br>駆け込み<br>ピーク回帰
+    </div>
+    <div class="tl-item warn-tl">
+      <div class="tl-year">2020年</div>
+      コロナ禍<br>急落→郊外<br>回帰で反発
+    </div>
+    <div class="tl-item future-tl">
+      <div class="tl-year">2025年〜</div>
+      構造的減少<br>回復なき<br>下降局面
+    </div>
+  </div>
+
+  <!-- 現状 vs 今後 -->
+  <div class="nvf-wrap">
+    <div class="nvf-box now">
+      <div class="nvf-head">🔵 現在の市場構造（2025年時点）</div>
+      <ul>
+        <li>総着工：<strong>約80万戸</strong>（持ち家23万・貸家31万・分譲22万・給与4万）</li>
+        <li>注文住宅の単価は上昇中（大手坪単価 100〜130万円）</li>
+        <li>建材・人件費の高騰で「坪単価」は5年で30〜40%上昇</li>
+        <li>ローコストビルダー・飯田Gなど建売が着工シェアを拡大</li>
+        <li>首都圏・名古屋圏・福岡圏に需要が集中しつつある</li>
+      </ul>
+    </div>
+    <div class="nvf-box future-box">
+      <div class="nvf-head">🟠 今後の着工見通し（〜2045年）</div>
+      <ul>
+        <li>2030年：総着工72万戸・持ち家<strong>20万棟</strong>（現在比▼13%）</li>
+        <li>2035年：総着工63万戸・持ち家<strong>17万棟</strong>（現在比▼26%）</li>
+        <li>2040年：総着工55万戸・持ち家<strong>15万棟</strong>（現在比▼35%）</li>
+        <li>2045年：総着工50万戸・持ち家<strong>12〜13万棟</strong>（現在比▼43〜47%）</li>
+        <li>棟数減少を単価上昇で補う時代に（売上維持のための高付加価値化）</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 持ち家着工予測表 -->
+  <table class="data-table">
+    <tr>
+      <th>年</th>
+      <th>総着工（万戸）</th>
+      <th>持ち家（万戸）</th>
+      <th>貸家（万戸）</th>
+      <th>分譲（万戸）</th>
+      <th>前年（現在）比</th>
+      <th>主な変化要因</th>
+    </tr>
+    <tr>
+      <td class="now-col">2025年（現在）</td>
+      <td>80</td><td class="now-col">23</td><td>31</td><td>22</td>
+      <td>—</td>
+      <td class="L">基準年</td>
+    </tr>
+    <tr>
+      <td>2030年</td>
+      <td>72</td><td class="fut-col">20</td><td>28</td><td>19</td>
+      <td class="red">▼13%</td>
+      <td class="L">世帯数ピークアウト・金利上昇</td>
+    </tr>
+    <tr>
+      <td>2035年</td>
+      <td>63</td><td class="fut-col">17</td><td>25</td><td>17</td>
+      <td class="red">▼26%</td>
+      <td class="L">30〜44歳人口▼20%・工務店淘汰</td>
+    </tr>
+    <tr>
+      <td>2040年</td>
+      <td>55</td><td class="fut-col">15</td><td>22</td><td>14</td>
+      <td class="red">▼35%</td>
+      <td class="L">空き家1,200万戸超・中古代替増</td>
+    </tr>
+    <tr class="highlight">
+      <td>2045年</td>
+      <td class="red">50</td><td class="red">12〜13</td><td>20</td><td>13</td>
+      <td class="red">▼43〜47%</td>
+      <td class="L">構造的縮小・ストック事業が主軸へ</td>
+    </tr>
+  </table>
+
+  <div class="insight future">
+    <div class="ins-head">🟠 重要な視点：「棟数」は減っても「市場規模（円）」は維持できるか？</div>
+    現在の大手ハウスメーカーは坪単価を毎年引き上げており、棟数が減少しても1棟あたりの売上を増やすことで全体の売上を維持しようとしています。
+    しかし、この戦略には限界があります。価格が上がりすぎると購入できる層が減り、ローコストビルダーや中古市場への流出が加速するためです。
+    <strong>「高単価化」は正しい方向性ですが、それだけでは生き残れない</strong>ことを認識する必要があります。
+  </div>
+
+  <div class="page-footer">
+    <span>新築戸建て住宅業界レポート 2026</span>
+    <span>出典：国土交通省 建築着工統計</span>
+    <span>p.3</span>
+  </div>
+</div>
+
+
+<!-- ============================================================
+  PAGE 4: ハウスメーカーの現状と変遷
+============================================================ -->
+<div class="page">
+  <div class="page-header">
+    <div>
+      <div class="ph-chapter">Chapter 3</div>
+      <div class="ph-title">ハウスメーカーの現状と戦略転換</div>
+    </div>
+    <div class="ph-page">新築戸建て住宅業界レポート 2026 ｜ p.4</div>
+  </div>
+
+  <div class="insight">
+    <div class="ins-head">💡 業界の「今」を知る：4層構造とそれぞれの立ち位置</div>
+    日本の新築戸建て市場は、大きく「大手ハウスメーカー」「中堅ビルダー」「地域工務店」「建売・分譲会社」の4層で構成されています。
+    それぞれが異なる顧客層・価格帯・戦略で競い合っていますが、市場縮小を前に各層の戦略は大きく分岐し始めています。
+    特に注目すべきは、大手が「住宅専業」から脱却しつつある点です。
+  </div>
+
+  <!-- 4層構造表 -->
+  <table class="data-table" style="margin-bottom:3mm;">
+    <tr>
+      <th>区分</th><th>代表企業</th><th>主な顧客層</th><th>坪単価目安</th><th>着工シェア</th><th>強み・特徴</th>
+    </tr>
+    <tr>
+      <td class="L now-col">大手ハウスメーカー</td>
+      <td class="L">積水ハウス・大和ハウス<br>住友林業・ヘーベルハウス等</td>
+      <td>高所得・こだわり層</td>
+      <td class="now-col">100〜150万円</td>
+      <td>約15%</td>
+      <td class="L">ブランド力・工業化・アフター保証</td>
+    </tr>
+    <tr>
+      <td class="L">中堅ビルダー</td>
+      <td class="L">タマホーム・オープンハウス<br>アイフルホーム等</td>
+      <td>一次取得・コスパ重視</td>
+      <td>55〜80万円</td>
+      <td>約20%</td>
+      <td class="L">コスト競争力・速度・広告力</td>
+    </tr>
+    <tr>
+      <td class="L">地域工務店</td>
+      <td class="L">全国約5〜6万社</td>
+      <td>地元密着・完全注文</td>
+      <td>60〜90万円</td>
+      <td>約25%</td>
+      <td class="L">柔軟性・地域信頼・職人技術</td>
+    </tr>
+    <tr>
+      <td class="L fut-col">建売・分譲</td>
+      <td class="L">飯田グループHD<br>オープンハウス等</td>
+      <td>価格最優先・若年層</td>
+      <td class="fut-col">土地込み企画</td>
+      <td>約40%</td>
+      <td class="L">土地仕入力・大量供給・早さ</td>
+    </tr>
+  </table>
+
+  <!-- 大手の戦略転換グラフ -->
+  <div class="two-col" style="align-items:start;">
+    <div>
+      <div class="section-title">大手ハウスメーカーの事業転換</div>
+      <div class="chart-box">
+        <div class="chart-label">■ 大手HM 売上構成の変化イメージ（住宅系→非住宅・海外の比率）</div>
+        <div class="chart-wrap" style="height:101px">
+          <canvas id="hmShiftChart"></canvas>
+        </div>
+      </div>
+      <div class="insight strat" style="margin-bottom:0;">
+        <div class="ins-head">🟢 大手の戦略：「住宅」を超えた企業へ</div>
+        積水ハウスは米国最大ビルダーを買収（2024年）し、売上の約半分が海外・非住宅へ。
+        大和ハウスは物流施設・商業施設・データセンターへ拡大。
+        「家を建てる会社」から「空間ソリューション企業」への変身が加速中。
+      </div>
+    </div>
+    <div>
+      <div class="section-title">地域工務店の現実</div>
+      <div class="chart-box">
+        <div class="chart-label">■ 工務店数の推移と今後の淘汰予測</div>
+        <div class="chart-wrap" style="height:101px">
+          <canvas id="komutenChart"></canvas>
+        </div>
+      </div>
+      <div class="insight warn" style="margin-bottom:0;">
+        <div class="ins-head">⚠️ 工務店は「静かな消滅」の危機</div>
+        地域工務店の多くは経営者が60〜70代で後継者がいません。
+        市場縮小と建材高騰が重なり、2035年には現在の半数が廃業・合併すると見込まれます。
+        廃業しなくても「新築」を辞めてリフォーム専業へ転換するケースが増えています。
+      </div>
+    </div>
+  </div>
+
+  <!-- 坪単価推移 -->
+  <div class="chart-box" style="margin-top:3mm;">
+    <div class="chart-label">■ 坪単価の推移（大手・中堅・ローコスト別）　　＊棟数が減っても単価上昇で売上をキープする戦略が顕著</div>
+    <div class="chart-wrap" style="height:86px">
+      <canvas id="tsuboChart"></canvas>
+    </div>
+  </div>
+
+  <div class="insight future">
+    <div class="ins-head">🟠 単価上昇の恩恵を受けられるのは「大手」だけ</div>
+    坪単価の上昇は大手ハウスメーカーにとって追い風です。しかし中堅・工務店は建材・人件費上昇分を価格に転嫁しにくく、
+    利益率が圧縮されています。「価格を上げれば受注が減る、下げれば赤字になる」というジレンマに多くの工務店が陥っており、
+    <strong>業界の二極化（大手の寡占化 vs. 中小の淘汰）が加速しています。</strong>
+  </div>
+
+  <div class="page-footer">
+    <span>新築戸建て住宅業界レポート 2026</span>
+    <span>出典：各社IR資料 / 国土交通省 建設工事施工統計調査</span>
+    <span>p.4</span>
+  </div>
+</div>
+
+
+<!-- ============================================================
+  PAGE 5: 現状 vs 今後の構造対比
+============================================================ -->
+<div class="page">
+  <div class="page-header">
+    <div>
+      <div class="ph-chapter">Chapter 4 ＆ 5</div>
+      <div class="ph-title">現状と今後の業界構造：徹底対比</div>
+    </div>
+    <div class="ph-page">新築戸建て住宅業界レポート 2026 ｜ p.5</div>
+  </div>
+
+  <div class="insight">
+    <div class="ins-head">💡 「今」と「20年後」では、市場の前提がまったく変わる</div>
+    新築戸建て市場はこれまで「需要があって当たり前」の時代が続いてきました。しかし今後20年は、その前提が根底から崩れます。
+    以下の対比表で、業界の「今」と「20年後」を横断的に整理します。
+    事業計画・採用・設備投資のあらゆる意思決定において、この変化を起点に考えることが必要です。
+  </div>
+
+  <!-- 大対比表 -->
+  <table class="data-table" style="margin-bottom:5mm;">
+    <tr>
+      <th style="width:22%">テーマ</th>
+      <th style="width:39%; background:#1565c0;">🔵 現在（〜2025年）の状況</th>
+      <th style="width:39%; background:#e65100;">🟠 今後20年（〜2045年）の見通し</th>
+    </tr>
+    <tr>
+      <td class="L" style="font-weight:bold;">市場規模</td>
+      <td class="L">持ち家着工23万棟・総着工80万棟。金額ベースでは単価上昇で約10〜11兆円を維持</td>
+      <td class="L fut-col">持ち家着工12〜13万棟（▼43〜47%）。金額は7〜8兆円まで縮小する見通し</td>
+    </tr>
+    <tr>
+      <td class="L" style="font-weight:bold;">購買層の厚さ</td>
+      <td class="L">30〜44歳が2,200万人。共働き世帯の増加で世帯年収は上昇傾向</td>
+      <td class="L fut-col">2045年に1,700万人（▼23%）。未婚率の高止まりで持ち家取得意欲が低下</td>
+    </tr>
+    <tr>
+      <td class="L" style="font-weight:bold;">競争構造</td>
+      <td class="L">大手〜工務店まで多様な競合が共存。住宅補助・ゼロ金利が全体を底上げ</td>
+      <td class="L fut-col">上位大手・建売大手への集約が加速。地域工務店は半数が淘汰・転換へ</td>
+    </tr>
+    <tr>
+      <td class="L" style="font-weight:bold;">価格・コスト</td>
+      <td class="L">坪単価は過去5年で30〜40%上昇済み。資材・人件費高騰が続く</td>
+      <td class="L fut-col">上昇圧力は続くが、購買力との乖離で大衆価格帯の受注が激減するリスク</td>
+    </tr>
+    <tr>
+      <td class="L" style="font-weight:bold;">住宅政策・金利</td>
+      <td class="L">ZEH補助金・低金利が需要を下支え。住宅ローン減税も継続</td>
+      <td class="L fut-col">金利正常化で変動金利組の返済増。補助金は縮小方向。政策依存は危険</td>
+    </tr>
+    <tr>
+      <td class="L" style="font-weight:bold;">空き家・中古</td>
+      <td class="L">空き家900万戸・空き家率13.8%。中古市場は未整備で流通が限定的</td>
+      <td class="L fut-col">空き家1,200〜1,400万戸に増加。中古＋リノベが新築の代替として本格化</td>
+    </tr>
+    <tr>
+      <td class="L" style="font-weight:bold;">技術・工法</td>
+      <td class="L">木造軸組・ユニット・パネル工法が主流。一部でBIM導入が始まる</td>
+      <td class="L fut-col">AI設計・施工ロボット・3Dプリンター住宅が実用化。工場化率がさらに上昇</td>
+    </tr>
+    <tr>
+      <td class="L" style="font-weight:bold;">職人・人材</td>
+      <td class="L">大工の高齢化が進むが、まだ一定数は確保できている状況</td>
+      <td class="L fut-col">2035年に現在の60〜70%まで供給能力が低下。着工できない事態のリスク増大</td>
+    </tr>
+    <tr>
+      <td class="L" style="font-weight:bold;">収益モデル</td>
+      <td class="L">「1棟を売る」ことが利益の中心。施工完了で顧客との関係が薄れがち</td>
+      <td class="L fut-col">アフター・リフォーム・エネルギー管理等で「一生涯の付き合い」が収益の柱へ</td>
+    </tr>
+  </table>
+
+  <!-- 3シナリオ -->
+  <div class="section-title">2045年：業界の未来シナリオ</div>
+  <div class="scenario-3">
+    <div class="sc3-box base">
+      <h4>📊 ベースシナリオ<br><span style="font-size:9px; font-weight:normal;">持ち家着工：12〜13万棟</span></h4>
+      <ul>
+        <li>現状のトレンドが継続</li>
+        <li>少子化・未婚化は止まらない</li>
+        <li>空き家流通が新築の15%を代替</li>
+        <li>大手数社への集約が完了</li>
+        <li>地域工務店の半数が廃業</li>
+        <li>リフォーム売上が新築を逆転</li>
+      </ul>
+    </div>
+    <div class="sc3-box bull">
+      <h4>📈 楽観シナリオ<br><span style="font-size:9px; font-weight:normal;">持ち家着工：16〜18万棟</span></h4>
+      <ul>
+        <li>移民政策・少子化対策が奏功</li>
+        <li>住宅取得補助の拡充が継続</li>
+        <li>建設ロボットでコスト低下</li>
+        <li>テレワーク定着で郊外需要維持</li>
+        <li>外国人移住者の持ち家取得増</li>
+        <li>中古→新築の住み替え需要増加</li>
+      </ul>
+    </div>
+    <div class="sc3-box bear">
+      <h4>📉 悲観シナリオ<br><span style="font-size:9px; font-weight:normal;">持ち家着工：10万棟以下</span></h4>
+      <ul>
+        <li>金利急上昇でローン破綻増加</li>
+        <li>建材・人件費がさらに高騰</li>
+        <li>空き家率20%超で新築不要論拡大</li>
+        <li>若年層の「生涯賃貸」が多数派へ</li>
+        <li>地方需要がほぼ消滅</li>
+        <li>職人不足で受注しても着工不能</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="insight strat">
+    <div class="ins-head">🟢 この対比から読み取るべきこと</div>
+    どのシナリオになっても「新築棟数が増える」シナリオは現実的ではありません。大切なのは、
+    <strong>「新築棟数が半分になった世界でも事業が成立するか？」</strong>を今から設計しておくことです。
+    リフォーム・ストック・非住宅・海外のいずれかへの布石を打てているかが、2035年以降の生存を左右します。
+  </div>
+
+  <div class="page-footer">
+    <span>新築戸建て住宅業界レポート 2026</span>
+    <span>出典：各種統計データをもとに作成</span>
+    <span>p.5</span>
+  </div>
+</div>
+
+
+<!-- ============================================================
+  PAGE 6: 事業戦略の方向性
+============================================================ -->
+<div class="page">
+  <div class="page-header">
+    <div>
+      <div class="ph-chapter">Chapter 6</div>
+      <div class="ph-title">事業戦略の方向性と生き残り条件</div>
+    </div>
+    <div class="ph-page">新築戸建て住宅業界レポート 2026 ｜ p.6</div>
+  </div>
+
+  <div class="insight strat">
+    <div class="ins-head">🟢 戦略の大前提：「縮む市場でどう稼ぐか」を問い直す</div>
+    新築市場が縮小するのは確定した未来です。それを嘆くのではなく、「縮んだ市場でどう生き残るか」「縮む新築市場の外側にどんな需要があるか」を問い直すことが戦略の出発点になります。
+    以下では、企業規模や立場ごとに有効な戦略の方向性を整理します。
+  </div>
+
+  <!-- 戦略4本柱 -->
+  <div class="section-title">◆ 4つの戦略方向性</div>
+  <div class="strat-grid">
+    <div class="strat-card">
+      <div class="sc-head">① ストック事業・リフォームへの転換</div>
+      <div class="sc-body">
+        <strong style="color:var(--strat);">なぜ重要か：</strong><br>
+        既存住宅は6,500万戸。そのうち築30年超が3,200万戸（約49%）に達しており、耐震・断熱・バリアフリー・設備更新のニーズは今後も確実に拡大します。新築が減っても「修繕・改修」の需要はむしろ増えます。<br><br>
+        <strong style="color:var(--strat);">具体的なアクション：</strong>
+        <ul>
+          <li>OB顧客への定期点検・メンテナンス提案の仕組みづくり</li>
+          <li>リフォーム専門チーム・職人の育成・確保</li>
+          <li>ZEH改修・断熱改修の補助金活用メニュー整備</li>
+          <li>「建てた後も続く関係」をサービス化・サブスク化</li>
+        </ul>
+      </div>
+    </div>
+    <div class="strat-card">
+      <div class="sc-head">② 高付加価値化・ZEH・スマートホーム</div>
+      <div class="sc-body">
+        <strong style="color:var(--strat);">なぜ重要か：</strong><br>
+        2025年から省エネ基準適合が全新築に義務化されました。断熱・太陽光・蓄電池・EV充電・HEMSの組み合わせは今後の「標準仕様」になります。これを「義務」としてこなすのか「強み」として差別化するのかで、競争力が大きく分かれます。<br><br>
+        <strong style="color:var(--strat);">具体的なアクション：</strong>
+        <ul>
+          <li>ZEH認定・LCCM住宅の設計・施工能力の習得</li>
+          <li>光熱費削減シミュレーションを提案ツールとして活用</li>
+          <li>蓄電池・太陽光の販売・設置を自社サービス化</li>
+          <li>エネルギー管理（HEMS）を通じた顧客との継続接点</li>
+        </ul>
+      </div>
+    </div>
+    <div class="strat-card">
+      <div class="sc-head">③ エリア戦略の見直し・選択と集中</div>
+      <div class="sc-body">
+        <strong style="color:var(--strat);">なぜ重要か：</strong><br>
+        全国一律の縮小ではなく、<strong>地域差が激しくなります。</strong>首都圏・名古屋圏・福岡圏は2040年代でも一定の需要が残る一方、人口流出が続く地方都市・農村部では需要がほぼ消滅します。どこで事業をするかが生死を分けます。<br><br>
+        <strong style="color:var(--strat);">具体的なアクション：</strong>
+        <ul>
+          <li>対象エリアの人口・世帯動態を5年・10年単位で精査</li>
+          <li>撤退すべきエリアを早めに判断し、資源を集中</li>
+          <li>テレワーク移住者が増える郊外エリアの先行開拓</li>
+          <li>地方では「新築」より「空き家再生・古民家再活用」へ転換</li>
+        </ul>
+      </div>
+    </div>
+    <div class="strat-card">
+      <div class="sc-head">④ DX・デジタル化・業務効率化</div>
+      <div class="sc-body">
+        <strong style="color:var(--strat);">なぜ重要か：</strong><br>
+        職人不足・人件費高騰の中で競争力を維持するには、デジタルツールで「人に頼る部分」を減らすことが不可欠です。大手はBIM・AI設計・工場プレハブ化を進めており、中小がこれに遅れると受注しても施工できない事態が起きます。<br><br>
+        <strong style="color:var(--strat);">具体的なアクション：</strong>
+        <ul>
+          <li>BIM・3Dプランニングツールの導入で設計時間を短縮</li>
+          <li>工場プレカット・パネル化で現場作業量を削減</li>
+          <li>AIによる見積・プラン提案の自動化</li>
+          <li>施工管理アプリで職人・現場の効率を向上</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 企業規模別ロードマップ -->
+  <div class="section-title">◆ 企業規模・立場別の優先戦略</div>
+  <table class="data-table" style="margin-bottom:4mm;">
+    <tr>
+      <th>企業規模・立場</th>
+      <th>最優先で取り組むべき戦略</th>
+      <th>2030年までの目標イメージ</th>
+      <th>注意すべきリスク</th>
+    </tr>
+    <tr>
+      <td class="L now-col" style="font-weight:bold;">大手ハウスメーカー</td>
+      <td class="L">海外事業拡大 ＋ ストック・非住宅事業の売上比率を高める</td>
+      <td class="L">住宅以外の売上が全体の50%超</td>
+      <td class="L red">海外リスク・M&A統合失敗</td>
+    </tr>
+    <tr>
+      <td class="L" style="font-weight:bold;">中堅ビルダー</td>
+      <td class="L">ローコストからの脱却 ＋ ZEH対応・差別化仕様への移行</td>
+      <td class="L">「性能×価格」で明確な訴求軸を確立</td>
+      <td class="L red">価格転嫁できず利益率悪化</td>
+    </tr>
+    <tr>
+      <td class="L" style="font-weight:bold;">地域工務店（規模維持）</td>
+      <td class="L">OB顧客へのリフォーム提案強化 ＋ 点検契約の仕組み化</td>
+      <td class="L">売上の30〜40%をリフォーム・ストックに</td>
+      <td class="L red">後継者不足・人材確保</td>
+    </tr>
+    <tr>
+      <td class="L" style="font-weight:bold;">地域工務店（小規模）</td>
+      <td class="L">専門特化（ZEH・古民家・バリアフリー等）またはFC加盟</td>
+      <td class="L">ニッチ市場での高単価受注体制</td>
+      <td class="L red">総合受注から撤退の判断が遅れる</td>
+    </tr>
+    <tr>
+      <td class="L fut-col" style="font-weight:bold;">建売・分譲会社</td>
+      <td class="L">成長エリアでの土地仕入力強化 ＋ ZEH建売の差別化</td>
+      <td class="L">首都圏・政令市集中で棟数維持</td>
+      <td class="L red">地方エリアの在庫リスク</td>
+    </tr>
+  </table>
+
+  <div class="insight strat">
+    <div class="ins-head">🟢 まとめ：「新築で勝てる時代」は終わる。「住まいで稼ぐ時代」が始まる。</div>
+    新築戸建て市場は今後20年で現在の半分以下に縮小します。これは避けられない現実です。
+    しかし、日本には6,500万戸の住宅ストックがあり、そのほぼすべてが「何らかの手入れを必要としている」状態です。
+    <strong>「建てること」から「住まいを長く・良く・使い続けること」</strong>にビジネスの軸足を移した企業が、2045年の勝者になります。
+    新築の棟数を追いかけるのではなく、顧客の「住まいの生涯価値」を追いかける経営への転換——それがこれからの10年で最も重要な経営判断です。
+  </div>
+
+  <div class="page-footer">
+    <span>新築戸建て住宅業界レポート 2026</span>
+    <span>出典：国土交通省 / 総務省 / 社人研 / 各社IR資料をもとに構成</span>
+    <span>p.6</span>
+  </div>
+</div>
+
+
+<!-- ============================================================
+  CHARTS JS
+============================================================ -->
+<script>
+const F = { family:"'Yu Gothic','Meiryo',sans-serif", size:9 };
+const FA = (s) => ({ family:"'Yu Gothic','Meiryo',sans-serif", size:s||9 });
+
+// ---- 人口推移 ----
+new Chart(document.getElementById('popChart'),{
+  type:'line',
+  data:{
+    labels:['2005','2008','2010','2015','2020','2025','2030','2035','2040','2045'],
+    datasets:[
+      {
+        label:'総人口（百万人）',
+        data:[127.8,128.1,128.1,127.1,126.2,124.0,119.1,115.2,110.2,105.0],
+        borderColor:'#1565c0', backgroundColor:'rgba(21,101,192,0.1)',
+        fill:true, tension:0.4, pointRadius:3, borderWidth:2,
+        segment:{ borderDash: ctx => ctx.p0DataIndex >= 4 ? [5,3] : undefined }
+      },
+      {
+        label:'30〜44歳・主力購買層（百万人）',
+        data:[28.5,27.8,27.2,25.6,23.5,22.0,20.0,18.5,17.5,17.0],
+        borderColor:'#e65100', backgroundColor:'rgba(230,81,0,0.08)',
+        fill:true, tension:0.4, pointRadius:3, borderWidth:2,
+        segment:{ borderDash: ctx => ctx.p0DataIndex >= 4 ? [5,3] : undefined }
+      },
+      {
+        label:'65歳以上・高齢者（百万人）',
+        data:[25.8,28.2,29.5,33.9,36.2,36.0,37.2,38.1,39.2,39.9],
+        borderColor:'#2e7d32', backgroundColor:'rgba(46,125,50,0.07)',
+        fill:true, tension:0.4, pointRadius:3, borderWidth:2,
+        segment:{ borderDash: ctx => ctx.p0DataIndex >= 4 ? [5,3] : undefined }
+      }
+    ]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    plugins:{ legend:{ labels:{ font:F, boxWidth:10, padding:8 } } },
+    scales:{
+      x:{ ticks:{font:F}, grid:{color:'#eee'} },
+      y:{ ticks:{font:F}, grid:{color:'#eee'},
+          title:{display:true,text:'百万人',font:FA(8)} }
+    }
+  }
+});
+
+// ---- 未婚率 × 主力購買層 ----
+new Chart(document.getElementById('mikonChart'),{
+  type:'bar',
+  data:{
+    labels:['2005','2010','2015','2020','2025（推）'],
+    datasets:[
+      {
+        label:'30〜44歳人口（百万人）',
+        data:[28.5,27.2,25.6,23.5,22.0],
+        backgroundColor:'rgba(21,101,192,0.65)',
+        borderColor:'#1565c0', borderWidth:1,
+        yAxisID:'y'
+      },
+      {
+        label:'男性生涯未婚率（%）',
+        data:[16.0,20.1,23.4,28.3,30.0],
+        type:'line',
+        borderColor:'#e65100', backgroundColor:'rgba(230,81,0,0.1)',
+        pointRadius:4, borderWidth:2.5, tension:0.4,
+        yAxisID:'y2'
+      }
+    ]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    plugins:{ legend:{ labels:{ font:F, boxWidth:10, padding:8 } } },
+    scales:{
+      x:{ ticks:{font:F}, grid:{color:'#eee'} },
+      y:{ min:0, max:35, ticks:{font:F}, grid:{color:'#eee'},
+          title:{display:true,text:'百万人',font:FA(8)} },
+      y2:{ position:'right', min:0, max:40, ticks:{font:F},
+           grid:{drawOnChartArea:false},
+           title:{display:true,text:'未婚率(%)',font:FA(8)} }
+    }
+  }
+});
+
+// ---- 着工棟数推移＋予測 ----
+const startLabels = ['05','06','08','11','13','15','19','20','22','24','27予','30予','35予','40予','45予'];
+const isPredict = i => i >= 10;
+new Chart(document.getElementById('startChart'),{
+  type:'bar',
+  data:{
+    labels: startLabels,
+    datasets:[
+      {
+        label:'持ち家（万棟）',
+        data:[30.7,32.1,29.0,26.1,29.4,28.0,27.9,26.3,25.3,23.0,21.5,20.0,17.5,15.0,12.5],
+        backgroundColor: startLabels.map((_,i) => isPredict(i) ? 'rgba(230,81,0,0.55)' : 'rgba(21,101,192,0.75)'),
+        borderColor: startLabels.map((_,i) => isPredict(i) ? '#e65100' : '#1565c0'),
+        borderWidth:1, stack:'a'
+      },
+      {
+        label:'貸家（万棟）',
+        data:[50.2,52.4,45.2,29.1,37.0,34.4,32.8,30.6,34.3,31.0,29.5,27.0,24.0,21.0,19.0],
+        backgroundColor: startLabels.map((_,i) => isPredict(i) ? 'rgba(180,130,40,0.45)' : 'rgba(66,165,245,0.6)'),
+        borderColor: startLabels.map((_,i) => isPredict(i) ? '#b08020' : '#42a5f5'),
+        borderWidth:1, stack:'a'
+      },
+      {
+        label:'分譲（万棟）',
+        data:[39.4,41.4,32.3,26.2,29.7,25.9,26.9,21.8,23.8,22.5,20.0,18.0,15.5,13.5,12.5],
+        backgroundColor: startLabels.map((_,i) => isPredict(i) ? 'rgba(140,70,170,0.4)' : 'rgba(46,125,50,0.6)'),
+        borderColor: startLabels.map((_,i) => isPredict(i) ? '#8c46aa' : '#2e7d32'),
+        borderWidth:1, stack:'a'
+      }
+    ]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    plugins:{
+      legend:{ labels:{ font:F, boxWidth:10, padding:8 } },
+      tooltip:{
+        callbacks:{
+          afterTitle: items => isPredict(items[0].dataIndex) ? '（予測値）' : ''
+        }
+      }
+    },
+    scales:{
+      x:{ stacked:true, ticks:{font:FA(7.5)}, grid:{color:'#eee'} },
+      y:{ stacked:true, ticks:{font:F}, grid:{color:'#eee'},
+          title:{display:true,text:'万棟',font:FA(8)} }
+    }
+  }
+});
+
+// ---- 大手HM 事業転換 ----
+new Chart(document.getElementById('hmShiftChart'),{
+  type:'bar',
+  data:{
+    labels:['2010年','2015年','2020年','2025年（推）'],
+    datasets:[
+      {
+        label:'住宅系売上',
+        data:[75,68,58,50],
+        backgroundColor:'rgba(21,101,192,0.7)',
+        borderColor:'#1565c0', borderWidth:1, stack:'a'
+      },
+      {
+        label:'非住宅・海外売上',
+        data:[25,32,42,50],
+        backgroundColor:'rgba(46,125,50,0.7)',
+        borderColor:'#2e7d32', borderWidth:1, stack:'a'
+      }
+    ]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    plugins:{ legend:{ labels:{ font:F, boxWidth:10, padding:6 } } },
+    scales:{
+      x:{ stacked:true, ticks:{font:FA(8)}, grid:{color:'#eee'} },
+      y:{ stacked:true, min:0, max:100, ticks:{font:F, callback:v=>v+'%'},
+          grid:{color:'#eee'},
+          title:{display:true,text:'売上構成比(%)',font:FA(8)} }
+    }
+  }
+});
+
+// ---- 工務店数推移 ----
+new Chart(document.getElementById('komutenChart'),{
+  type:'bar',
+  data:{
+    labels:['2005年','2010年','2015年','2020年','2025年','2030年予','2035年予'],
+    datasets:[{
+      label:'工務店数（万社）',
+      data:[7.0,6.5,6.2,5.8,5.5,4.5,3.2],
+      backgroundColor: ['rgba(21,101,192,0.65)','rgba(21,101,192,0.65)','rgba(21,101,192,0.65)','rgba(21,101,192,0.65)','rgba(21,101,192,0.65)',
+        'rgba(230,81,0,0.55)','rgba(198,40,40,0.55)'],
+      borderColor:['#1565c0','#1565c0','#1565c0','#1565c0','#1565c0','#e65100','#c62828'],
+      borderWidth:1
+    }]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    plugins:{ legend:{ labels:{ font:F, boxWidth:10 } } },
+    scales:{
+      x:{ ticks:{font:FA(7.5)}, grid:{color:'#eee'} },
+      y:{ min:0, max:8, ticks:{font:F},
+          title:{display:true,text:'万社',font:FA(8)},
+          grid:{color:'#eee'} }
+    }
+  }
+});
+
+// ---- 坪単価推移 ----
+new Chart(document.getElementById('tsuboChart'),{
+  type:'line',
+  data:{
+    labels:['2010','2013','2016','2019','2022','2025'],
+    datasets:[
+      {
+        label:'大手HM 平均坪単価（万円）',
+        data:[75,80,85,92,105,120],
+        borderColor:'#1565c0', backgroundColor:'rgba(21,101,192,0.1)',
+        fill:true, tension:0.4, pointRadius:3, borderWidth:2.5
+      },
+      {
+        label:'中堅ビルダー 平均坪単価（万円）',
+        data:[55,58,60,65,72,78],
+        borderColor:'#2e7d32', backgroundColor:'rgba(46,125,50,0.08)',
+        fill:true, tension:0.4, pointRadius:3, borderWidth:2.5
+      },
+      {
+        label:'ローコスト 平均坪単価（万円）',
+        data:[38,40,42,45,52,58],
+        borderColor:'#e65100', backgroundColor:'rgba(230,81,0,0.07)',
+        fill:true, tension:0.4, pointRadius:3, borderWidth:2.5, borderDash:[4,2]
+      }
+    ]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    plugins:{ legend:{ labels:{ font:F, boxWidth:10, padding:8 } } },
+    scales:{
+      x:{ ticks:{font:F}, grid:{color:'#eee'} },
+      y:{ min:20, max:140, ticks:{font:F},
+          title:{display:true,text:'万円/坪',font:FA(8)},
+          grid:{color:'#eee'} }
+    }
+  }
+});
+</script>
+</body>
+</html>

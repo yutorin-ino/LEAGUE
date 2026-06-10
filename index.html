@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>自己紹介 | ゆとりん</title>
+  <style>
+    /* ===== リセット & ベース ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary:   #4A90D9;   /* 明るいブルー */
+      --accent:    #F5A623;   /* 温かみのあるオレンジ */
+      --green:     #5CB85C;   /* ポジティブなグリーン */
+      --bg:        #F7F9FC;   /* 薄いグレー背景 */
+      --card:      #FFFFFF;
+      --text:      #333333;
+      --sub:       #666666;
+      --border:    #E0E8F0;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Hiragino Kaku Gothic ProN', 'Meiryo', sans-serif;
+      background-image: url(images/bg.jpg);
+      background-size: cover;
+      background-attachment: fixed;
+      background-position: center center;
+      color: var(--text);
+      font-size: 16px;
+      line-height: 1.7;
+    }
+
+    /* 背景全体に薄い白オーバーレイ（文字の読みやすさ確保） */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: rgba(255, 255, 255, 0.55);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    header, nav, main, footer { position: relative; z-index: 1; }
+
+    /* ===== ヘッダー ===== */
+    header {
+      background: linear-gradient(135deg, #4A90D9 0%, #7B64D4 100%);
+      color: #fff;
+      padding: 60px 20px 50px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    header::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 240px; height: 240px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 50%;
+    }
+    header::after {
+      content: '';
+      position: absolute;
+      bottom: -80px; left: -40px;
+      width: 300px; height: 300px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 50%;
+    }
+
+    .avatar {
+      width: 120px; height: 120px;
+      border-radius: 50%;
+      border: 4px solid rgba(255,255,255,0.7);
+      background: rgba(255,255,255,0.25);
+      margin: 0 auto 20px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 52px;
+      position: relative; z-index: 1;
+    }
+    header h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      position: relative; z-index: 1;
+    }
+    header .tagline {
+      margin-top: 8px;
+      font-size: 1rem;
+      opacity: 0.88;
+      position: relative; z-index: 1;
+    }
+
+    /* ===== ナビ ===== */
+    nav {
+      background: rgba(255, 255, 255, 0.82);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255,255,255,0.6);
+      position: sticky; top: 0; z-index: 100;
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    nav ul li a {
+      display: block;
+      padding: 14px 22px;
+      text-decoration: none;
+      color: var(--sub);
+      font-size: 0.95rem;
+      font-weight: 600;
+      transition: color 0.2s, border-bottom 0.2s;
+      border-bottom: 3px solid transparent;
+    }
+    nav ul li a:hover {
+      color: var(--primary);
+      border-bottom: 3px solid var(--primary);
+    }
+
+    /* ===== メインレイアウト ===== */
+    main {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 40px 20px 60px;
+    }
+
+    section { margin-bottom: 48px; }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--border);
+    }
+    .section-title .icon {
+      font-size: 1.4rem;
+    }
+
+    /* ===== カード ===== */
+    .card {
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      border-radius: 12px;
+      padding: 24px 28px;
+      box-shadow: 0 4px 20px rgba(74,144,217,0.12);
+      border: 1px solid rgba(255,255,255,0.7);
+    }
+
+    /* ===== プロフィール ===== */
+    .profile-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .profile-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .profile-item .label {
+      font-size: 0.82rem;
+      color: var(--sub);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .profile-item .value {
+      font-size: 1rem;
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    /* ===== 自己紹介テキスト ===== */
+    .intro-text {
+      font-size: 1.02rem;
+      color: var(--text);
+      line-height: 1.9;
+    }
+
+    /* ===== スキル ===== */
+    .skill-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .skill-tag {
+      background: #EBF4FF;
+      color: var(--primary);
+      border: 1.5px solid #BDD9F5;
+      border-radius: 20px;
+      padding: 6px 16px;
+      font-size: 0.92rem;
+      font-weight: 600;
+    }
+    .skill-tag.accent {
+      background: #FFF5E6;
+      color: #D4861A;
+      border-color: #F5C878;
+    }
+    .skill-tag.green {
+      background: #EDFAF0;
+      color: #3A9142;
+      border-color: #99D9A3;
+    }
+
+    /* ===== 経歴タイムライン ===== */
+    .timeline {
+      position: relative;
+      padding-left: 28px;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 7px; top: 6px; bottom: 6px;
+      width: 3px;
+      background: linear-gradient(to bottom, var(--primary), var(--accent));
+      border-radius: 2px;
+    }
+    .timeline-item {
+      position: relative;
+      margin-bottom: 24px;
+    }
+    .timeline-item:last-child { margin-bottom: 0; }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -24px; top: 6px;
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      background: var(--primary);
+      border: 3px solid #fff;
+      box-shadow: 0 0 0 2px var(--primary);
+    }
+    .timeline-year {
+      font-size: 0.82rem;
+      color: var(--primary);
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      margin-bottom: 2px;
+    }
+    .timeline-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .timeline-desc {
+      font-size: 0.92rem;
+      color: var(--sub);
+      margin-top: 2px;
+    }
+
+    /* ===== 趣味 ===== */
+    .hobby-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 14px;
+    }
+    .hobby-card {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      border: 1.5px solid rgba(255,255,255,0.7);
+      border-radius: 12px;
+      padding: 18px 14px;
+      text-align: center;
+      transition: transform 0.18s, box-shadow 0.18s;
+    }
+    .hobby-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(74,144,217,0.13);
+    }
+    .hobby-card .hobby-icon { font-size: 2rem; margin-bottom: 8px; }
+    .hobby-card .hobby-name {
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+    a.hobby-card {
+      text-decoration: none;
+      cursor: pointer;
+      display: block;
+      position: relative;
+    }
+    a.hobby-card::after {
+      content: '▼ 詳しく見る';
+      display: block;
+      margin-top: 8px;
+      font-size: 0.75rem;
+      color: var(--primary);
+      font-weight: 600;
+    }
+    a.hobby-card:hover {
+      border-color: var(--primary);
+    }
+
+    /* ===== グルメカード ===== */
+    .gourmet-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 16px;
+    }
+    .gourmet-card {
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      border: 1.5px solid rgba(255,255,255,0.7);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: transform 0.18s, box-shadow 0.18s;
+    }
+    .gourmet-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(74,144,217,0.13);
+    }
+    .gourmet-thumb {
+      height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.8rem;
+    }
+    .gourmet-body { padding: 14px 16px; }
+    .gourmet-genre {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 2px 10px;
+      border-radius: 20px;
+      background: #FFF5E6;
+      color: #D4861A;
+      border: 1px solid #F5C878;
+      margin-bottom: 6px;
+    }
+    .gourmet-name {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .gourmet-comment {
+      font-size: 0.88rem;
+      color: var(--sub);
+      line-height: 1.6;
+    }
+
+    /* ===== ゴルフギャラリー ===== */
+    .golf-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px;
+    }
+    .golf-photo {
+      aspect-ratio: 4/3;
+      border-radius: 10px;
+      overflow: hidden;
+      background: var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 8px;
+      color: var(--sub);
+      font-size: 0.88rem;
+      border: 2px dashed #C8D8EC;
+    }
+    .golf-photo img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .golf-photo-placeholder { font-size: 2rem; }
+
+    /* ===== お問い合わせ ===== */
+    .contact-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 18px;
+      background: rgba(247, 249, 252, 0.75);
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.7);
+    }
+    .contact-icon {
+      font-size: 1.5rem;
+      width: 36px; text-align: center;
+    }
+    .contact-label {
+      font-size: 0.82rem;
+      color: var(--sub);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .contact-value {
+      font-size: 0.98rem;
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    /* ===== フッター ===== */
+    footer {
+      text-align: center;
+      padding: 24px 20px;
+      background: rgba(255, 255, 255, 0.82);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(255,255,255,0.6);
+      color: var(--sub);
+      font-size: 0.88rem;
+    }
+
+    /* ===== レスポンシブ ===== */
+    @media (max-width: 540px) {
+      header h1 { font-size: 1.5rem; }
+      .profile-grid { grid-template-columns: 1fr; }
+      nav ul li a { padding: 12px 14px; font-size: 0.88rem; }
+      .card { padding: 18px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ヘッダー -->
+  <header>
+    <div class="avatar">😊</div>
+    <h1>ゆとりん</h1>
+    <p class="tagline">会社員 ／ 愛知県一宮市在住</p>
+  </header>
+
+  <!-- ナビゲーション -->
+  <nav>
+    <ul>
+      <li><a href="#profile">プロフィール</a></li>
+      <li><a href="#about">自己紹介</a></li>
+      <li><a href="#values">大切なこと</a></li>
+      <li><a href="#career">学歴</a></li>
+      <li><a href="#hobbies">趣味</a></li>
+      <li><a href="#contact">連絡先</a></li>
+    </ul>
+  </nav>
+
+  <main>
+
+    <!-- プロフィール -->
+    <section id="profile">
+      <h2 class="section-title"><span class="icon">👤</span> プロフィール</h2>
+      <div class="card">
+        <div class="profile-grid">
+          <div class="profile-item">
+            <span class="label">名前</span>
+            <span class="value">ゆとりん</span>
+          </div>
+          <div class="profile-item">
+            <span class="label">生年</span>
+            <span class="value">1981年生まれ</span>
+          </div>
+          <div class="profile-item">
+            <span class="label">居住地</span>
+            <span class="value">愛知県一宮市</span>
+          </div>
+          <div class="profile-item">
+            <span class="label">職業</span>
+            <span class="value">会社員</span>
+          </div>
+          <div class="profile-item">
+            <span class="label">出身地</span>
+            <span class="value">愛知県名古屋市</span>
+          </div>
+          <div class="profile-item">
+            <span class="label">家族構成</span>
+            <span class="value">既婚・子ども2人（5歳・4歳）</span>
+          </div>
+          <div class="profile-item">
+            <span class="label">趣味</span>
+            <span class="value">ゴルフ・グルメ・旅行</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 自己紹介 -->
+    <section id="about">
+      <h2 class="section-title"><span class="icon">✍️</span> 自己紹介</h2>
+      <div class="card">
+        <p class="intro-text">
+          はじめまして、ゆとりんと申します。<br>
+          愛知県一宮市の生まれ育ちで、今もこの街が大好きな生粋の地元っ子です。<br><br>
+          1980年代生まれ、会社員として毎日元気に働いています。
+          仕事では人と関わることが多く、コミュニケーションを大切にしながら
+          日々充実した時間を過ごしています。<br><br>
+          休日はゴルフで汗を流したり、気になったお店のグルメを開拓したりするのが楽しみです。
+          美味しいものへのアンテナには自信があり、
+          地元エリアのおすすめスポットも把握しています。
+          また、年に数回は旅行にも出かけ、
+          知らない土地の景色や食文化に触れることが大きなリフレッシュになっています。<br><br>
+          食べて・笑って・遊んで——そんな毎日を大切にしています。
+          このページを覗いてくださりありがとうございます。どうぞよろしくお願いします！
+        </p>
+      </div>
+    </section>
+
+    <!-- 大切にしていること -->
+    <section id="values">
+      <h2 class="section-title"><span class="icon">💡</span> 大切にしていること</h2>
+      <div class="card">
+        <p style="font-size:0.9rem;color:var(--sub);margin-bottom:14px;font-weight:600;">人との関わり</p>
+        <div class="skill-list" style="margin-bottom:18px;">
+          <span class="skill-tag">笑顔であいさつ</span>
+          <span class="skill-tag">話をよく聞く</span>
+          <span class="skill-tag">感謝を伝える</span>
+          <span class="skill-tag">誠実さ</span>
+        </div>
+        <p style="font-size:0.9rem;color:var(--sub);margin-bottom:14px;font-weight:600;">暮らし・趣味</p>
+        <div class="skill-list" style="margin-bottom:18px;">
+          <span class="skill-tag accent">美味しいものを探す</span>
+          <span class="skill-tag accent">ゴルフで気分転換</span>
+          <span class="skill-tag accent">旅先での新発見</span>
+        </div>
+        <p style="font-size:0.9rem;color:var(--sub);margin-bottom:14px;font-weight:600;">日々の心がけ</p>
+        <div class="skill-list">
+          <span class="skill-tag green">健康第一</span>
+          <span class="skill-tag green">前向きに過ごす</span>
+          <span class="skill-tag green">地元を楽しむ</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 学歴 -->
+    <section id="career">
+      <h2 class="section-title"><span class="icon">🎓</span> 学歴</h2>
+      <div class="card">
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-year">高校</div>
+            <div class="timeline-title">〇〇高校 卒業</div>
+            <div class="timeline-desc">愛知県内の高校に進学。部活動や友人との時間を大切に過ごす。</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-year">大学・短大</div>
+            <div class="timeline-title">〇〇大学（短大） 卒業</div>
+            <div class="timeline-desc">学業に励みながら、アルバイトやサークル活動で視野を広げる。</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 趣味 -->
+    <section id="hobbies">
+      <h2 class="section-title"><span class="icon">🎨</span> 趣味・好きなこと</h2>
+      <div class="hobby-grid">
+        <a class="hobby-card" href="#golf-gallery">
+          <div class="hobby-icon">⛳</div>
+          <div class="hobby-name">ゴルフ</div>
+        </a>
+        <a class="hobby-card" href="#gourmet">
+          <div class="hobby-icon">🍽️</div>
+          <div class="hobby-name">グルメ巡り</div>
+        </a>
+        <div class="hobby-card">
+          <div class="hobby-icon">✈️</div>
+          <div class="hobby-name">旅行</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- グルメおすすめ -->
+    <section id="gourmet">
+      <h2 class="section-title"><span class="icon">🍽️</span> おすすめグルメ</h2>
+      <div class="gourmet-grid">
+        <div class="gourmet-card">
+          <div class="gourmet-thumb" style="background:#FFF5E6;">🍜</div>
+          <div class="gourmet-body">
+            <span class="gourmet-genre">ラーメン</span>
+            <div class="gourmet-name">〇〇ラーメン</div>
+            <div class="gourmet-comment">一宮で一番通っているお店。濃厚なスープがたまりません！</div>
+          </div>
+        </div>
+        <div class="gourmet-card">
+          <div class="gourmet-thumb" style="background:#FFF0F0;">🍣</div>
+          <div class="gourmet-body">
+            <span class="gourmet-genre">寿司・海鮮</span>
+            <div class="gourmet-name">〇〇鮨</div>
+            <div class="gourmet-comment">新鮮なネタが自慢。記念日にも使える大好きなお店です。</div>
+          </div>
+        </div>
+        <div class="gourmet-card">
+          <div class="gourmet-thumb" style="background:#F0FFF4;">☕</div>
+          <div class="gourmet-body">
+            <span class="gourmet-genre">カフェ</span>
+            <div class="gourmet-name">〇〇カフェ</div>
+            <div class="gourmet-comment">モーニングが充実。ゆっくりできる雰囲気が大好きです。</div>
+          </div>
+        </div>
+      </div>
+      <p style="margin-top:14px;font-size:0.85rem;color:var(--sub);text-align:right;">※ 店名・内容はご自身の情報に書き換えてください</p>
+    </section>
+
+    <!-- ゴルフ写真ギャラリー -->
+    <section id="golf-gallery">
+      <h2 class="section-title"><span class="icon">⛳</span> ゴルフフォトギャラリー</h2>
+      <div class="golf-gallery">
+        <div class="golf-photo">
+          <div class="golf-photo-placeholder">📷</div>
+          <span>写真を追加予定</span>
+        </div>
+        <div class="golf-photo">
+          <div class="golf-photo-placeholder">📷</div>
+          <span>写真を追加予定</span>
+        </div>
+        <div class="golf-photo">
+          <div class="golf-photo-placeholder">📷</div>
+          <span>写真を追加予定</span>
+        </div>
+        <div class="golf-photo">
+          <div class="golf-photo-placeholder">📷</div>
+          <span>写真を追加予定</span>
+        </div>
+      </div>
+      <p style="margin-top:14px;font-size:0.85rem;color:var(--sub);text-align:right;">写真の追加方法はお気軽にご相談ください</p>
+    </section>
+
+    <!-- 連絡先 -->
+    <section id="contact">
+      <h2 class="section-title"><span class="icon">📬</span> 連絡先</h2>
+      <div class="card">
+        <div class="contact-list">
+          <div class="contact-item">
+            <span class="contact-icon">💬</span>
+            <div>
+              <div class="contact-label">LINE 公式アカウント</div>
+              <div class="contact-value" style="color:var(--sub);font-style:italic;">（後ほど追加予定）</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>© 2026 ゆとりん — Thank you for visiting!</p>
+  </footer>
+
+</body>
+</html>
