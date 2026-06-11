@@ -44,7 +44,8 @@ E-mail:yutorin.ino@gmail.com
 Address: 49-5 Kitazakuno, Higashi-Itsushiro, Ichinomiya City, Aichi Prefecture, Japan
 
 ================================================="""
-    return f"https://mail.google.com/mail/?view=cm&fs=1&to={quote(email,safe='')}&su={quote(subject,safe='')}&body={quote(body,safe='')}"
+    sender = quote("yutorin.ino@gmail.com", safe='')
+    return f"https://mail.google.com/mail/?authuser={sender}&view=cm&fs=1&to={quote(email,safe='')}&su={quote(subject,safe='')}&body={quote(body,safe='')}"
 
 products = []
 for row in ws.iter_rows(min_row=2, values_only=True):
