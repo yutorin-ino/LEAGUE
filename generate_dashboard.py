@@ -2,7 +2,7 @@ import json
 from openpyxl import load_workbook
 from urllib.parse import quote
 
-wb = load_workbook(r"C:\Users\hiro\HP0524\海外便利グッズリスト_日本未上陸1305件.xlsx")
+wb = load_workbook(r"C:\Users\hiro\HP0524\海外便利グッズリスト_日本未上陸1505件.xlsx")
 ws = wb.active
 
 def build_gmail_url(email, maker_name, product_name):
