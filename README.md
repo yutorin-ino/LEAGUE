@@ -9,9 +9,9 @@
 
 | ページ | URL |
 |---|---|
-| **Sumai＋ トップページ** | https://yutorin-ino.github.io/HP0524/sumai-plus/ |
-| **リフォーム概算診断ツール** | https://yutorin-ino.github.io/HP0524/sumai-plus/estimator.html |
-| **プロモーションLP** | https://yutorin-ino.github.io/HP0524/sumai-plus/promo.html |
+| **Sumai＋ トップページ** | https://yutorin-ino.github.io/LEAGUE/sumai-plus/ |
+| **リフォーム概算診断ツール** | https://yutorin-ino.github.io/LEAGUE/sumai-plus/estimator.html |
+| **プロモーションLP** | https://yutorin-ino.github.io/LEAGUE/sumai-plus/promo.html |
 
 ---
 
