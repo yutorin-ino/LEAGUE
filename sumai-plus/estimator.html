@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>リフォーム30秒概算診断｜Sumai＋</title>
+  <meta name="description" content="一宮市のリフォーム会社Sumai＋の概算診断ツール。キッチン・浴室・トイレ・外壁・外構などのリフォーム費用をかんたん30秒で概算表示。相談無料・しつこい営業なし。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #1a2d5a;
+      --navy-dark: #111d3d;
+      --navy-light: #2d4a80;
+      --beige: #c8a96e;
+      --beige-light: #f8f4ec;
+      --beige-mid: #f0ece2;
+      --white: #ffffff;
+      --gray-50: #f8f6f3;
+      --gray-100: #ede9e2;
+      --gray-200: #d5d0c4;
+      --gray-500: #888;
+      --gray-600: #666;
+      --gray-700: #444;
+      --line-green: #06c755;
+      --radius-sm: 4px;
+      --radius-md: 8px;
+      --radius-lg: 14px;
+      --shadow-card: 0 2px 16px rgba(0,0,0,0.07);
+      --shadow-hover: 0 6px 24px rgba(0,0,0,0.12);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--gray-50);
+      color: #1a1a1a;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== HEADER ===== */
+    .header {
+      background: rgba(255,255,255,0.97);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--gray-100);
+      height: 60px;
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    }
+    .header__inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo { font-size: 20px; font-weight: 700; color: var(--navy); letter-spacing: 0.04em; text-decoration: none; }
+    .logo span { color: var(--beige); }
+    .back-link {
+      font-size: 13px;
+      color: var(--gray-600);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .back-link:hover { color: var(--navy); }
+
+    /* ===== WRAP ===== */
+    .wrap { max-width: 1000px; margin: 0 auto; padding: 32px 16px 80px; }
+
+    /* ===== HERO ===== */
+    .hero {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+      color: white;
+      border-radius: 20px;
+      padding: 36px 28px;
+      box-shadow: 0 20px 50px rgba(26,45,90,0.25);
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      right: -60px; top: -60px;
+      width: 280px; height: 280px;
+      border-radius: 50%;
+      background: rgba(200,169,110,0.12);
+      pointer-events: none;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      left: -40px; bottom: -80px;
+      width: 200px; height: 200px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.05);
+      pointer-events: none;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(200,169,110,0.3);
+      border: 1px solid rgba(200,169,110,0.5);
+      color: var(--beige);
+      padding: 5px 14px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 14px;
+      letter-spacing: 0.06em;
+    }
+    .hero h1 {
+      font-size: clamp(26px, 5vw, 42px);
+      line-height: 1.25;
+      margin-bottom: 12px;
+      font-family: 'Noto Serif JP', serif;
+      font-weight: 500;
+    }
+    .hero h1 em {
+      color: var(--beige);
+      font-style: normal;
+    }
+    .hero p { color: rgba(255,255,255,0.8); font-size: 15px; max-width: 600px; }
+    .hero-pills {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+    .hero-pill {
+      background: rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.85);
+      border-radius: 999px;
+      padding: 5px 12px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    .hero-note { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 12px; }
+
+    /* ===== GRID ===== */
+    .grid {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 20px;
+      align-items: start;
+    }
+
+    /* ===== CARD ===== */
+    .card {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: var(--shadow-card);
+      border: 1px solid var(--gray-100);
+    }
+    .card h2 {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 4px;
+    }
+    .card-lead { color: var(--gray-600); font-size: 13px; margin-bottom: 20px; }
+
+    /* ===== FORM ===== */
+    .form-label {
+      display: block;
+      font-weight: 700;
+      font-size: 13px;
+      color: var(--navy);
+      margin: 18px 0 7px;
+    }
+    .form-label:first-of-type { margin-top: 0; }
+    select, input[type="text"] {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: var(--radius-md);
+      border: 1.5px solid var(--gray-200);
+      font-size: 15px;
+      font-family: inherit;
+      background: white;
+      color: #1a1a1a;
+      transition: border-color 0.2s;
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23888' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+    }
+    select:focus, input[type="text"]:focus {
+      outline: none;
+      border-color: var(--navy);
+    }
+    input[type="text"] { background-image: none; }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .size-hint { font-size: 12px; color: var(--gray-500); margin-top: 6px; line-height: 1.5; }
+
+    /* ===== CHECKS ===== */
+    .checks { display: grid; gap: 8px; margin-top: 6px; }
+    .check-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--gray-50);
+      border: 1.5px solid var(--gray-100);
+      border-radius: var(--radius-md);
+      padding: 11px 14px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .check-label:hover { border-color: var(--navy); background: var(--beige-light); }
+    .check-label input[type="checkbox"] {
+      width: 17px; height: 17px;
+      accent-color: var(--navy);
+      flex-shrink: 0;
+      background-image: none;
+      cursor: pointer;
+      border: none;
+      padding: 0;
+    }
+
+    /* ===== CALC BTN ===== */
+    .calc-btn {
+      width: 100%;
+      border: none;
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 20px;
+      background: var(--navy);
+      color: white;
+      font-family: inherit;
+      box-shadow: 0 8px 24px rgba(26,45,90,0.2);
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .calc-btn:hover { background: var(--navy-dark); transform: translateY(-1px); box-shadow: var(--shadow-hover); }
+
+    /* ===== RESULT ===== */
+    .result-box {
+      background: linear-gradient(180deg, #ffffff, var(--beige-light));
+      border: 2px solid var(--gray-100);
+      border-top: 3px solid var(--beige);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      margin-top: 14px;
+    }
+    .result-summary { font-size: 13px; color: var(--gray-500); margin-bottom: 6px; }
+    .result-price {
+      font-size: 36px;
+      font-weight: 900;
+      color: var(--navy);
+      letter-spacing: 0.01em;
+      margin: 4px 0 2px;
+      line-height: 1.15;
+    }
+    .result-note { font-size: 13px; color: var(--gray-500); margin-bottom: 16px; }
+    .breakdown {
+      border-top: 1px dashed var(--gray-200);
+      padding-top: 14px;
+      display: grid;
+      gap: 9px;
+      margin-bottom: 16px;
+    }
+    .breakdown-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      color: var(--gray-700);
+    }
+    .breakdown-line strong { color: var(--navy); font-weight: 700; }
+    .warn-box {
+      background: var(--beige-light);
+      border: 1px solid var(--beige);
+      color: #7a5a1e;
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+      font-size: 13px;
+      line-height: 1.7;
+      margin-bottom: 14px;
+    }
+
+    /* ===== CTA ===== */
+    .cta-line {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      text-align: center;
+      text-decoration: none;
+      border-radius: var(--radius-md);
+      padding: 15px 20px;
+      background: var(--line-green);
+      color: white;
+      font-weight: 700;
+      font-size: 15px;
+      box-shadow: 0 8px 20px rgba(6,199,85,0.25);
+      margin-bottom: 10px;
+      transition: all 0.2s;
+    }
+    .cta-line:hover { background: #05b34a; transform: translateY(-1px); }
+    .cta-tel {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      text-decoration: none;
+      border-radius: var(--radius-md);
+      padding: 13px 20px;
+      background: var(--navy);
+      color: white;
+      font-weight: 700;
+      font-size: 14px;
+      transition: background 0.2s;
+    }
+    .cta-tel:hover { background: var(--navy-dark); }
+
+    /* ===== STEPS ===== */
+    .steps { display: grid; gap: 10px; margin-top: 20px; }
+    .step-item {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      background: var(--gray-50);
+      border: 1px solid var(--gray-100);
+      border-radius: var(--radius-md);
+      padding: 13px 14px;
+    }
+    .step-num {
+      background: var(--beige);
+      color: white;
+      min-width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      font-size: 13px;
+      flex-shrink: 0;
+    }
+    .step-body strong { font-size: 14px; color: var(--navy); display: block; }
+    .step-body span { font-size: 12px; color: var(--gray-500); }
+
+    /* ===== FOOTER ===== */
+    .page-footer {
+      margin-top: 32px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--gray-500);
+      line-height: 1.8;
+    }
+    .page-footer a { color: var(--navy); text-decoration: underline; }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 780px) {
+      .wrap { padding: 20px 14px 80px; }
+      .hero { padding: 26px 20px; border-radius: 16px; }
+      .grid { grid-template-columns: 1fr; }
+      .row { grid-template-columns: 1fr; }
+      .result-price { font-size: 30px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header__inner">
+    <a href="index.html" class="logo">Sumai<span>＋</span></a>
+    <a href="index.html" class="back-link">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+      トップへ戻る
+    </a>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- HERO -->
+  <section class="hero">
+    <span class="hero-badge">Sumai＋ リフォーム費用診断</span>
+    <h1><em>30秒</em>でわかる<br>リフォーム概算診断</h1>
+    <p>キッチン・浴室・トイレ・外壁・外構など、希望内容を選ぶだけで概算費用を自動表示。まずは相場感を知りたい方へ。</p>
+    <div class="hero-pills">
+      <span class="hero-pill">スマホ対応</span>
+      <span class="hero-pill">概算即時表示</span>
+      <span class="hero-pill">外構・エクステリア対応</span>
+      <span class="hero-pill">相談無料</span>
+      <span class="hero-pill">しつこい営業なし</span>
+    </div>
+    <div class="hero-note">※本診断は概算です。正式な見積もりは現地確認後にご案内します。</div>
+  </section>
+
+  <!-- MAIN GRID -->
+  <section class="grid">
+
+    <!-- 左：フォーム -->
+    <div class="card">
+      <h2>かんたん診断フォーム</h2>
+      <p class="card-lead">該当する項目を選ぶと、右側に概算費用が表示されます。</p>
+
+      <label class="form-label" for="category">リフォーム内容</label>
+      <select id="category">
+        <option value="toilet">トイレ交換</option>
+        <option value="bath">ユニットバス交換</option>
+        <option value="kitchen">キッチン交換</option>
+        <option value="washstand">洗面台交換</option>
+        <option value="wallpaper">クロス張替え</option>
+        <option value="floor">床張替え</option>
+        <option value="exterior_wall">外壁塗装</option>
+        <option value="exterior">エクステリア・外構工事</option>
+      </select>
+
+      <div id="subCategoryWrap" style="display:none;">
+        <label class="form-label" for="subCategory">外構工事の細分類</label>
+        <select id="subCategory">
+          <option value="fence">フェンス設置</option>
+          <option value="carport">カーポート設置</option>
+          <option value="deck">ウッドデッキ・人工木デッキ</option>
+          <option value="gate">門柱・機能門柱</option>
+          <option value="approach">玄関アプローチ</option>
+          <option value="parking">駐車場土間コンクリート</option>
+          <option value="garden">庭まわり・雑草対策</option>
+        </select>
+      </div>
+
+      <div class="row">
+        <div>
+          <label class="form-label" for="grade">グレード</label>
+          <select id="grade">
+            <option value="standard">標準</option>
+            <option value="middle">中級</option>
+            <option value="high">高級</option>
+          </select>
+        </div>
+        <div>
+          <label class="form-label" for="size">広さ・サイズ</label>
+          <select id="size">
+            <option value="small">小さめ</option>
+            <option value="normal" selected>標準</option>
+            <option value="large">大きめ</option>
+          </select>
+          <div class="size-hint" id="sizeHint">標準サイズを基準に概算します</div>
+        </div>
+      </div>
+
+      <label class="form-label">追加オプション</label>
+      <div class="checks">
+        <label class="check-label"><input type="checkbox" id="option1"> <span id="opt1Text">既存撤去・処分が多い</span></label>
+        <label class="check-label"><input type="checkbox" id="option2"> <span id="opt2Text">配管・下地補修の可能性あり</span></label>
+        <label class="check-label"><input type="checkbox" id="option3"> <span id="opt3Text">土日・短納期を希望</span></label>
+      </div>
+
+      <label class="form-label" for="area">施工エリア</label>
+      <input type="text" id="area" placeholder="例：一宮市、稲沢市、江南市など" />
+
+      <button class="calc-btn" onclick="calc()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="7" x2="16" y2="7"/><line x1="8" y1="11" x2="16" y2="11"/><line x1="8" y1="15" x2="13" y2="15"/></svg>
+        概算を計算する
+      </button>
+    </div>
+
+    <!-- 右：結果 -->
+    <div class="card">
+      <h2>概算見積もり</h2>
+      <p class="card-lead">おおよその費用帯を表示します。</p>
+
+      <div class="result-box">
+        <div class="result-summary" id="summary">トイレ交換・標準グレード・標準サイズ</div>
+        <div class="result-price" id="price">12〜18万円</div>
+        <div class="result-note">税込目安・現地状況により変動</div>
+        <div class="breakdown">
+          <div class="breakdown-line"><span>商品・材料費</span><strong id="mat">7〜10万円</strong></div>
+          <div class="breakdown-line"><span>基本工事費</span><strong id="work">4〜6万円</strong></div>
+          <div class="breakdown-line"><span>諸経費・処分費</span><strong id="misc">1〜2万円</strong></div>
+        </div>
+        <div class="warn-box">
+          ⚠️ 概算のため、現地確認後に金額が前後します。<br>
+          まずは写真をLINEで送るだけでもご相談いただけます。
+        </div>
+        <a class="cta-line" href="https://line.me/" target="_blank" rel="noopener">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.04 2 11c0 2.96 1.56 5.57 4 7.27V22l3.44-1.89A11.2 11.2 0 0012 20.28C17.52 20.28 22 16.24 22 11S17.52 2 12 2z"/></svg>
+          写真を送って無料相談する（LINE）
+        </a>
+        <a class="cta-tel" href="tel:0000000000">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .99h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 15.92z"/></svg>
+          電話で相談する　00-0000-0000
+        </a>
+      </div>
+
+      <div class="steps">
+        <div class="step-item">
+          <div class="step-num">1</div>
+          <div class="step-body"><strong>概算診断</strong><span>まずは費用感を確認</span></div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">2</div>
+          <div class="step-body"><strong>LINEで写真送付</strong><span>現地調査前に内容を確認</span></div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">3</div>
+          <div class="step-body"><strong>現地確認・正式見積もり</strong><span>納得いただいてから工事へ</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <p class="page-footer">
+    ※本ページの金額はあくまで概算目安です。正式な見積もりは現地確認後にご案内します。<br>
+    対応エリア：一宮市・稲沢市・江南市・岩倉市・北名古屋市・清須市・岐阜市・羽島市・各務原市<br>
+    <a href="index.html">Sumai＋ トップページへ</a>｜しつこい営業は一切いたしません
+  </p>
+
+</main>
+
+<script>
+const data = {
+  toilet:   { name:'トイレ交換',   standard:[12,18], middle:[18,25], high:[25,40] },
+  bath:     { name:'ユニットバス交換', standard:[80,120], middle:[120,180], high:[180,300] },
+  kitchen:  { name:'キッチン交換', standard:[70,110], middle:[110,180], high:[180,350] },
+  washstand:{ name:'洗面台交換',   standard:[10,18], middle:[18,30], high:[30,55] },
+  wallpaper:{ name:'クロス張替え', standard:[4,8],   middle:[8,14],  high:[14,25] },
+  floor:    { name:'床張替え',     standard:[8,18],  middle:[18,35], high:[35,70] },
+  exterior_wall: { name:'外壁塗装', standard:[60,90], middle:[90,130], high:[130,200] }
+};
+const exteriorData = {
+  fence:   { name:'フェンス設置', hint:'小：5m前後 / 標準：10m前後 / 大：20m前後', standard:[18,35], middle:[35,70], high:[70,130] },
+  carport: { name:'カーポート設置', hint:'小：1台用 / 標準：2台用 / 大：ワイド・高耐久仕様', standard:[25,45], middle:[45,80], high:[80,150] },
+  deck:    { name:'ウッドデッキ・人工木デッキ', hint:'小：1.5坪 / 標準：3坪 / 大：5坪以上', standard:[20,45], middle:[45,90], high:[90,180] },
+  gate:    { name:'門柱・機能門柱', hint:'表札・ポスト・宅配ボックスの有無で変動', standard:[12,28], middle:[28,55], high:[55,100] },
+  approach:{ name:'玄関アプローチ', hint:'小：部分施工 / 標準：通路一式 / 大：デザイン外構', standard:[20,45], middle:[45,90], high:[90,180] },
+  parking: { name:'駐車場土間コンクリート', hint:'小：1台分 / 標準：2台分 / 大：3台分以上', standard:[25,45], middle:[45,85], high:[85,160] },
+  garden:  { name:'庭まわり・雑草対策', hint:'防草シート・砂利・人工芝などで変動', standard:[10,30], middle:[30,70], high:[70,140] }
+};
+const gradeName = { standard:'標準グレード', middle:'中級グレード', high:'高級グレード' };
+const sizeName  = { small:'小さめ', normal:'標準サイズ', large:'大きめ' };
+
+function yen(n) { return Math.round(n) + '万円'; }
+function rangeText(a, b) { return yen(a) + '〜' + yen(b); }
+
+function syncForm() {
+  const c = document.getElementById('category').value;
+  const isExterior = c === 'exterior';
+  document.getElementById('subCategoryWrap').style.display = isExterior ? 'block' : 'none';
+  document.getElementById('opt1Text').textContent = isExterior ? '既存物の撤去・処分がある' : '既存撤去・処分が多い';
+  document.getElementById('opt2Text').textContent = isExterior ? '土・勾配・排水調整の可能性あり' : '配管・下地補修の可能性あり';
+  document.getElementById('opt3Text').textContent = isExterior ? 'デザイン・色柄にこだわりたい' : '土日・短納期を希望';
+  if (isExterior) {
+    const sub = document.getElementById('subCategory').value;
+    document.getElementById('sizeHint').textContent = exteriorData[sub].hint;
+  } else {
+    document.getElementById('sizeHint').textContent = '標準サイズを基準に概算します';
+  }
+}
+
+function calc() {
+  syncForm();
+  const c = document.getElementById('category').value;
+  const g = document.getElementById('grade').value;
+  const s = document.getElementById('size').value;
+  const isExterior = c === 'exterior';
+  const item = isExterior ? exteriorData[document.getElementById('subCategory').value] : data[c];
+  let [min, max] = item[g];
+  if (s === 'small') { min *= 0.82; max *= 0.90; }
+  if (s === 'large') { min *= 1.25; max *= 1.45; }
+  let opt = 0;
+  if (document.getElementById('option1').checked) opt += isExterior ? 8 : 5;
+  if (document.getElementById('option2').checked) opt += isExterior ? 12 : 8;
+  if (document.getElementById('option3').checked) opt += isExterior ? 10 : 3;
+  min += opt; max += opt * 1.45;
+  const matRatMin = isExterior ? 0.48 : 0.56, matRatMax = isExterior ? 0.52 : 0.58;
+  const wkRatMin  = isExterior ? 0.38 : 0.33, wkRatMax  = isExterior ? 0.36 : 0.32;
+  const msRatMin  = isExterior ? 0.14 : 0.11, msRatMax  = isExterior ? 0.12 : 0.10;
+  document.getElementById('summary').textContent = `${item.name}・${gradeName[g]}・${sizeName[s]}`;
+  document.getElementById('price').textContent   = rangeText(min, max);
+  document.getElementById('mat').textContent     = rangeText(min * matRatMin, max * matRatMax);
+  document.getElementById('work').textContent    = rangeText(min * wkRatMin, max * wkRatMax);
+  document.getElementById('misc').textContent    = rangeText(min * msRatMin, max * msRatMax);
+}
+
+['category','subCategory','grade','size','option1','option2','option3'].forEach(id => {
+  document.getElementById(id).addEventListener('change', calc);
+});
+calc();
+</script>
+</body>
+</html>
