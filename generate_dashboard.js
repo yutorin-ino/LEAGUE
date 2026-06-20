@@ -1,7 +1,7 @@
 const XLSX = require('xlsx');
 const fs = require('fs');
 
-const INPUT = "C:\\Users\\hiro\\HP0524\\海外便利グッズリスト_日本未上陸1505件_評価付.xlsx";
+const INPUT = "C:\\Users\\hiro\\HP0524\\海外便利グッズリスト_日本未上陸1705件_評価付.xlsx";
 const OUTPUT = "C:\\Users\\hiro\\HP0524\\mail_dashboard.html";
 
 console.log("Excelファイル読み込み中...");
