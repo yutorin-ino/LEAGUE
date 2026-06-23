@@ -47,13 +47,13 @@ Sumai pluS Co., Ltd.
  (LEAGUE Co., Ltd. Agent )
 Hiroyuki Inoguchi
 
-E-mail:hiro.1981.0213@gmail.com
+E-mail:yutorin.ino@gmail.com
 
 Address: 49-5 Kitazakuno, Higashi-Itsushiro, Ichinomiya City, Aichi Prefecture, Japan
 
 =================================================`;
 
-  const sender = encodeURIFull("hiro.1981.0213@gmail.com");
+  const sender = encodeURIFull("yutorin.ino@gmail.com");
   return `https://mail.google.com/mail/?authuser=${sender}&view=cm&fs=1&to=${encodeURIFull(email)}&su=${encodeURIFull(subject)}&body=${encodeURIFull(body)}`;
 }
 
