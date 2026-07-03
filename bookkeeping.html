@@ -362,7 +362,8 @@ const INCOME_CATEGORIES = ['売上高','受取手数料','雑収入','その他�
 let currentType = 'expense';
 let currentReceiptBase64 = null;
 let currentReceiptMime = null;
-let currentMonth = new Date().toISOString().slice(0,7);
+const _now = new Date();
+let currentMonth = `${_now.getFullYear()}-${String(_now.getMonth()+1).padStart(2,'0')}`;
 let editingId = null;
 
 // ─── Data layer ───────────────────────────────────────────────────────────
@@ -598,7 +599,7 @@ function clearForm() {
 function changeMonth(delta) {
   const [y, m] = currentMonth.split('-').map(Number);
   const d = new Date(y, m - 1 + delta, 1);
-  currentMonth = d.toISOString().slice(0,7);
+  currentMonth = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
   renderDashboard();
 }
 
