@@ -3,85 +3,243 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>海外便利グッズ メールダッシュボード</title>
+  <title>LEAGUE ダッシュボード一覧</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: "Segoe UI", "Hiragino Sans", sans-serif;
       background: #f0f4f8;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       min-height: 100vh;
+      padding: 48px 20px;
     }
+    header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    header .logo { font-size: 40px; margin-bottom: 12px; }
+    header h1 {
+      font-size: 26px;
+      font-weight: 700;
+      color: #1a2d5a;
+      margin-bottom: 6px;
+    }
+    header p {
+      font-size: 14px;
+      color: #888;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
     .card {
       background: #fff;
       border-radius: 16px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.12);
-      padding: 48px 56px;
-      text-align: center;
-      max-width: 520px;
-      width: 90%;
-    }
-    .icon { font-size: 56px; margin-bottom: 16px; }
-    h1 {
-      font-size: 22px;
-      color: #1a2e4a;
-      margin-bottom: 8px;
-      line-height: 1.4;
-    }
-    p {
-      font-size: 14px;
-      color: #666;
-      margin-bottom: 32px;
-    }
-    .btn {
-      display: inline-block;
-      background: linear-gradient(135deg, #2563eb, #1d4ed8);
-      color: #fff;
-      text-decoration: none;
-      padding: 16px 40px;
-      border-radius: 10px;
-      font-size: 17px;
-      font-weight: 600;
-      box-shadow: 0 4px 14px rgba(37,99,235,0.4);
-      transition: transform 0.15s, box-shadow 0.15s;
-    }
-    .btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(37,99,235,0.5);
-    }
-    .stats {
-      margin-top: 28px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.09);
+      padding: 32px 28px;
       display: flex;
+      flex-direction: column;
+      gap: 16px;
+      transition: transform 0.15s, box-shadow 0.15s;
+      text-decoration: none;
+      color: inherit;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.14);
+    }
+
+    .card-head {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .card-icon {
+      font-size: 36px;
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
       justify-content: center;
-      gap: 32px;
+      flex-shrink: 0;
+    }
+    .card-icon.blue  { background: #e8f0fe; }
+    .card-icon.green { background: #e6f4ea; }
+    .card-icon.orange{ background: #fff3e0; }
+    .card-icon.purple{ background: #f3e8fd; }
+
+    .card-title { font-size: 17px; font-weight: 700; color: #1a2d5a; }
+    .card-sub   { font-size: 12px; color: #999; margin-top: 2px; }
+
+    .card-desc {
+      font-size: 13px;
+      color: #666;
+      line-height: 1.6;
+    }
+
+    .stats {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
     }
     .stat { text-align: center; }
-    .stat-num { font-size: 28px; font-weight: 700; color: #2563eb; }
-    .stat-label { font-size: 12px; color: #888; margin-top: 2px; }
+    .stat-num   { font-size: 22px; font-weight: 700; }
+    .stat-label { font-size: 11px; color: #aaa; margin-top: 1px; }
+
+    .blue  .stat-num  { color: #2563eb; }
+    .green .stat-num  { color: #16a34a; }
+    .orange .stat-num { color: #d97706; }
+    .purple .stat-num { color: #7c3aed; }
+
+    .card-footer {
+      margin-top: auto;
+      font-size: 13px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .blue   .card-footer { color: #2563eb; }
+    .green  .card-footer { color: #16a34a; }
+    .orange .card-footer { color: #d97706; }
+    .purple .card-footer { color: #7c3aed; }
+
+    .badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 99px;
+      background: #e8f0fe;
+      color: #2563eb;
+    }
+    .badge.new { background: #fef3c7; color: #d97706; }
+
+    .divider {
+      max-width: 1000px;
+      margin: 40px auto 24px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #aaa;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      border-bottom: 1px solid #e5e7eb;
+      padding-bottom: 8px;
+    }
   </style>
 </head>
 <body>
-  <div class="card">
-    <div class="icon">📧</div>
-    <h1>海外便利グッズ<br>一括メール送信ダッシュボード</h1>
-    <p>日本未上陸の海外ブランドへ、Gmailで一括コンタクト送信</p>
-    <a class="btn" href="mail_dashboard.html">ダッシュボードを開く →</a>
-    <div class="stats">
-      <div class="stat">
-        <div class="stat-num">1,105</div>
-        <div class="stat-label">総商品数</div>
+
+  <header>
+    <div class="logo">🌐</div>
+    <h1>LEAGUE ダッシュボード一覧</h1>
+    <p>海外便利グッズ リサーチ・メール送信プロジェクト</p>
+  </header>
+
+  <div class="divider">メール送信ダッシュボード</div>
+
+  <div class="grid">
+
+    <!-- メインダッシュボード -->
+    <a class="card blue" href="mail_dashboard.html">
+      <div class="card-head">
+        <div class="card-icon blue">📧</div>
+        <div>
+          <div class="card-title">全件メールダッシュボード</div>
+          <div class="card-sub">mail_dashboard.html</div>
+        </div>
       </div>
-      <div class="stat">
-        <div class="stat-num">673</div>
-        <div class="stat-label">メールアドレスあり</div>
+      <div class="card-desc">
+        日本未上陸の海外ブランド全件を対象に、Gmailで一括コンタクト送信できるメインダッシュボード。カテゴリ・★評価・キーワードでフィルタリング可能。
       </div>
-      <div class="stat">
-        <div class="stat-num">10</div>
-        <div class="stat-label">カテゴリ</div>
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-num">2,683</div>
+          <div class="stat-label">総商品数</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">2,195</div>
+          <div class="stat-label">メールあり</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">10</div>
+          <div class="stat-label">カテゴリ</div>
+        </div>
       </div>
-    </div>
+      <div class="card-footer">ダッシュボードを開く →</div>
+    </a>
+
+    <!-- クラファンダッシュボード -->
+    <a class="card green" href="cf_dashboard.html">
+      <div class="card-head">
+        <div class="card-icon green">🔥</div>
+        <div>
+          <div class="card-title">クラファン・通販限定ダッシュボード <span class="badge new">NEW</span></div>
+          <div class="card-sub">cf_dashboard.html</div>
+        </div>
+      </div>
+      <div class="card-desc">
+        Kickstarter・Indiegogo・Amazon・eBayなどクラウドファンディング・通販サイト出品製品のみを抽出したダッシュボード。サイト種別バッジ付き。
+      </div>
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-num">652</div>
+          <div class="stat-label">対象商品数</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">226</div>
+          <div class="stat-label">クラファン 🔥</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">624</div>
+          <div class="stat-label">メールあり</div>
+        </div>
+      </div>
+      <div class="card-footer">ダッシュボードを開く →</div>
+    </a>
+
   </div>
+
+  <div class="divider" style="margin-top:48px;">その他のページ</div>
+
+  <div class="grid">
+
+    <!-- Sumai+ -->
+    <a class="card orange" href="sumai-plus/index.html">
+      <div class="card-head">
+        <div class="card-icon orange">🏠</div>
+        <div>
+          <div class="card-title">Sumai+ サイト</div>
+          <div class="card-sub">sumai-plus/index.html</div>
+        </div>
+      </div>
+      <div class="card-desc">
+        住宅リフォーム会社「Sumai＋」のコーポレートウェブサイト。
+      </div>
+      <div class="card-footer">サイトを開く →</div>
+    </a>
+
+    <!-- 見積もり -->
+    <a class="card purple" href="sumai-plus/estimator.html">
+      <div class="card-head">
+        <div class="card-icon purple">📋</div>
+        <div>
+          <div class="card-title">リフォーム見積もりシミュレーター</div>
+          <div class="card-sub">sumai-plus/estimator.html</div>
+        </div>
+      </div>
+      <div class="card-desc">
+        リフォームの概算費用をその場で試算できるオンライン見積もりシミュレーター。
+      </div>
+      <div class="card-footer">シミュレーターを開く →</div>
+    </a>
+
+  </div>
+
 </body>
 </html>
