@@ -7,7 +7,7 @@
 const XLSX = require('xlsx');
 const fs   = require('fs');
 
-const INPUT  = "C:\\Users\\hiro\\Desktop\\LEAGUE\\海外便利グッズリスト_日本未上陸2705件_評価付.xlsx";
+const INPUT  = "C:\\Users\\hiro\\Desktop\\LEAGUE\\海外便利グッズリスト_日本未上陸2905件_評価付.xlsx";
 const OUTPUT = "C:\\Users\\hiro\\Desktop\\LEAGUE\\cf_dashboard.html";
 
 // 対象ECサイトのキーワード
