@@ -139,6 +139,16 @@ tr:hover td{background:#fafaf8}
 </head>
 <body>
 
+<div id="login-screen" style="display:none;position:fixed;inset:0;background:#f0efea;z-index:200;flex-direction:column;align-items:center;justify-content:center;gap:20px">
+  <div style="font-size:48px">📒</div>
+  <h1 style="font-size:24px;font-weight:500">帳簿管理</h1>
+  <p style="color:#5f5e5a;font-size:14px">個人事業主向け経費・収支管理アプリ</p>
+  <button onclick="signInWithGoogle()" style="display:flex;align-items:center;gap:10px;padding:12px 24px;border-radius:8px;border:0.5px solid #b4b2a9;background:#fff;cursor:pointer;font-size:15px;font-family:inherit;font-weight:500">
+    <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.875 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.258c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z"/><path fill="#FBBC05" d="M3.964 10.707A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.707V4.961H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.039l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.961L3.964 6.293C4.672 4.169 6.656 3.58 9 3.58z"/></svg>
+    Googleでログイン
+  </button>
+</div>
+
 <div class="app-header">
   <h1>📒 帳簿管理</h1>
   <nav>
@@ -147,6 +157,11 @@ tr:hover td{background:#fafaf8}
     <button onclick="switchPanel('list')">取引一覧</button>
     <button onclick="switchPanel('settings')">設定・出力</button>
   </nav>
+  <div id="user-info" style="display:flex;align-items:center;gap:8px;margin-left:12px">
+    <div id="user-avatar" style="width:30px;height:30px;border-radius:50%;background:#185fa5;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:500"></div>
+    <span id="user-name" style="font-size:13px;color:#5f5e5a;max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span>
+    <button onclick="signOut()" style="background:none;border:0.5px solid #b4b2a9;border-radius:5px;padding:3px 8px;font-size:12px;cursor:pointer;color:#5f5e5a">ログアウト</button>
+  </div>
 </div>
 
 <div class="main">
@@ -372,13 +387,9 @@ const _now = new Date();
 let currentMonth = `${_now.getFullYear()}-${String(_now.getMonth()+1).padStart(2,'0')}`;
 let editingId = null;
 
-// ─── Data layer ───────────────────────────────────────────────────────────
+// ─── Data layer (Firestore) ───────────────────────────────────────────────
 function loadData() {
-  try { return JSON.parse(localStorage.getItem('bookkeeping_data') || '[]'); }
-  catch { return []; }
-}
-function saveData(data) {
-  localStorage.setItem('bookkeeping_data', JSON.stringify(data));
+  return _data;
 }
 function getApiKey() {
   return localStorage.getItem('bookkeeping_api_key') || '';
@@ -390,9 +401,7 @@ window.addEventListener('load', () => {
   populateCategorySelect();
   const key = getApiKey();
   if (key) document.getElementById('api-key-input').value = key;
-  renderDashboard();
-  renderList();
-  updateDataCount();
+  // UI is initialized after auth state is confirmed (see Firebase section below)
 });
 
 function setTodayDate() {
@@ -569,19 +578,26 @@ function saveEntry() {
     createdAt: new Date().toISOString()
   };
 
-  const data = loadData();
+  const receiptDataUrl = currentReceiptBase64 ? `data:${currentReceiptMime};base64,${currentReceiptBase64}` : null;
+  const firestoreEntry = { ...entry };
+  delete firestoreEntry.receipt; // receipts are stored in localStorage only
+  firestoreEntry.uid = _currentUser.uid;
+
   if (editingId) {
-    const idx = data.findIndex(d => d.id === editingId);
-    if (idx >= 0) data[idx] = entry;
+    if (receiptDataUrl) localStorage.setItem('receipt_' + editingId, receiptDataUrl);
+    else localStorage.removeItem('receipt_' + editingId);
+    db.collection('transactions').doc(editingId).set(firestoreEntry)
+      .then(() => { showAlert('entry-alert', 'success', '✅ 更新しました！'); clearForm(); setTimeout(() => document.getElementById('entry-alert').innerHTML = '', 3000); })
+      .catch(e => showAlert('entry-alert', 'error', '保存エラー: ' + e.message));
     editingId = null;
   } else {
-    data.push(entry);
+    db.collection('transactions').add(firestoreEntry)
+      .then(docRef => {
+        if (receiptDataUrl) localStorage.setItem('receipt_' + docRef.id, receiptDataUrl);
+        showAlert('entry-alert', 'success', '✅ 保存しました！'); clearForm(); setTimeout(() => document.getElementById('entry-alert').innerHTML = '', 3000);
+      })
+      .catch(e => showAlert('entry-alert', 'error', '保存エラー: ' + e.message));
   }
-  saveData(data);
-
-  showAlert('entry-alert', 'success', '✅ 保存しました！');
-  clearForm();
-  setTimeout(() => document.getElementById('entry-alert').innerHTML = '', 3000);
 }
 
 function clearForm() {
@@ -741,9 +757,9 @@ function clearFilters() {
 
 function deleteEntry(id) {
   if (!confirm('この取引を削除しますか？')) return;
-  const data = loadData().filter(d => d.id !== id);
-  saveData(data);
-  renderList();
+  localStorage.removeItem('receipt_' + id);
+  db.collection('transactions').doc(id).delete()
+    .catch(e => alert('削除エラー: ' + e.message));
 }
 
 function editEntry(id) {
@@ -819,13 +835,18 @@ function importJSON(e) {
       const imported = json.data || json;
       if (!Array.isArray(imported)) throw new Error('形式が不正です');
       if (!confirm(`${imported.length}件のデータを読み込みます。既存データと統合します。よろしいですか？`)) return;
-      const existing = loadData();
-      const existingIds = new Set(existing.map(d => d.id));
+      const existingIds = new Set(_data.map(d => d.id));
       const newItems = imported.filter(d => !existingIds.has(d.id));
-      saveData([...existing, ...newItems]);
-      alert(`${newItems.length}件の新しいデータを読み込みました。`);
-      updateDataCount();
-      renderList();
+      const batch = db.batch();
+      newItems.forEach(item => {
+        const { receipt, id, ...rest } = item;
+        const ref = db.collection('transactions').doc();
+        batch.set(ref, { ...rest, uid: _currentUser.uid });
+        if (receipt) localStorage.setItem('receipt_' + ref.id, receipt);
+      });
+      batch.commit()
+        .then(() => alert(`${newItems.length}件の新しいデータを読み込みました。`))
+        .catch(err => alert('読み込みエラー：' + err.message));
     } catch (err) {
       alert('読み込みエラー：' + err.message);
     }
@@ -860,11 +881,17 @@ function toggleApiKeyVisible() {
 function clearAllData() {
   if (!confirm('すべての取引データを削除します。この操作は取り消せません。よろしいですか？')) return;
   if (!confirm('本当に削除しますか？')) return;
-  localStorage.removeItem('bookkeeping_data');
-  alert('データを削除しました。');
-  updateDataCount();
-  renderDashboard();
-  renderList();
+  db.collection('transactions').where('uid', '==', _currentUser.uid).get()
+    .then(snap => {
+      const batch = db.batch();
+      snap.docs.forEach(doc => {
+        localStorage.removeItem('receipt_' + doc.id);
+        batch.delete(doc.ref);
+      });
+      return batch.commit();
+    })
+    .then(() => alert('データを削除しました。'))
+    .catch(e => alert('削除エラー: ' + e.message));
 }
 
 function updateDataCount() {
@@ -883,6 +910,79 @@ function showAlert(id, type, msg) {
   document.getElementById(id).innerHTML = `<div class="alert ${type}">${msg}</div>`;
 }
 </script>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script>
+// Firebase初期化
+const firebaseConfig = {
+  apiKey: "AIzaSyB_Rm_HWlR0BpiqlMEmmXq3X1Vu4Ganmj0",
+  authDomain: "bookkeeping-82511.firebaseapp.com",
+  projectId: "bookkeeping-82511",
+  storageBucket: "bookkeeping-82511.firebasestorage.app",
+  messagingSenderId: "811817295291",
+  appId: "1:811817295291:web:717be55b0c77b82bafb89e"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+const auth = firebase.auth();
+
+let _currentUser = null;
+let _unsubscribe = null;
+
+auth.onAuthStateChanged(user => {
+  const loginScreen = document.getElementById('login-screen');
+  const userInfo = document.getElementById('user-info');
+  if (user) {
+    _currentUser = user;
+    loginScreen.style.display = 'none';
+    userInfo.style.display = 'flex';
+    document.getElementById('user-name').textContent = user.displayName || user.email;
+    document.getElementById('user-avatar').textContent = (user.displayName || user.email || 'U')[0].toUpperCase();
+    subscribeToData();
+    setTodayDate();
+    populateCategorySelect();
+    const key = getApiKey();
+    if (key) document.getElementById('api-key-input').value = key;
+  } else {
+    _currentUser = null;
+    if (_unsubscribe) { _unsubscribe(); _unsubscribe = null; }
+    _data = [];
+    loginScreen.style.display = 'flex';
+    userInfo.style.display = 'none';
+  }
+});
+
+function subscribeToData() {
+  if (_unsubscribe) _unsubscribe();
+  _unsubscribe = db.collection('transactions')
+    .where('uid', '==', _currentUser.uid)
+    .onSnapshot(snapshot => {
+      _data = snapshot.docs.map(doc => {
+        const d = doc.data();
+        const receipt = localStorage.getItem('receipt_' + doc.id) || null;
+        return { ...d, id: doc.id, receipt };
+      });
+      _data.sort((a,b) => b.date.localeCompare(a.date));
+      renderDashboard();
+      renderList();
+      updateDataCount();
+    }, err => console.error('Firestore:', err));
+}
+
+function signInWithGoogle() {
+  const provider = new firebase.auth.GoogleAuthProvider();
+  auth.signInWithPopup(provider).catch(e => alert('ログインエラー: ' + e.message));
+}
+
+function signOut() {
+  if (!confirm('ログアウトしますか？')) return;
+  auth.signOut();
+}
+</script>
+
 <script>
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
