@@ -932,6 +932,11 @@ const auth = firebase.auth();
 let _currentUser = null;
 let _unsubscribe = null;
 
+// リダイレクトログイン後の結果処理（iOS Safari対応）
+auth.getRedirectResult().catch(e => {
+  if (e.code !== 'auth/no-auth-event') alert('ログインエラー: ' + e.message);
+});
+
 auth.onAuthStateChanged(user => {
   const loginScreen = document.getElementById('login-screen');
   const userInfo = document.getElementById('user-info');
@@ -974,7 +979,8 @@ function subscribeToData() {
 
 function signInWithGoogle() {
   const provider = new firebase.auth.GoogleAuthProvider();
-  auth.signInWithPopup(provider).catch(e => alert('ログインエラー: ' + e.message));
+  // iOS Safari はポップアップをブロックするためリダイレクト方式を使用
+  auth.signInWithRedirect(provider);
 }
 
 function signOut() {
