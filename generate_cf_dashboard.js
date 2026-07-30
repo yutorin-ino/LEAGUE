@@ -1,16 +1,14 @@
 /**
  * generate_cf_dashboard.js
- * クラウドファンディング・通販サイト限定ダッシュボード生成
- * node generate_cf_dashboard.js
+ * クラウドファンチE��ング・通販サイト限定ダチE��ュボ�Eド生戁E * node generate_cf_dashboard.js
  */
 
 const XLSX = require('xlsx');
 const fs   = require('fs');
 
-const INPUT  = "C:\\Users\\hiro\\Desktop\\LEAGUE\\海外便利グッズリスト_日本未上陸3105件_評価付.xlsx";
+const INPUT = "C:\\Users\\hiro\\Desktop\\LEAGUE\\海外便利グッズリスト_日本未上陸3905件_評価付.xlsx";
 const OUTPUT = "C:\\Users\\hiro\\Desktop\\LEAGUE\\cf_dashboard.html";
 
-// 対象ECサイトのキーワード
 const CF_KEYWORDS    = ['Kickstarter', 'Indiegogo', 'BackerKit', 'Crowdfunder', 'Crowd Supply'];
 const SHOP_KEYWORDS  = ['Amazon', 'eBay', 'Walmart', 'Target', 'Best Buy', 'Costco', 'Shopify'];
 
@@ -84,8 +82,7 @@ for (let i = 1; i < rows.length; i++) {
   if (!row[0]) continue;
   const ec_site  = String(row[4] || "");
   const siteType = getSiteType(ec_site);
-  if (!siteType) continue;   // クラファン・通販以外は除外
-
+  if (!siteType) continue;   // クラファン・通販以外�E除夁E
   const no       = row[0];
   const category = String(row[1] || "");
   const name     = String(row[2] || "");
@@ -96,7 +93,7 @@ for (let i = 1; i < rows.length; i++) {
   const stars    = String(row[8] || "");
   const comment  = String(row[9] || "");
 
-  const hasEmail  = contact.includes("@") && !contact.startsWith("http") && !contact.includes("問い合わせ");
+  const hasEmail = contact.includes("@") && !contact.startsWith("http") && !contact.includes("問い合わせ");
   const gmailUrl  = hasEmail ? buildGmailUrl(contact, maker, name) : "";
   const siteName  = getSiteName(ec_site);
 
@@ -109,7 +106,7 @@ const emailCount = products.filter(p => p.has_email).length;
 const cfCount    = products.filter(p => p.site_type === 'cf').length;
 const shopCount  = products.filter(p => p.site_type === 'shop').length;
 
-console.log(`対象商品数: ${products.length} 件 (クラファン: ${cfCount} / 通販: ${shopCount}) / メールあり: ${emailCount} 件`);
+console.log(`対象啁E��数: ${products.length} 件 (クラファン: ${cfCount} / 通販: ${shopCount}) / メールあり: ${emailCount} 件`);
 
 const dataJson  = JSON.stringify(products);
 const catOptions = categories.map(c => `<option value="${c}">${c}</option>`).join('\n    ');
@@ -119,7 +116,7 @@ const html = `<!DOCTYPE html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🚀 クラファン・通販 限定ダッシュボード</title>
+<title>🚀 クラファン・通販 限定ダチE��ュボ�EチE/title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: "Segoe UI", "Yu Gothic", sans-serif; background: #f0f4f8; color: #222; }
@@ -193,45 +190,45 @@ const html = `<!DOCTYPE html>
   .progress-fill { background: #28a745; height: 100%; transition: width 0.2s; }
   .progress-text { font-size: 0.8rem; color: #555; margin-top: 6px; text-align: center; }
 
-  .cat-キッチン・調理器具 { background: #dbeafe; color: #1e40af; }
-  .cat-スマートホーム・インテリア・照明 { background: #d1fae5; color: #065f46; }
-  .cat-ウェアラブル・ヘルス・フィットネス { background: #ede9fe; color: #4c1d95; }
-  .cat-アウトドア・スポーツ・旅行 { background: #fee2e2; color: #991b1b; }
-  .cat-ペット用品 { background: #fef3c7; color: #78350f; }
-  .cat-テクノロジー・ガジェット { background: #e0f2fe; color: #0c4a6e; }
+  .cat-キチE��ン・調琁E��具 { background: #dbeafe; color: #1e40af; }
+  .cat-スマ�Eト�Eーム・インチE��ア・照昁E{ background: #d1fae5; color: #065f46; }
+  .cat-ウェアラブル・ヘルス・フィチE��ネス { background: #ede9fe; color: #4c1d95; }
+  .cat-アウトドア・スポ�EチE�E旁E��E{ background: #fee2e2; color: #991b1b; }
+  .cat-ペット用品E{ background: #fef3c7; color: #78350f; }
+  .cat-チE��ノロジー・ガジェチE�� { background: #e0f2fe; color: #0c4a6e; }
   .cat-美容・スキンケア { background: #fce7f3; color: #831843; }
-  .cat-子供・教育 { background: #d1fae5; color: #14532d; }
-  .cat-ファッション・アクセサリー { background: #fdf2f8; color: #701a75; }
-  .cat-クリーニング・収納・整理 { background: #f3f4f6; color: #374151; }
+  .cat-子供�E教育 { background: #d1fae5; color: #14532d; }
+  .cat-ファチE��ョン・アクセサリー { background: #fdf2f8; color: #701a75; }
+  .cat-クリーニング・収納�E整琁E{ background: #f3f4f6; color: #374151; }
 </style>
 </head>
 <body>
 
 <header>
   <div class="h-top">
-    <h1>🚀 クラウドファンディング・通販サイト 限定ダッシュボード</h1>
+    <h1>🚀 クラウドファンチE��ング・通販サイチE限定ダチE��ュボ�EチE/h1>
   </div>
   <div class="h-stats">
     <span class="badge badge-total">総数 ${products.length} 件</span>
     <span class="badge badge-cf">🔥 クラファン ${cfCount} 件</span>
     <span class="badge badge-shop">🛒 通販 ${shopCount} 件</span>
-    <span class="badge badge-email">✉️ メールあり ${emailCount} 件</span>
+    <span class="badge badge-email">✉︁Eメールあり ${emailCount} 件</span>
   </div>
 </header>
 
 <div class="toolbar">
-  <input type="text" id="searchBox" placeholder="🔍 商品名・メーカー名で検索..." oninput="applyFilter()">
+  <input type="text" id="searchBox" placeholder="🔍 啁E��名�Eメーカー名で検索..." oninput="applyFilter()">
   <select id="catFilter" onchange="applyFilter()">
-    <option value="">すべてのカテゴリ</option>
+    <option value="">すべてのカチE��リ</option>
     ${catOptions}
   </select>
   <select id="siteTypeFilter" onchange="applyFilter()">
-    <option value="">ソース：すべて</option>
+    <option value="">ソース�E�すべて</option>
     <option value="cf">🔥 クラファンのみ (Kickstarter/Indiegogo)</option>
-    <option value="shop">🛒 通販のみ (Amazon等)</option>
+    <option value="shop">🛒 通販のみ (Amazon筁E</option>
   </select>
   <select id="siteNameFilter" onchange="applyFilter()">
-    <option value="">サイト名：すべて</option>
+    <option value="">サイト名�E�すべて</option>
     <option value="Kickstarter">Kickstarter</option>
     <option value="Indiegogo">Indiegogo</option>
     <option value="Amazon">Amazon</option>
@@ -239,16 +236,16 @@ const html = `<!DOCTYPE html>
     <option value="Walmart">Walmart</option>
   </select>
   <select id="emailFilter" onchange="applyFilter()">
-    <option value="">メール：すべて</option>
+    <option value="">メール�E�すべて</option>
     <option value="yes">メールあり</option>
-    <option value="no">メールなし</option>
+    <option value="no">メールなぁE/option>
   </select>
   <select id="starsFilter" onchange="applyFilter()">
-    <option value="">評価：すべて</option>
-    <option value="5">★★★★★ のみ</option>
-    <option value="4">★★★★ 以上</option>
+    <option value="">評価�E�すべて</option>
+    <option value="5">☁E�E☁E�E☁Eのみ</option>
+    <option value="4">☁E�E☁E�E 以丁E/option>
   </select>
-  <button class="btn btn-outline" onclick="selectAllVisible()">表示中を全選択</button>
+  <button class="btn btn-outline" onclick="selectAllVisible()">表示中を�E選抁E/button>
   <button class="btn btn-outline" onclick="clearSelection()">選択解除</button>
   <span class="sel-count">選択中: <span id="selCount">0</span> 件</span>
   <span class="filter-info" id="filterInfo"></span>
@@ -262,14 +259,14 @@ const html = `<!DOCTYPE html>
         <th><input type="checkbox" id="headerCheck" onchange="toggleHeaderCheck(this)"></th>
         <th>No.</th>
         <th>ソース</th>
-        <th>カテゴリ</th>
-        <th>商品名</th>
-        <th>メーカー名</th>
-        <th>商品URL</th>
+        <th>カチE��リ</th>
+        <th>啁E��吁E/th>
+        <th>メーカー吁E/th>
+        <th>啁E��URL</th>
         <th>メーカーHP</th>
         <th>連絡先メール</th>
         <th>日本需要評価</th>
-        <th>コメント</th>
+        <th>コメンチE/th>
       </tr>
     </thead>
     <tbody id="tableBody"></tbody>
@@ -278,20 +275,19 @@ const html = `<!DOCTYPE html>
 
 <div class="modal" id="confirmModal">
   <div class="modal-box">
-    <h2>📧 一括メール送信の確認</h2>
+    <h2>📧 一括メール送信の確誁E/h2>
     <p id="confirmText"></p>
     <div class="warn">
-      ⚠️ ブラウザのポップアップブロックを許可してください。<br>
-      複数のGmail作成画面が新しいタブで開きます。<br>
-      大量送信の場合は数十件ずつ分けることを推奨します。
-    </div>
+      ⚠�E�EブラウザのポップアチE�EブロチE��を許可してください、Ebr>
+      褁E��のGmail作�E画面が新しいタブで開きます、Ebr>
+      大量送信の場合�E数十件ずつ刁E��ることを推奨します、E    </div>
     <div class="progress" id="progressArea">
       <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
       <div class="progress-text" id="progressText"></div>
     </div>
     <div class="btns">
       <button class="btn btn-outline" onclick="closeModal()">キャンセル</button>
-      <button class="btn btn-success" id="execBtn" onclick="executeSend()">送信開始</button>
+      <button class="btn btn-success" id="execBtn" onclick="executeSend()">送信開姁E/button>
     </div>
   </div>
 </div>
@@ -302,7 +298,7 @@ let filtered = [...products];
 let selected = new Set();
 
 function starsClass(stars) {
-  const filled = (stars.match(/★/g)||[]).length;
+  const filled = (stars.match(/☁Eg)||[]).length;
   return 'stars-' + filled;
 }
 
@@ -326,7 +322,7 @@ function applyFilter() {
     if (em === 'yes' && !p.has_email) return false;
     if (em === 'no'  &&  p.has_email) return false;
     if (stars && p.stars) {
-      const filled = (p.stars.match(/★/g)||[]).length;
+      const filled = (p.stars.match(/☁Eg)||[]).length;
       if (filled < parseInt(stars)) return false;
     }
     return true;
@@ -354,11 +350,11 @@ function renderTable(rows) {
       '<td><span class="cat-badge cat-' + p.category + '">' + p.category + '</span></td>' +
       '<td class="name-col" title="' + esc(p.name) + '">' + truncate(p.name, 28) + '</td>' +
       '<td class="maker-col" title="' + esc(p.maker) + '">' + truncate(p.maker, 18) + '</td>' +
-      '<td>' + (p.prod_url ? '<a class="link" href="' + p.prod_url + '" target="_blank">🔗 商品</a>' : '') + '</td>' +
+      '<td>' + (p.prod_url ? '<a class="link" href="' + p.prod_url + '" target="_blank">🔗 啁E��</a>' : '') + '</td>' +
       '<td>' + (p.maker_hp ? '<a class="link" href="' + p.maker_hp + '" target="_blank">🏠 HP</a>' : '') + '</td>' +
       '<td class="email-col">' + (p.has_email
-        ? '<a class="link" href="' + p.gmail_url + '" target="_blank">✉️ ' + p.contact + '</a>'
-        : '<span class="no-email-tag">メールなし</span>') + '</td>' +
+        ? '<a class="link" href="' + p.gmail_url + '" target="_blank">✉︁E' + p.contact + '</a>'
+        : '<span class="no-email-tag">メールなぁE/span>') + '</td>' +
       '<td class="' + sc + '" style="white-space:nowrap">' + (p.stars||'') + '</td>' +
       '<td class="comment-col">' + esc(p.comment) + '</td>';
     tbody.appendChild(tr);
@@ -397,7 +393,7 @@ function updateSendBtn() {
 function confirmSend() {
   const sel = products.filter(p => selected.has(p.no) && p.has_email);
   document.getElementById('confirmText').textContent =
-    '選択した ' + sel.length + ' 件の相手にGmailの作成画面を開きます。よろしいですか？';
+    '選択しぁE' + sel.length + ' 件の相手にGmailの作�E画面を開きます。よろしぁE��すか�E�E;
   document.getElementById('progressArea').style.display = 'none';
   document.getElementById('execBtn').disabled = false;
   document.getElementById('confirmModal').classList.add('show');
@@ -417,7 +413,7 @@ async function executeSend() {
     text.textContent = (i + 1) + ' / ' + sel.length + ' 件 開きました...';
     await new Promise(r => setTimeout(r, 400));
   }
-  text.textContent = '✅ ' + sel.length + ' 件のGmail作成画面を開きました！';
+  text.textContent = '✁E' + sel.length + ' 件のGmail作�E画面を開きました�E�E;
   setTimeout(() => closeModal(), 2000);
 }
 init();
@@ -426,5 +422,5 @@ init();
 </html>`;
 
 fs.writeFileSync(OUTPUT, html, 'utf8');
-console.log(`\n完了: ${OUTPUT}`);
-console.log(`対象商品数: ${products.length} 件 (クラファン: ${cfCount} / 通販: ${shopCount}) / メールあり: ${emailCount} 件`);
+console.log(`\n完亁E ${OUTPUT}`);
+console.log(`対象啁E��数: ${products.length} 件 (クラファン: ${cfCount} / 通販: ${shopCount}) / メールあり: ${emailCount} 件`);

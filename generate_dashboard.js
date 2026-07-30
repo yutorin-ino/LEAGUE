@@ -1,7 +1,7 @@
 const XLSX = require('xlsx');
 const fs = require('fs');
 
-const INPUT = "C:\\Users\\hiro\\Desktop\\LEAGUE\\海外便利グッズリスト_日本未上陸3105件_評価付.xlsx";
+const INPUT = "C:\\Users\\hiro\\Desktop\\LEAGUE\\海外便利グッズリスト_日本未上陸3905件_評価付.xlsx";
 const OUTPUT = "C:\\Users\\hiro\\Desktop\\LEAGUE\\mail_dashboard.html";
 
 console.log("Excelファイル読み込み中...");
@@ -192,6 +192,7 @@ const html = `<!DOCTYPE html>
   <button class="btn btn-outline" onclick="selectAllVisible()">表示中を全選択</button>
   <button class="btn btn-outline" onclick="clearSelection()">選択解除</button>
   <span class="sel-count">選択中: <span id="selCount">0</span> 件</span>
+  <span class="filter-info" style="color:#888">（Shift+クリックで範囲選択）</span>
   <span class="filter-info" id="filterInfo"></span>
   <button class="btn btn-success" id="sendBtn" onclick="confirmSend()" disabled>📧 選択した相手に一括送信</button>
 </div>
@@ -242,6 +243,7 @@ const products = ${dataJson};
 
 let filtered = [...products];
 let selected = new Set();
+let lastCheckedIndex = null;
 
 function starsClass(stars) {
   if (!stars) return '';
@@ -279,13 +281,13 @@ function applyFilter() {
 function renderTable(rows) {
   const tbody = document.getElementById('tableBody');
   tbody.innerHTML = '';
-  rows.forEach(p => {
+  rows.forEach((p, idx) => {
     const tr = document.createElement('tr');
     if (selected.has(p.no)) tr.classList.add('selected');
     if (!p.has_email) tr.classList.add('no-email');
     const sc = starsClass(p.stars);
     tr.innerHTML =
-      '<td><input type="checkbox"' + (!p.has_email ? ' disabled title="メールアドレスなし"' : '') + (selected.has(p.no) ? ' checked' : '') + ' onchange="toggleRow(' + JSON.stringify(p.no) + ', this)"></td>' +
+      '<td><input type="checkbox"' + (!p.has_email ? ' disabled title="メールアドレスなし"' : '') + (selected.has(p.no) ? ' checked' : '') + ' onclick="handleRowCheckClick(event, ' + JSON.stringify(p.no) + ', ' + idx + ', this)"></td>' +
       '<td class="no-col">' + p.no + '</td>' +
       '<td><span class="cat-badge cat-' + p.category + '">' + p.category + '</span></td>' +
       '<td class="name-col" title="' + esc(p.name) + '">' + truncate(p.name, 30) + '</td>' +
@@ -309,10 +311,24 @@ function truncate(str, n) {
   return str.length > n ? str.slice(0, n) + '…' : str;
 }
 
-function toggleRow(no, cb) {
-  if (cb.checked) selected.add(no);
-  else selected.delete(no);
-  cb.closest('tr').classList.toggle('selected', cb.checked);
+function handleRowCheckClick(event, no, idx, cb) {
+  if (event.shiftKey && lastCheckedIndex !== null) {
+    const start = Math.min(lastCheckedIndex, idx);
+    const end = Math.max(lastCheckedIndex, idx);
+    const shouldCheck = cb.checked;
+    for (let i = start; i <= end; i++) {
+      const p = filtered[i];
+      if (!p || !p.has_email) continue;
+      if (shouldCheck) selected.add(p.no);
+      else selected.delete(p.no);
+    }
+    renderTable(filtered);
+  } else {
+    if (cb.checked) selected.add(no);
+    else selected.delete(no);
+    cb.closest('tr').classList.toggle('selected', cb.checked);
+  }
+  lastCheckedIndex = idx;
   updateSendBtn();
   document.getElementById('selCount').textContent = selected.size;
 }
