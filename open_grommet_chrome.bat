@@ -1,6 +1,6 @@
 @echo off
-rem Open grommet_1100_dashboard.html in Google Chrome
-set "DASHBOARD=%~dp0grommet_1100_dashboard.html"
+rem Open grommet_1300_dashboard.html in Google Chrome
+set "DASHBOARD=%~dp0grommet_1300_dashboard.html"
 
 set "CHROME=%ProgramFiles%\Google\Chrome\Application\chrome.exe"
 if not exist "%CHROME%" set "CHROME=%ProgramFiles(x86)%\Google\Chrome\Application\chrome.exe"
