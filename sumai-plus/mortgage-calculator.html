@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>住宅ローン返済シミュレーター｜Sumai＋</title>
+  <meta name="description" content="一宮市のリフォーム会社Sumai＋の住宅ローン返済シミュレーター。借入額・金利・返済年数を入力するだけで毎月の返済額と総返済額を自動計算。リフォームローンの目安確認にも。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #1a2d5a;
+      --navy-dark: #111d3d;
+      --navy-light: #2d4a80;
+      --beige: #c8a96e;
+      --beige-light: #f8f4ec;
+      --beige-mid: #f0ece2;
+      --white: #ffffff;
+      --gray-50: #f8f6f3;
+      --gray-100: #ede9e2;
+      --gray-200: #d5d0c4;
+      --gray-500: #888;
+      --gray-600: #666;
+      --gray-700: #444;
+      --line-green: #06c755;
+      --radius-sm: 4px;
+      --radius-md: 8px;
+      --radius-lg: 14px;
+      --shadow-card: 0 2px 16px rgba(0,0,0,0.07);
+      --shadow-hover: 0 6px 24px rgba(0,0,0,0.12);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--gray-50);
+      color: #1a1a1a;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== HEADER ===== */
+    .header {
+      background: rgba(255,255,255,0.97);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--gray-100);
+      height: 60px;
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    }
+    .header__inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo { font-size: 20px; font-weight: 700; color: var(--navy); letter-spacing: 0.04em; text-decoration: none; }
+    .logo span { color: var(--beige); }
+    .back-link {
+      font-size: 13px;
+      color: var(--gray-600);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .back-link:hover { color: var(--navy); }
+
+    /* ===== WRAP ===== */
+    .wrap { max-width: 1000px; margin: 0 auto; padding: 32px 16px 80px; }
+
+    /* ===== HERO ===== */
+    .hero {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+      color: white;
+      border-radius: 20px;
+      padding: 36px 28px;
+      box-shadow: 0 20px 50px rgba(26,45,90,0.25);
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      right: -60px; top: -60px;
+      width: 280px; height: 280px;
+      border-radius: 50%;
+      background: rgba(200,169,110,0.12);
+      pointer-events: none;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      left: -40px; bottom: -80px;
+      width: 200px; height: 200px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.05);
+      pointer-events: none;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(200,169,110,0.3);
+      border: 1px solid rgba(200,169,110,0.5);
+      color: var(--beige);
+      padding: 5px 14px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 14px;
+      letter-spacing: 0.06em;
+    }
+    .hero h1 {
+      font-size: clamp(26px, 5vw, 42px);
+      line-height: 1.25;
+      margin-bottom: 12px;
+      font-family: 'Noto Serif JP', serif;
+      font-weight: 500;
+    }
+    .hero h1 em {
+      color: var(--beige);
+      font-style: normal;
+    }
+    .hero p { color: rgba(255,255,255,0.8); font-size: 15px; max-width: 600px; }
+    .hero-pills {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+    .hero-pill {
+      background: rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.85);
+      border-radius: 999px;
+      padding: 5px 12px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    .hero-note { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 12px; }
+
+    /* ===== GRID ===== */
+    .grid {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 20px;
+      align-items: start;
+    }
+
+    /* ===== CARD ===== */
+    .card {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: var(--shadow-card);
+      border: 1px solid var(--gray-100);
+    }
+    .card h2 {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 4px;
+    }
+    .card-lead { color: var(--gray-600); font-size: 13px; margin-bottom: 20px; }
+
+    /* ===== FORM ===== */
+    .form-label {
+      display: block;
+      font-weight: 700;
+      font-size: 13px;
+      color: var(--navy);
+      margin: 18px 0 7px;
+    }
+    .form-label:first-of-type { margin-top: 0; }
+    select, input[type="number"] {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: var(--radius-md);
+      border: 1.5px solid var(--gray-200);
+      font-size: 15px;
+      font-family: inherit;
+      background: white;
+      color: #1a1a1a;
+      transition: border-color 0.2s;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+    select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23888' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+    }
+    select:focus, input[type="number"]:focus {
+      outline: none;
+      border-color: var(--navy);
+    }
+    .input-unit {
+      position: relative;
+    }
+    .input-unit input { padding-right: 48px; }
+    .input-unit span {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 13px;
+      color: var(--gray-500);
+      font-weight: 500;
+      pointer-events: none;
+    }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .size-hint { font-size: 12px; color: var(--gray-500); margin-top: 6px; line-height: 1.5; }
+
+    /* ===== CALC BTN ===== */
+    .calc-btn {
+      width: 100%;
+      border: none;
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 20px;
+      background: var(--navy);
+      color: white;
+      font-family: inherit;
+      box-shadow: 0 8px 24px rgba(26,45,90,0.2);
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .calc-btn:hover { background: var(--navy-dark); transform: translateY(-1px); box-shadow: var(--shadow-hover); }
+
+    /* ===== RESULT ===== */
+    .result-box {
+      background: linear-gradient(180deg, #ffffff, var(--beige-light));
+      border: 2px solid var(--gray-100);
+      border-top: 3px solid var(--beige);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      margin-top: 14px;
+    }
+    .result-summary { font-size: 13px; color: var(--gray-500); margin-bottom: 6px; }
+    .result-price {
+      font-size: 36px;
+      font-weight: 900;
+      color: var(--navy);
+      letter-spacing: 0.01em;
+      margin: 4px 0 2px;
+      line-height: 1.15;
+    }
+    .result-note { font-size: 13px; color: var(--gray-500); margin-bottom: 16px; }
+    .breakdown {
+      border-top: 1px dashed var(--gray-200);
+      padding-top: 14px;
+      display: grid;
+      gap: 9px;
+      margin-bottom: 16px;
+    }
+    .breakdown-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      color: var(--gray-700);
+    }
+    .breakdown-line strong { color: var(--navy); font-weight: 700; }
+    .warn-box {
+      background: var(--beige-light);
+      border: 1px solid var(--beige);
+      color: #7a5a1e;
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+      font-size: 13px;
+      line-height: 1.7;
+      margin-bottom: 14px;
+    }
+
+    /* ===== CTA ===== */
+    .cta-line {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      text-align: center;
+      text-decoration: none;
+      border-radius: var(--radius-md);
+      padding: 15px 20px;
+      background: var(--line-green);
+      color: white;
+      font-weight: 700;
+      font-size: 15px;
+      box-shadow: 0 8px 20px rgba(6,199,85,0.25);
+      margin-bottom: 10px;
+      transition: all 0.2s;
+    }
+    .cta-line:hover { background: #05b34a; transform: translateY(-1px); }
+    .cta-tel {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      text-decoration: none;
+      border-radius: var(--radius-md);
+      padding: 13px 20px;
+      background: var(--navy);
+      color: white;
+      font-weight: 700;
+      font-size: 14px;
+      transition: background 0.2s;
+    }
+    .cta-tel:hover { background: var(--navy-dark); }
+
+    /* ===== STEPS ===== */
+    .steps { display: grid; gap: 10px; margin-top: 20px; }
+    .step-item {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      background: var(--gray-50);
+      border: 1px solid var(--gray-100);
+      border-radius: var(--radius-md);
+      padding: 13px 14px;
+    }
+    .step-num {
+      background: var(--beige);
+      color: white;
+      min-width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      font-size: 13px;
+      flex-shrink: 0;
+    }
+    .step-body strong { font-size: 14px; color: var(--navy); display: block; }
+    .step-body span { font-size: 12px; color: var(--gray-500); }
+
+    /* ===== FOOTER ===== */
+    .page-footer {
+      margin-top: 32px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--gray-500);
+      line-height: 1.8;
+    }
+    .page-footer a { color: var(--navy); text-decoration: underline; }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 780px) {
+      .wrap { padding: 20px 14px 80px; }
+      .hero { padding: 26px 20px; border-radius: 16px; }
+      .grid { grid-template-columns: 1fr; }
+      .row { grid-template-columns: 1fr; }
+      .result-price { font-size: 30px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header__inner">
+    <a href="index.html" class="logo">Sumai<span>＋</span></a>
+    <a href="index.html" class="back-link">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+      トップへ戻る
+    </a>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- HERO -->
+  <section class="hero">
+    <span class="hero-badge">Sumai＋ 住宅ローン返済シミュレーター</span>
+    <h1>借入額・金利・年数から<br><em>毎月の返済額</em>がわかる</h1>
+    <p>借入額・金利・返済年数を入力するだけで、毎月の返済額と総返済額を自動計算します。リフォームローンの資金計画にもご活用ください。</p>
+    <div class="hero-pills">
+      <span class="hero-pill">スマホ対応</span>
+      <span class="hero-pill">即時計算</span>
+      <span class="hero-pill">元利均等返済方式</span>
+      <span class="hero-pill">相談無料</span>
+    </div>
+    <div class="hero-note">※本シミュレーターは概算です。実際の返済額は金融機関の審査・条件により異なります。</div>
+  </section>
+
+  <!-- MAIN GRID -->
+  <section class="grid">
+
+    <!-- 左：フォーム -->
+    <div class="card">
+      <h2>返済額シミュレーション</h2>
+      <p class="card-lead">借入条件を入力すると、右側に返済額が表示されます。</p>
+
+      <label class="form-label" for="principal">借入額</label>
+      <div class="input-unit">
+        <input type="number" id="principal" value="3000" min="0" step="10" inputmode="decimal" />
+        <span>万円</span>
+      </div>
+
+      <div class="row">
+        <div>
+          <label class="form-label" for="rate">金利（年利）</label>
+          <div class="input-unit">
+            <input type="number" id="rate" value="1.0" min="0" max="20" step="0.01" inputmode="decimal" />
+            <span>%</span>
+          </div>
+        </div>
+        <div>
+          <label class="form-label" for="years">返済期間</label>
+          <div class="input-unit">
+            <input type="number" id="years" value="30" min="1" max="50" step="1" inputmode="numeric" />
+            <span>年</span>
+          </div>
+        </div>
+      </div>
+
+      <label class="form-label" for="repayType">返済方式</label>
+      <select id="repayType">
+        <option value="equal_payment">元利均等返済（毎月の返済額が一定）</option>
+        <option value="equal_principal">元金均等返済（毎月の元金が一定）</option>
+      </select>
+      <div class="size-hint" id="typeHint">毎月の返済額が変わらないため、返済計画が立てやすい方式です。</div>
+
+      <button class="calc-btn" onclick="calc()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="7" x2="16" y2="7"/><line x1="8" y1="11" x2="16" y2="11"/><line x1="8" y1="15" x2="13" y2="15"/></svg>
+        返済額を計算する
+      </button>
+    </div>
+
+    <!-- 右：結果 -->
+    <div class="card">
+      <h2>返済シミュレーション結果</h2>
+      <p class="card-lead">毎月の返済額と総返済額の目安です。</p>
+
+      <div class="result-box">
+        <div class="result-summary" id="summary">借入3,000万円・金利1.0%・30年・元利均等返済</div>
+        <div class="result-price" id="price">96,491円<span style="font-size:14px;font-weight:700;color:var(--gray-600);">/月〜</span></div>
+        <div class="result-note" id="priceNote">毎月の返済額目安</div>
+        <div class="breakdown">
+          <div class="breakdown-line"><span>借入元金</span><strong id="matAmount">3,000万円</strong></div>
+          <div class="breakdown-line"><span>利息総額</span><strong id="interestAmount">474万円</strong></div>
+          <div class="breakdown-line"><span>総返済額</span><strong id="totalAmount">3,474万円</strong></div>
+          <div class="breakdown-line"><span>年間返済額目安</span><strong id="yearAmount">約115.8万円</strong></div>
+        </div>
+        <div class="warn-box">
+          ⚠️ 実際の金利・返済額は金融機関の審査結果や商品条件により変動します。<br>
+          リフォーム資金計画についてもお気軽にご相談ください。
+        </div>
+        <a class="cta-line" href="https://line.me/" target="_blank" rel="noopener">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.04 2 11c0 2.96 1.56 5.57 4 7.27V22l3.44-1.89A11.2 11.2 0 0012 20.28C17.52 20.28 22 16.24 22 11S17.52 2 12 2z"/></svg>
+          資金計画をLINEで相談する
+        </a>
+        <a class="cta-tel" href="tel:0000000000">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .99h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 15.92z"/></svg>
+          電話で相談する　00-0000-0000
+        </a>
+      </div>
+
+      <div class="steps">
+        <div class="step-item">
+          <div class="step-num">1</div>
+          <div class="step-body"><strong>返済額シミュレーション</strong><span>まずは返済額の目安を確認</span></div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">2</div>
+          <div class="step-body"><strong>資金計画のご相談</strong><span>リフォーム費用とあわせて検討</span></div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">3</div>
+          <div class="step-body"><strong>プラン・お見積もり</strong><span>納得いただいてから工事へ</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <p class="page-footer">
+    ※本ページの計算結果はあくまで概算目安です。実際の金利・返済額は金融機関の審査後に確定します。<br>
+    対応エリア：一宮市・稲沢市・江南市・岩倉市・北名古屋市・清須市・岐阜市・羽島市・各務原市<br>
+    <a href="index.html">Sumai＋ トップページへ</a>｜<a href="estimator.html">リフォーム費用診断ツールへ</a>
+  </p>
+
+</main>
+
+<script>
+function yen10k(man) {
+  return Number(man.toFixed(man >= 100 ? 0 : 1)).toLocaleString('ja-JP') + '万円';
+}
+function yenFull(man) {
+  return Math.round(man * 10000).toLocaleString('ja-JP') + '円';
+}
+
+function syncTypeHint() {
+  const type = document.getElementById('repayType').value;
+  const hint = type === 'equal_payment'
+    ? '毎月の返済額が変わらないため、返済計画が立てやすい方式です。'
+    : '毎月の元金は一定で、返済が進むほど利息が減り、返済額も減っていく方式です。';
+  document.getElementById('typeHint').textContent = hint;
+}
+
+function calc() {
+  syncTypeHint();
+
+  const principalMan = parseFloat(document.getElementById('principal').value) || 0;
+  const ratePercent = parseFloat(document.getElementById('rate').value) || 0;
+  const years = parseInt(document.getElementById('years').value, 10) || 0;
+  const type = document.getElementById('repayType').value;
+
+  const principal = principalMan * 10000;
+  const monthlyRate = ratePercent / 100 / 12;
+  const months = years * 12;
+
+  let firstPayment, totalPayment;
+
+  if (months <= 0 || principal <= 0) {
+    firstPayment = 0;
+    totalPayment = 0;
+  } else if (monthlyRate === 0) {
+    firstPayment = principal / months;
+    totalPayment = principal;
+  } else if (type === 'equal_payment') {
+    const factor = Math.pow(1 + monthlyRate, months);
+    firstPayment = principal * monthlyRate * factor / (factor - 1);
+    totalPayment = firstPayment * months;
+  } else {
+    const principalPerMonth = principal / months;
+    firstPayment = principalPerMonth + principal * monthlyRate;
+    let balance = principal;
+    totalPayment = 0;
+    for (let i = 0; i < months; i++) {
+      const interest = balance * monthlyRate;
+      totalPayment += principalPerMonth + interest;
+      balance -= principalPerMonth;
+    }
+  }
+
+  const totalMan = totalPayment / 10000;
+  const interestMan = totalMan - principalMan;
+  const yearMan = totalMan / (years || 1);
+
+  const typeName = type === 'equal_payment' ? '元利均等返済' : '元金均等返済';
+  document.getElementById('summary').textContent =
+    `借入${yen10k(principalMan)}・金利${ratePercent}%・${years}年・${typeName}`;
+
+  document.getElementById('price').innerHTML =
+    yenFull(firstPayment / 10000) + '<span style="font-size:14px;font-weight:700;color:var(--gray-600);">/月' + (type === 'equal_principal' ? '（初回）' : '') + '</span>';
+  document.getElementById('priceNote').textContent =
+    type === 'equal_payment' ? '毎月の返済額目安（一定）' : '毎月の返済額目安（初回・以降は逓減）';
+
+  document.getElementById('matAmount').textContent = yen10k(principalMan);
+  document.getElementById('interestAmount').textContent = yen10k(Math.max(interestMan, 0));
+  document.getElementById('totalAmount').textContent = yen10k(totalMan);
+  document.getElementById('yearAmount').textContent = '約' + yen10k(yearMan);
+}
+
+['principal', 'rate', 'years', 'repayType'].forEach(id => {
+  document.getElementById(id).addEventListener('input', calc);
+  document.getElementById(id).addEventListener('change', calc);
+});
+calc();
+</script>
+</body>
+</html>
