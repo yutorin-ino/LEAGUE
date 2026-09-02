@@ -184,13 +184,14 @@
       padding: 12px 14px;
       border-radius: var(--radius-md);
       border: 1.5px solid var(--gray-200);
-      font-size: 15px;
+      font-size: 16px;
       font-family: inherit;
       background: white;
       color: #1a1a1a;
       transition: border-color 0.2s;
       appearance: none;
       -webkit-appearance: none;
+      min-height: 48px;
     }
     select {
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23888' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
@@ -201,13 +202,17 @@
       outline: none;
       border-color: var(--navy);
     }
+    /* 数値入力：±ボタン付き（タップしやすいように） */
     .input-unit {
       position: relative;
+      display: flex;
+      align-items: stretch;
+      gap: 8px;
     }
-    .input-unit input { padding-right: 48px; }
+    .input-unit input { flex: 1; min-width: 0; padding-right: 48px; text-align: right; }
     .input-unit span {
       position: absolute;
-      right: 14px;
+      right: 60px;
       top: 50%;
       transform: translateY(-50%);
       font-size: 13px;
@@ -215,8 +220,82 @@
       font-weight: 500;
       pointer-events: none;
     }
+    .stepper-btn {
+      flex-shrink: 0;
+      width: 48px;
+      min-height: 48px;
+      border-radius: var(--radius-md);
+      border: 1.5px solid var(--gray-200);
+      background: var(--gray-50);
+      color: var(--navy);
+      font-size: 20px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s, border-color 0.15s;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+    .stepper-btn:hover { border-color: var(--navy); background: var(--beige-light); }
+    .stepper-btn:active { background: var(--beige-mid); }
+    /* スライダー：ドラッグでも調整できるように */
+    .slider-wrap { margin-top: 10px; }
+    input[type="range"] {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--gray-200);
+      outline: none;
+      cursor: pointer;
+      touch-action: pan-y;
+      margin: 6px 0;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--white);
+      border: 3px solid var(--navy);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      cursor: pointer;
+    }
+    input[type="range"]::-moz-range-thumb {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--white);
+      border: 3px solid var(--navy);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      cursor: pointer;
+    }
+    input[type="range"]::-moz-range-track {
+      height: 6px;
+      border-radius: 999px;
+      background: var(--gray-200);
+    }
+    .slider-scale {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--gray-500);
+    }
     .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
     .size-hint { font-size: 12px; color: var(--gray-500); margin-top: 6px; line-height: 1.5; }
+    .input-note {
+      font-size: 12px;
+      color: var(--gray-500);
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
 
     /* ===== CALC BTN ===== */
     .calc-btn {
@@ -387,7 +466,7 @@
     <h1>借入額・金利・年数から<br><em>毎月の返済額</em>がわかる</h1>
     <p>借入額・金利・返済年数を入力するだけで、毎月の返済額と総返済額を自動計算します。リフォームローンの資金計画にもご活用ください。</p>
     <div class="hero-pills">
-      <span class="hero-pill">スマホ対応</span>
+      <span class="hero-pill">スマホ・タブレット・PC対応</span>
       <span class="hero-pill">即時計算</span>
       <span class="hero-pill">元利均等返済方式</span>
       <span class="hero-pill">相談無料</span>
@@ -402,26 +481,48 @@
     <div class="card">
       <h2>返済額シミュレーション</h2>
       <p class="card-lead">借入条件を入力すると、右側に返済額が表示されます。</p>
+      <p class="input-note">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        数値の直接入力／±ボタン／スライダーのどれでも調整できます（スマホ・タブレット・PC対応）
+      </p>
 
       <label class="form-label" for="principal">借入額</label>
       <div class="input-unit">
+        <button type="button" class="stepper-btn" data-target="principal" data-dir="-1" aria-label="借入額を減らす">−</button>
         <input type="number" id="principal" value="3000" min="0" step="10" inputmode="decimal" />
         <span>万円</span>
+        <button type="button" class="stepper-btn" data-target="principal" data-dir="1" aria-label="借入額を増やす">＋</button>
+      </div>
+      <div class="slider-wrap">
+        <input type="range" id="principalRange" min="0" max="10000" step="10" value="3000" aria-label="借入額スライダー" />
+        <div class="slider-scale"><span>0万円</span><span>1億円</span></div>
       </div>
 
       <div class="row">
         <div>
           <label class="form-label" for="rate">金利（年利）</label>
           <div class="input-unit">
+            <button type="button" class="stepper-btn" data-target="rate" data-dir="-1" aria-label="金利を下げる">−</button>
             <input type="number" id="rate" value="1.0" min="0" max="20" step="0.01" inputmode="decimal" />
             <span>%</span>
+            <button type="button" class="stepper-btn" data-target="rate" data-dir="1" aria-label="金利を上げる">＋</button>
+          </div>
+          <div class="slider-wrap">
+            <input type="range" id="rateRange" min="0" max="10" step="0.05" value="1.0" aria-label="金利スライダー" />
+            <div class="slider-scale"><span>0%</span><span>10%</span></div>
           </div>
         </div>
         <div>
           <label class="form-label" for="years">返済期間</label>
           <div class="input-unit">
+            <button type="button" class="stepper-btn" data-target="years" data-dir="-1" aria-label="返済期間を減らす">−</button>
             <input type="number" id="years" value="30" min="1" max="50" step="1" inputmode="numeric" />
             <span>年</span>
+            <button type="button" class="stepper-btn" data-target="years" data-dir="1" aria-label="返済期間を増やす">＋</button>
+          </div>
+          <div class="slider-wrap">
+            <input type="range" id="yearsRange" min="1" max="50" step="1" value="30" aria-label="返済期間スライダー" />
+            <div class="slider-scale"><span>1年</span><span>50年</span></div>
           </div>
         </div>
       </div>
@@ -564,10 +665,76 @@ function calc() {
   document.getElementById('yearAmount').textContent = '約' + yen10k(yearMan);
 }
 
-['principal', 'rate', 'years', 'repayType'].forEach(id => {
-  document.getElementById(id).addEventListener('input', calc);
-  document.getElementById(id).addEventListener('change', calc);
-});
+// ===== 数値入力・±ボタン・スライダーの同期 =====
+// どの端末（スマホ／タブレット／PC）でも、直接入力・タップ・ドラッグのいずれでも調整できるようにする
+function clamp(v, min, max) { return Math.min(Math.max(v, min), max); }
+
+function updateSliderFill(rangeEl) {
+  const min = parseFloat(rangeEl.min), max = parseFloat(rangeEl.max);
+  const val = clamp(parseFloat(rangeEl.value) || min, min, max);
+  const pct = max > min ? ((val - min) / (max - min)) * 100 : 0;
+  rangeEl.style.background =
+    `linear-gradient(to right, var(--navy) 0%, var(--navy) ${pct}%, var(--gray-200) ${pct}%, var(--gray-200) 100%)`;
+}
+
+const fieldConfig = {
+  principal: { min: 0, max: 200000, step: 10, decimals: 0 },
+  rate:      { min: 0, max: 20,     step: 0.01, decimals: 2 },
+  years:     { min: 1, max: 80,     step: 1, decimals: 0 }
+};
+
+function bindField(id) {
+  const cfg = fieldConfig[id];
+  const numberEl = document.getElementById(id);
+  const rangeEl = document.getElementById(id + 'Range');
+
+  function applyNumberValue(v, opts) {
+    v = clamp(v, cfg.min, cfg.max);
+    numberEl.value = cfg.decimals > 0 ? Number(v.toFixed(cfg.decimals)) : Math.round(v);
+    const rangeMax = parseFloat(rangeEl.max);
+    rangeEl.value = clamp(v, parseFloat(rangeEl.min), rangeMax);
+    updateSliderFill(rangeEl);
+    if (!opts || opts.recalc !== false) calc();
+  }
+
+  numberEl.addEventListener('input', () => {
+    const v = parseFloat(numberEl.value);
+    if (isNaN(v)) return;
+    const rangeMax = parseFloat(rangeEl.max);
+    rangeEl.value = clamp(v, parseFloat(rangeEl.min), rangeMax);
+    updateSliderFill(rangeEl);
+    calc();
+  });
+  numberEl.addEventListener('blur', () => {
+    const v = parseFloat(numberEl.value);
+    applyNumberValue(isNaN(v) ? cfg.min : v);
+  });
+  numberEl.addEventListener('focus', () => numberEl.select());
+  // マウスホイールでの意図しない値変化を防ぐ（フォーカスを外して通常のスクロールに戻す）
+  numberEl.addEventListener('wheel', () => {
+    if (document.activeElement === numberEl) numberEl.blur();
+  }, { passive: true });
+
+  rangeEl.addEventListener('input', () => {
+    numberEl.value = rangeEl.value;
+    updateSliderFill(rangeEl);
+    calc();
+  });
+
+  document.querySelectorAll(`.stepper-btn[data-target="${id}"]`).forEach(btn => {
+    const dir = parseFloat(btn.dataset.dir);
+    btn.addEventListener('click', () => {
+      const current = parseFloat(numberEl.value) || 0;
+      applyNumberValue(current + dir * cfg.step);
+    });
+  });
+
+  updateSliderFill(rangeEl);
+}
+
+['principal', 'rate', 'years'].forEach(bindField);
+
+document.getElementById('repayType').addEventListener('change', calc);
 calc();
 </script>
 </body>
