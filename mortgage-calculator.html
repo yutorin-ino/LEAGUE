@@ -561,18 +561,18 @@
         </label>
       </div>
       <div class="bonus-wrap" id="bonusFieldWrap" style="display:none;">
-        <label class="form-label" for="bonusRatio">ボーナス返済の割合（借入額に対する割合）</label>
+        <label class="form-label" for="bonusAmount">ボーナス返済額（1回あたり）</label>
         <div class="input-unit">
-          <button type="button" class="stepper-btn" data-target="bonusRatio" data-dir="-1" aria-label="ボーナス返済割合を減らす">−</button>
-          <input type="number" id="bonusRatio" value="20" min="0" max="50" step="1" inputmode="numeric" />
-          <span>%</span>
-          <button type="button" class="stepper-btn" data-target="bonusRatio" data-dir="1" aria-label="ボーナス返済割合を増やす">＋</button>
+          <button type="button" class="stepper-btn" data-target="bonusAmount" data-dir="-1" aria-label="ボーナス返済額を減らす">−</button>
+          <input type="number" id="bonusAmount" value="10" min="0" max="200" step="1" inputmode="numeric" />
+          <span>万円</span>
+          <button type="button" class="stepper-btn" data-target="bonusAmount" data-dir="1" aria-label="ボーナス返済額を増やす">＋</button>
         </div>
         <div class="slider-wrap">
-          <input type="range" id="bonusRatioRange" min="0" max="50" step="1" value="20" aria-label="ボーナス返済割合スライダー" />
-          <div class="slider-scale"><span>0%</span><span>50%</span></div>
+          <input type="range" id="bonusAmountRange" min="0" max="200" step="1" value="10" aria-label="ボーナス返済額スライダー" />
+          <div class="slider-scale"><span>0万円</span><span>200万円</span></div>
         </div>
-        <div class="size-hint">借入額の一部を、年2回のボーナス月に毎月の返済額へ上乗せして返済します（一般的に借入額の50%が上限の目安です）。</div>
+        <div class="size-hint" id="bonusHint">年2回のボーナス月に、毎月の返済額へこの金額を上乗せしてお支払いいただきます。</div>
       </div>
 
       <button class="calc-btn" onclick="calc()">
@@ -593,6 +593,7 @@
         <div class="breakdown" id="bonusResultWrap" style="display:none; background: var(--beige-light); border-radius: var(--radius-md); padding: 10px 12px; margin-bottom: 12px; border-top: none;">
           <div class="breakdown-line"><span>ボーナス月の加算額（年2回）</span><strong id="bonusAddAmount">0円</strong></div>
           <div class="breakdown-line"><span>ボーナス月の返済額（合計）</span><strong id="bonusMonthTotal">0円</strong></div>
+          <div class="breakdown-line"><span>ボーナス返済に充当する元金</span><strong id="bonusPrincipalAmount">0万円</strong></div>
         </div>
         <div class="breakdown">
           <div class="breakdown-line"><span>借入元金</span><strong id="matAmount">3,000万円</strong></div>
@@ -675,6 +676,17 @@ function equalPrincipalTotals(principal, periodRate, periods) {
   return { first, total };
 }
 
+// 「1回あたりの返済額」から、それに充当できる元金（現在価値）を逆算する
+function principalFromPayment(payment, periodRate, periods, type) {
+  if (payment <= 0 || periods <= 0) return 0;
+  if (type === 'equal_payment') {
+    if (periodRate === 0) return payment * periods;
+    return payment * (1 - Math.pow(1 + periodRate, -periods)) / periodRate;
+  }
+  // 元金均等：1回目の返済額 = 元金/回数 + 元金×金利 なので、元金について解く
+  return payment / (1 / periods + periodRate);
+}
+
 function calc() {
   syncTypeHint();
 
@@ -683,17 +695,22 @@ function calc() {
   const years = parseInt(document.getElementById('years').value, 10) || 0;
   const type = document.getElementById('repayType').value;
   const bonusEnabled = document.getElementById('bonusEnabled').checked;
-  const bonusRatioPercent = bonusEnabled ? (parseFloat(document.getElementById('bonusRatio').value) || 0) : 0;
+  const bonusAmountMan = bonusEnabled ? (parseFloat(document.getElementById('bonusAmount').value) || 0) : 0;
 
   const principal = principalMan * 10000;
-  const bonusPrincipal = principal * (bonusRatioPercent / 100);
-  const monthlyPrincipal = principal - bonusPrincipal;
+  const bonusPaymentTarget = bonusAmountMan * 10000;
 
   const monthlyRate = ratePercent / 100 / 12;
   const months = years * 12;
   // ボーナス返済は年2回（6ヶ月ごと）のため、月利を複利換算して6ヶ月分のレートにする
   const bonusPeriodRate = Math.pow(1 + monthlyRate, 6) - 1;
   const bonusPeriods = years * 2;
+
+  // 希望するボーナス返済額から、それに充当される元金を逆算し、残りを毎月分にまわす
+  let bonusPrincipal = principalFromPayment(bonusPaymentTarget, bonusPeriodRate, bonusPeriods, type);
+  const bonusExceedsLoan = bonusPrincipal > principal;
+  bonusPrincipal = clamp(bonusPrincipal, 0, principal);
+  const monthlyPrincipal = principal - bonusPrincipal;
 
   let monthlyFirst, monthlyTotal, bonusFirst, bonusTotal;
 
@@ -715,22 +732,26 @@ function calc() {
   const yearMan = totalMan / (years || 1);
 
   const typeName = type === 'equal_payment' ? '元利均等返済' : '元金均等返済';
+  const showBonus = bonusEnabled && bonusAmountMan > 0;
   document.getElementById('summary').textContent =
     `借入${yen10k(principalMan)}・金利${ratePercent}%・${years}年・${typeName}` +
-    (bonusEnabled && bonusRatioPercent > 0 ? `・ボーナス返済併用（${bonusRatioPercent}%）` : '');
+    (showBonus ? `・ボーナス返済併用（1回${bonusAmountMan}万円）` : '');
 
   document.getElementById('price').innerHTML =
     yenFull(monthlyFirst / 10000) + '<span style="font-size:14px;font-weight:700;color:var(--gray-600);">/月' + (type === 'equal_principal' ? '（初回）' : '') + '</span>';
   document.getElementById('priceNote').textContent =
     (type === 'equal_payment' ? '毎月の返済額目安（一定）' : '毎月の返済額目安（初回・以降は逓減）') +
-    (bonusEnabled && bonusRatioPercent > 0 ? '・ボーナス月は別途加算' : '');
+    (showBonus ? '・ボーナス月は別途加算' : '');
 
-  const showBonus = bonusEnabled && bonusRatioPercent > 0;
   document.getElementById('bonusResultWrap').style.display = showBonus ? 'grid' : 'none';
   if (showBonus) {
     document.getElementById('bonusAddAmount').textContent = yenFull(bonusFirst / 10000);
     document.getElementById('bonusMonthTotal').textContent = yenFull((monthlyFirst + bonusFirst) / 10000);
+    document.getElementById('bonusPrincipalAmount').textContent = yen10k(bonusPrincipal / 10000);
   }
+  document.getElementById('bonusHint').textContent = bonusExceedsLoan
+    ? 'ご希望のボーナス返済額が借入額に対して大きいため、借入額の全額をボーナス返済に充当した場合の金額で計算しています。'
+    : '年2回のボーナス月に、毎月の返済額へこの金額を上乗せしてお支払いいただきます。';
 
   document.getElementById('matAmount').textContent = yen10k(principalMan);
   document.getElementById('interestAmount').textContent = yen10k(Math.max(interestMan, 0));
@@ -751,10 +772,10 @@ function updateSliderFill(rangeEl) {
 }
 
 const fieldConfig = {
-  principal:  { min: 0, max: 200000, step: 10,   decimals: 0 },
-  rate:       { min: 0, max: 20,     step: 0.01, decimals: 2 },
-  years:      { min: 1, max: 80,     step: 1,    decimals: 0 },
-  bonusRatio: { min: 0, max: 50,     step: 1,    decimals: 0 }
+  principal:   { min: 0, max: 200000, step: 10,   decimals: 0 },
+  rate:        { min: 0, max: 20,     step: 0.01, decimals: 2 },
+  years:       { min: 1, max: 80,     step: 1,    decimals: 0 },
+  bonusAmount: { min: 0, max: 500,    step: 1,    decimals: 0 }
 };
 
 function bindField(id) {
@@ -806,7 +827,7 @@ function bindField(id) {
   updateSliderFill(rangeEl);
 }
 
-['principal', 'rate', 'years', 'bonusRatio'].forEach(bindField);
+['principal', 'rate', 'years', 'bonusAmount'].forEach(bindField);
 
 document.getElementById('repayType').addEventListener('change', calc);
 
