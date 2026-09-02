@@ -696,9 +696,6 @@ function bindField(id) {
 
   document.querySelectorAll(`.stepper-btn[data-target="${id}"]`).forEach(btn => {
     const dir = parseFloat(btn.dataset.dir);
-    // pointerdown で preventDefault することで、入力欄フォーカス中でも
-    // 1回目のタップでキーボードが閉じるだけでボタンが反応しない不具合を防ぐ
-    btn.addEventListener('pointerdown', (e) => { e.preventDefault(); });
     btn.addEventListener('click', () => {
       const current = parseFloat(numberEl.value) || 0;
       applyNumberValue(current + dir * cfg.step);
