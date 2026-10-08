@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>宅建業法 予想問題152</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=Shippori+Mincho:wght@600;800&display=swap">
+<style>
+/* Layout: 答案用紙の一枚紙。1カラム・最大幅 680px、選択肢はマークシートの楕円で答える */
+:root{
+  --paper:#f5f6f1; --sheet:#ffffff; --ink:#1c2733; --muted:#5d6871; --rule:#dadccf;
+  --accent:#1f5c53; --accent-soft:#e3eeea; --pen:#c4302b; --pen-soft:#fbe9e7; --ok:#1d7148; --ok-soft:#e5f2ea;
+  --f-display:"Shippori Mincho","Hiragino Mincho ProN","Yu Mincho",serif;
+  --f-body:"BIZ UDPGothic","Hiragino Sans","Yu Gothic",system-ui,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#13181b; --sheet:#1b2226; --ink:#e4e7e1; --muted:#9aa5ab; --rule:#2e373c;
+  --accent:#6dbfae; --accent-soft:#1e3330; --pen:#ff6f61; --pen-soft:#3a2120; --ok:#62c793; --ok-soft:#1b3326; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#13181b; --sheet:#1b2226; --ink:#e4e7e1; --muted:#9aa5ab; --rule:#2e373c;
+  --accent:#6dbfae; --accent-soft:#1e3330; --pen:#ff6f61; --pen-soft:#3a2120; --ok:#62c793; --ok-soft:#1b3326; color-scheme:dark}
+
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.75;
+  padding-inline:16px;padding-block:0 96px;-webkit-text-size-adjust:100%}
+.wrap{max-width:680px;margin:0 auto}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.num{font-variant-numeric:tabular-nums}
+
+/* ---- ホーム ---- */
+.mast{padding-block:28px 18px;border-bottom:2px solid var(--ink)}
+.eyebrow{font-size:12px;letter-spacing:.12em;color:var(--muted);margin:0}
+h1{font-family:var(--f-display);font-weight:800;font-size:clamp(28px,7vw,38px);line-height:1.25;margin:4px 0 6px;text-wrap:balance}
+h1 small{font-size:.55em;font-weight:600;margin-left:.3em;color:var(--accent)}
+.lede{margin:0;color:var(--muted);font-size:14px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid var(--rule)}
+.stat{padding-block:14px;text-align:center}
+.stat+.stat{border-left:1px solid var(--rule)}
+.stat b{display:block;font-family:var(--f-display);font-size:26px;line-height:1.2}
+.stat span{font-size:12px;color:var(--muted);letter-spacing:.06em}
+h2{font-family:var(--f-display);font-size:19px;margin:28px 0 10px;display:flex;align-items:baseline;gap:10px}
+h2 .hint{font-family:var(--f-body);font-size:12px;color:var(--muted);font-weight:400}
+.modes{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mode{background:var(--sheet);border:1px solid var(--rule);border-radius:6px;padding:14px;text-align:left;display:flex;flex-direction:column;gap:2px;min-width:0}
+.mode:hover{border-color:var(--accent)}
+.mode b{font-size:15px}
+.mode span{font-size:12px;color:var(--muted);line-height:1.5}
+.mode.primary{grid-column:1/-1;background:var(--accent);border-color:var(--accent);color:var(--sheet)}
+.mode.primary span{color:inherit;opacity:.85}
+.mode[disabled]{opacity:.45;cursor:default}
+.cats{list-style:none;margin:0;padding:0;border-top:1px solid var(--rule)}
+.cats li{border-bottom:1px solid var(--rule)}
+.cat{width:100%;background:none;border:0;padding:12px 2px;display:grid;grid-template-columns:2.2em 1fr auto;gap:4px 10px;align-items:center;text-align:left}
+.cat:hover .cname{color:var(--accent)}
+.cno{font-family:var(--f-display);color:var(--muted);font-size:14px}
+.cname{font-weight:700;font-size:15px;min-width:0}
+.cmeta{font-size:12px;color:var(--muted);white-space:nowrap}
+.bar{grid-column:2/-1;height:4px;background:var(--rule);border-radius:2px;overflow:hidden;display:flex}
+.bar i{display:block;height:100%}
+.bar .g{background:var(--ok)}.bar .r{background:var(--pen)}
+.foot{margin-top:28px;font-size:12px;color:var(--muted);line-height:1.7}
+.linkbtn{background:none;border:0;padding:0;color:var(--pen);text-decoration:underline;font-size:12px}
+.confirm{display:inline-flex;gap:10px;align-items:center;margin-left:6px}
+
+/* ---- 問題 ---- */
+.qbar{position:sticky;top:env(safe-area-inset-top,0px);background:var(--paper);z-index:5;padding-block:10px 8px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--rule)}
+.back{background:none;border:1px solid var(--rule);border-radius:4px;padding:2px 10px;font-size:13px}
+.qpos{font-size:13px;color:var(--muted);flex:1}
+.star{background:none;border:0;font-size:22px;line-height:1;padding:2px 4px;color:var(--muted)}
+.star[aria-pressed="true"]{color:#d49a1a}
+.prog{height:3px;background:var(--rule);margin-top:-1px}
+.prog i{display:block;height:100%;background:var(--accent);transition:width .25s}
+.qhead{display:flex;align-items:baseline;gap:12px;margin:22px 0 10px;flex-wrap:wrap}
+.qno{font-family:var(--f-display);font-weight:800;font-size:28px;line-height:1}
+.chip{font-size:12px;border:1px solid var(--accent);color:var(--accent);border-radius:999px;padding:1px 10px}
+.qid{font-size:12px;color:var(--muted);margin-left:auto}
+.stem{white-space:pre-wrap;font-size:16.5px;margin:0 0 18px}
+.choices{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.ch{width:100%;display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;text-align:left;background:var(--sheet);border:1px solid var(--rule);border-radius:6px;padding:12px 14px;position:relative;min-width:0}
+.ch:hover:not([disabled]){border-color:var(--accent)}
+.ch[disabled]{cursor:default}
+.bub{width:26px;height:34px;border:1.5px solid var(--accent);border-radius:50%;display:grid;place-items:center;font-size:13px;color:var(--accent);font-weight:700;margin-top:-3px;flex:none}
+.ch .tx{min-width:0}
+.ch.picked .bub{background:var(--ink);border-color:var(--ink);color:var(--sheet)}
+.ch.correct{border-color:var(--ok);background:var(--ok-soft)}
+.ch.correct .bub{border-color:var(--ok);color:var(--ok)}
+.ch.correct.picked .bub{background:var(--ok);color:var(--sheet)}
+.ch.wrong{border-color:var(--pen);background:var(--pen-soft);padding-right:46px}
+.ch.wrong .bub{background:var(--pen);border-color:var(--pen);color:var(--sheet)}
+.stamp{position:absolute;right:10px;top:50%;transform:translateY(-50%) rotate(-8deg);font-family:var(--f-display);font-weight:800;color:var(--pen);font-size:34px;line-height:1;pointer-events:none;opacity:.9}
+.verdict{display:flex;align-items:center;gap:14px;margin:20px 0 8px}
+.mark{width:56px;height:56px;border:3px solid var(--pen);border-radius:50%;flex:none;transform:rotate(-6deg)}
+.mark.x{border:0;position:relative}
+.mark.x::before,.mark.x::after{content:"";position:absolute;left:50%;top:4px;width:3px;height:48px;background:var(--pen);border-radius:2px}
+.mark.x::before{transform:translateX(-50%) rotate(45deg)}.mark.x::after{transform:translateX(-50%) rotate(-45deg)}
+.verdict b{font-family:var(--f-display);font-size:22px}
+.verdict span{display:block;font-size:13px;color:var(--muted)}
+.exp{background:var(--sheet);border:1px solid var(--rule);border-left:3px solid var(--accent);padding:12px 14px;border-radius:0 6px 6px 0;font-size:15px}
+.exp h3{margin:0 0 4px;font-size:13px;letter-spacing:.1em;color:var(--accent)}
+.exp p{margin:0}
+.next{position:fixed;left:0;right:0;bottom:0;padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));background:linear-gradient(to top,var(--paper) 70%,transparent)}
+.next button{display:block;width:100%;max-width:680px;margin:0 auto;background:var(--ink);color:var(--paper);border:0;border-radius:6px;padding:14px;font-weight:700;font-size:16px}
+@media (prefers-reduced-motion:no-preference){.stamp,.mark{animation:pop .22s ease-out}@keyframes pop{from{transform:scale(1.4) rotate(-8deg);opacity:0}}}
+
+/* ---- 結果 ---- */
+.score{text-align:center;padding-block:30px 20px;border-bottom:2px solid var(--ink)}
+.score .big{font-family:var(--f-display);font-weight:800;font-size:64px;line-height:1}
+.score .big small{font-size:.4em;color:var(--muted)}
+.score p{margin:8px 0 0;color:var(--muted);font-size:14px}
+.rlist{list-style:none;margin:0;padding:0}
+.rlist li{border-bottom:1px solid var(--rule)}
+.rlist button{width:100%;background:none;border:0;padding:10px 2px;display:grid;grid-template-columns:2em 4.2em 1fr;gap:8px;text-align:left;align-items:baseline}
+.rlist .o{color:var(--ok);font-weight:700}.rlist .x{color:var(--pen);font-weight:700}
+.rlist .t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:14px;min-width:0}
+.rlist .n{font-size:12px;color:var(--muted)}
+.btnrow{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px}
+.btn{border:1px solid var(--ink);background:var(--sheet);border-radius:6px;padding:12px;font-weight:700}
+.btn.fill{background:var(--ink);color:var(--paper)}
+@media (max-width:420px){.modes{grid-template-columns:1fr}.btnrow{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main class="wrap" id="app"></main>
+
+<script src="q1.js"></script>
+<script src="q2.js"></script>
+<script src="q3.js"></script>
+<script src="q4.js"></script>
+<script src="q5.js"></script>
+<script src="q6.js"></script>
+<script>
+(function(){
+const CATS=[
+ ["def","宅建業の定義・免許の要否"],["lic","免許"],["shi","宅地建物取引士"],["hos","営業保証金"],
+ ["kyo","保証協会"],["jim","事務所・案内所等の規制"],["gyo","広告・業務上の規制"],["bai","媒介・代理契約"],
+ ["j35","重要事項の説明（35条）"],["j37","37条書面"],["hachi","8種制限（自ら売主）"],["hou","報酬"],
+ ["kan","監督処分・罰則"],["kashi","住宅瑕疵担保履行法"]];
+const CATNAME=Object.fromEntries(CATS);
+const ORDER=Object.fromEntries(CATS.map((c,i)=>[c[0],i]));
+// 分野順に並べて通し番号を振る
+const QS=window.Q.map((q,i)=>Object.assign({},q,{_i:i})).sort((a,b)=>ORDER[a.c]-ORDER[b.c]||a._i-b._i);
+QS.forEach((q,i)=>{q.no=i+1});
+const KEY="takken-gyoho-2026-v1";
+const MARK=["①","②","③","④"];
+let st={h:{},b:[]};
+try{const s=JSON.parse(localStorage.getItem(KEY)||"null");if(s&&s.h)st=s;}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}}
+const app=document.getElementById("app");
+let run=null; // {title, list:[no], pos, answers:{no:choice}}
+const $=(h)=>{const t=document.createElement("template");t.innerHTML=h.trim();return t.content};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const pad=n=>String(n).padStart(3,"0");
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const last=no=>st.h[no]?st.h[no].l:null; // true / false / null
+const wrongList=()=>QS.filter(q=>last(q.no)===false).map(q=>q.no);
+const isBm=no=>st.b.includes(no);
+
+function home(){
+  run=null;
+  const done=QS.filter(q=>last(q.no)!==null).length;
+  const ok=QS.filter(q=>last(q.no)===true).length;
+  const wr=wrongList().length;
+  const rate=done?Math.round(ok/done*100)+"%":"—";
+  const unanswered=QS.filter(q=>last(q.no)===null).map(q=>q.no);
+  let h=`<header class="mast"><p class="eyebrow">令和8年度（2026年度）宅建試験対策</p>
+  <h1>宅建業法 予想問題<small class="num">${QS.length}問</small></h1>
+  <p class="lede">本試験の問26〜問45（宅建業法・住宅瑕疵担保履行法）に対応したオリジナル4肢択一問題です。</p></header>
+  <div class="stats"><div class="stat"><b class="num">${done}<small style="font-size:.5em">/${QS.length}</small></b><span>解答済み</span></div>
+  <div class="stat"><b class="num">${rate}</b><span>正答率（最新）</span></div>
+  <div class="stat"><b class="num" style="color:var(--pen)">${wr}</b><span>要復習</span></div></div>
+  <h2>演習モード</h2>
+  <div class="modes">
+   <button class="mode primary" data-m="exam"><b>本試験形式 20問</b><span>全分野から本試験の出題比率に近い配分でランダム出題</span></button>
+   <button class="mode" data-m="unans" ${unanswered.length?"":"disabled"}><b>未解答の問題</b><span class="num">残り ${unanswered.length}問を順に</span></button>
+   <button class="mode" data-m="wrong" ${wr?"":"disabled"}><b>間違えた問題</b><span class="num">${wr}問を解き直す</span></button>
+   <button class="mode" data-m="bm" ${st.b.length?"":"disabled"}><b>ブックマーク</b><span class="num">★ ${st.b.length}問</span></button>
+   <button class="mode" data-m="all"><b>全問通し</b><span class="num">No.001〜${pad(QS.length)}を順に</span></button>
+  </div>
+  <h2>分野別 <span class="hint">緑＝正解済み　赤＝要復習</span></h2><ul class="cats">`;
+  CATS.forEach(([k,name],i)=>{
+    const qs=QS.filter(q=>q.c===k);const g=qs.filter(q=>last(q.no)===true).length;const r=qs.filter(q=>last(q.no)===false).length;
+    h+=`<li><button class="cat" data-cat="${k}"><span class="cno num">${String(i+1).padStart(2,"0")}</span><span class="cname">${name}</span><span class="cmeta num">${g}/${qs.length}問</span>
+    <span class="bar"><i class="g" style="width:${g/qs.length*100}%"></i><i class="r" style="width:${r/qs.length*100}%"></i></span></button></li>`;
+  });
+  h+=`</ul><p class="foot">問題は2026年4月1日時点で施行されている法令（拘禁刑への一本化、低廉な空家等の報酬特例などを含む）を前提に作成したオリジナル予想問題です。学習記録はこの端末のブラウザにのみ保存されます。
+  <span id="reset"><button class="linkbtn" data-reset="1">学習記録をリセット</button></span></p>`;
+  app.replaceChildren($(h));
+  window.scrollTo(0,0);
+}
+
+function start(title,list){
+  if(!list.length)return;
+  run={title,list,pos:0,answers:{}};
+  show();
+}
+function pickExam(){
+  // 本試験の業法20問の配分の目安
+  const quota={def:1,lic:2,shi:2,hos:1,kyo:1,jim:1,gyo:1,bai:1,j35:2,j37:2,hachi:3,hou:1,kan:1,kashi:1};
+  let out=[];
+  for(const k in quota){out=out.concat(shuffle(QS.filter(q=>q.c===k)).slice(0,quota[k]).map(q=>q.no));}
+  return out.sort((a,b)=>a-b);
+}
+
+function show(){
+  const no=run.list[run.pos];const q=QS[no-1];
+  const ans=run.answers[no];const answered=ans!==undefined;
+  let h=`<div class="qbar"><button class="back" data-home="1">← 一覧</button><span class="qpos num">${esc(run.title)}　${run.pos+1} / ${run.list.length}</span>
+  <button class="star" data-star="${no}" aria-pressed="${isBm(no)}" aria-label="ブックマーク">${isBm(no)?"★":"☆"}</button></div>
+  <div class="prog"><i style="width:${(run.pos+(answered?1:0))/run.list.length*100}%"></i></div>
+  <div class="qhead"><span class="qno num">問${run.pos+1}</span><span class="chip">${CATNAME[q.c]}</span><span class="qid num">No.${pad(no)}</span></div>
+  <p class="stem">${esc(q.q)}</p><ol class="choices">`;
+  q.o.forEach((o,i)=>{
+    let cls="ch";
+    if(answered){if(i+1===q.a)cls+=" correct";if(i+1===ans)cls+=" picked";if(i+1===ans&&ans!==q.a)cls+=" wrong";}
+    h+=`<li><button class="${cls}" data-pick="${i+1}" ${answered?"disabled":""}><span class="bub">${i+1}</span><span class="tx">${esc(o)}</span>${answered&&i+1===ans&&ans!==q.a?'<span class="stamp">✕</span>':""}</button></li>`;
+  });
+  h+=`</ol>`;
+  if(answered){
+    const ok=ans===q.a;
+    h+=`<div class="verdict"><div class="mark ${ok?"":"x"}" aria-hidden="true"></div><div><b>${ok?"正解":"不正解"}</b><span>正解は ${MARK[q.a-1]}${ok?"":"　あなたの解答 "+MARK[ans-1]}</span></div></div>
+    <div class="exp"><h3>解説</h3><p>${esc(q.e)}</p></div>
+    <div class="next"><button data-next="1">${run.pos+1<run.list.length?"次の問題へ":"結果を見る"}</button></div>`;
+  }
+  app.replaceChildren($(h));
+  if(!answered)window.scrollTo(0,0);
+}
+
+function pick(i){
+  const no=run.list[run.pos];if(run.answers[no]!==undefined)return;
+  const q=QS[no-1];const ok=i===q.a;
+  run.answers[no]=i;
+  const r=st.h[no]||{n:0,c:0};r.n++;if(ok)r.c++;r.l=ok;st.h[no]=r;save();
+  show();
+  const v=app.querySelector(".verdict");if(v)v.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"});
+}
+
+function result(){
+  const list=run.list;const ok=list.filter(no=>run.answers[no]===QS[no-1].a).length;
+  const pct=Math.round(ok/list.length*100);
+  const msg=list.length===20?(ok>=18?"合格ラインの目安（業法で18点以上）に到達しています。":"業法は18点以上が合格の目安です。間違えた問題を解き直しましょう。"):`正答率 ${pct}%`;
+  let h=`<div class="qbar"><button class="back" data-home="1">← 一覧</button><span class="qpos">${esc(run.title)}　結果</span></div>
+  <section class="score"><div class="big num">${ok}<small> / ${list.length}</small></div><p>${msg}</p></section><ul class="rlist">`;
+  list.forEach((no,i)=>{const q=QS[no-1];const good=run.answers[no]===q.a;const skipped=run.answers[no]===undefined;
+    h+=`<li><button data-review="${i}"><span class="${good?"o":"x"}">${skipped?"－":good?"◯":"✕"}</span><span class="n num">No.${pad(no)}</span><span class="t">${esc(CATNAME[q.c])}｜${esc(q.q.split("\n")[0])}</span></button></li>`;});
+  const wrongs=list.filter(no=>run.answers[no]!==QS[no-1].a);
+  h+=`</ul><div class="btnrow"><button class="btn fill" data-redo="1" ${wrongs.length?"":"disabled"}>間違えた${wrongs.length}問を解き直す</button><button class="btn" data-home="1">ホームに戻る</button></div>`;
+  run.done=true;run.wrongs=wrongs;
+  app.replaceChildren($(h));window.scrollTo(0,0);
+}
+
+app.addEventListener("click",e=>{
+  const b=e.target.closest("button");if(!b)return;
+  const d=b.dataset;
+  if(d.m){
+    if(d.m==="exam")start("本試験形式",pickExam());
+    if(d.m==="all")start("全問通し",QS.map(q=>q.no));
+    if(d.m==="unans")start("未解答",QS.filter(q=>last(q.no)===null).map(q=>q.no));
+    if(d.m==="wrong")start("間違えた問題",wrongList());
+    if(d.m==="bm")start("ブックマーク",st.b.slice().sort((a,b)=>a-b));
+  }
+  else if(d.cat)start(CATNAME[d.cat],QS.filter(q=>q.c===d.cat).map(q=>q.no));
+  else if(d.pick)pick(+d.pick);
+  else if(d.next){if(run.pos+1<run.list.length){run.pos++;show();}else result();}
+  else if(d.home)home();
+  else if(d.star){const no=+d.star;st.b=isBm(no)?st.b.filter(x=>x!==no):st.b.concat(no);save();b.setAttribute("aria-pressed",isBm(no));b.textContent=isBm(no)?"★":"☆";}
+  else if(d.review){run.pos=+d.review;show();}
+  else if(d.redo)start("解き直し",run.wrongs);
+  else if(d.reset){document.getElementById("reset").innerHTML='すべての記録を消しますか？<span class="confirm"><button class="linkbtn" data-reset2="1">消去する</button><button class="linkbtn" style="color:var(--muted)" data-home="1">やめる</button></span>';}
+  else if(d.reset2){st={h:{},b:[]};save();home();}
+});
+document.addEventListener("keydown",e=>{
+  if(!run||run.done||e.metaKey||e.ctrlKey||e.altKey)return;
+  const no=run.list[run.pos];
+  if(/^[1-4]$/.test(e.key)&&run.answers[no]===undefined)pick(+e.key);
+  else if(e.key==="Enter"&&run.answers[no]!==undefined){e.preventDefault();if(run.pos+1<run.list.length){run.pos++;show();}else result();}
+});
+home();
+})();
+</script>
+</body>
+</html>
