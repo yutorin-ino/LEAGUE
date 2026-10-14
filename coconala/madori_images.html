@@ -73,6 +73,16 @@ body{background:#ccc;font-family:"Zen Maru Gothic",sans-serif;color:var(--brown)
 #p4 .plan .dl li{list-style:none;font-size:28px;font-weight:700;line-height:1.6}
 #p4 .plan .dl li:before{content:"● ";color:var(--orange)}
 #p4 .note{position:absolute;bottom:26px;left:70px;right:70px;font-size:21px;line-height:1.5;color:var(--brown2);text-align:center}
+#p4 .plans{margin:30px 70px 0;display:flex;gap:22px}
+#p4 .pl{flex:1;position:relative;background:#fff;border:5px solid #F2D9BC;border-radius:32px;padding:28px 22px 22px;text-align:center}
+#p4 .pl.rec{border-color:var(--terra);background:#FFF9F2}
+#p4 .tag{position:absolute;top:-24px;left:50%;transform:translateX(-50%);background:var(--terra);color:#fff;font-weight:900;font-size:24px;padding:6px 22px;border-radius:999px;white-space:nowrap}
+#p4 .pn{font-size:34px;font-weight:900;color:var(--terra)}
+#p4 .pv{font-size:60px;font-weight:900;line-height:1.2;margin:4px 0 12px}
+#p4 .pv small{font-size:28px}
+#p4 .pl ul{text-align:left;border-top:2px dashed #F2D9BC;padding-top:12px}
+#p4 .pl li{list-style:none;font-size:24px;font-weight:700;line-height:1.45;padding-left:24px;position:relative;margin-bottom:4px}
+#p4 .pl li:before{content:"●";position:absolute;left:0;color:var(--orange);font-size:18px;top:4px}
 </style></head><body>
 
 <!-- ============ 1: メインキャッチ ============ -->
@@ -146,16 +156,11 @@ body{background:#ccc;font-family:"Zen Maru Gothic",sans-serif;color:var(--brown)
     <li>契約前に、別の視点から意見を聞きたい</li>
     <li>間取りは良いけど、外観がどうも今ひとつ</li>
   </ul>
-  <div class="plan">
-    <div class="pr"><div class="l">基本プラン</div><div class="v">7,000<small>円</small></div><div class="n">PDFでお届け</div></div>
-    <div class="dl"><h4>納品内容</h4><ul>
-      <li>良いところ／気になるところ・改善の方向性</li>
-      <li>暮らしやすさを高めるアイデア</li>
-      <li>住宅会社に確認したい質問リスト</li>
-      <li>CADご提案図（平面・立面イメージ）</li>
-      <li>外観パース＋LDKパース 各1カット</li>
-    </ul></div>
+  <div class="plans">
+    <div class="pl"><div class="pn">ライト</div><div class="pv">7,000<small>円</small></div><ul><li>良い点・気になる点</li><li>改善の方向性</li><li>暮らしのアイデア</li><li>確認したい質問リスト</li></ul></div>
+    <div class="pl rec"><div class="tag">おすすめ</div><div class="pn">スタンダード</div><div class="pv">19,800<small>円</small></div><ul><li>ライトの内容すべて</li><li>改善イメージ図<br>（平面）1案</li></ul></div>
+    <div class="pl"><div class="pn">プレミアム</div><div class="pv">34,800<small>円</small></div><ul><li>スタンダードの全内容</li><li>外観イメージ（立面）</li><li>外観＋LDKパース</li></ul></div>
   </div>
-  <div class="note">※本サービスは生活動線や住まい方に関する助言です。建築士による設計、構造計算、法令適合性の確認、設計図書の作成は行いません。</div>
+  <div class="note">※すべてPDFレポートでお届け。図・パースは参考イメージです。本サービスは住まい方に関する助言であり、設計・構造計算・法令適合性の確認・設計図書の作成は行いません。</div>
 </section>
 </body></html>
